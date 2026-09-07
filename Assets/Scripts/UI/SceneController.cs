@@ -61,7 +61,6 @@ public class SceneController : MonoBehaviour
                 break;
             default:
         }
-        Debug.Log(Time.timeScale);
         pauseAnimator.SetBool("PauseState", IsPaused);
         pauseAnimator.SetTrigger("PauseInput");     
     }
