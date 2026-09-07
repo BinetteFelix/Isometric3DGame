@@ -15,7 +15,6 @@ public class SceneController : MonoBehaviour
 
     #region STATE PARAMETERS
     public bool IsPaused { get; private set; }
-    public float LastPressedPauseTime { get; private set; }
     #endregion
 
     #region MISCELLANEOUS
@@ -35,10 +34,6 @@ public class SceneController : MonoBehaviour
     }
     private void Update()
     {
-        #region TIMERS
-        LastPressedPauseTime -= Time.deltaTime;
-        #endregion
-
         #region INPUT HANDLER
         if (PauseAction.WasPressedThisFrame())
         {
