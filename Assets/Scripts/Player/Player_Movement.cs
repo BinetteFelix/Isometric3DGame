@@ -1,11 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
+    [SerializeField] public InputAction movementAction;
     private Vector3 _input;
     [SerializeField] private Rigidbody RB;
     private float _moveSpeed = 5;
     private float _sensitivity = 1080;
+
+    private void Awake()
+    {
+        movementAction.Enable();
+    }
     private void Update()
     {
         GatherInputs();
@@ -18,7 +25,7 @@ public class Player_Movement : MonoBehaviour
     }
     void GatherInputs()
     {
-        _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        _input = new Vector3(movementAction.ReadValue<Vector2>().x, 0, movementAction.ReadValue<Vector2>().y);
     }
 
     void Look()

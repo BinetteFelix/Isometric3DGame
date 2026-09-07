@@ -3,31 +3,50 @@ using UnityEngine.InputSystem;
 
 public class SceneController : MonoBehaviour
 {
-    public static SceneController Instance;
-    [SerializeField] private InputAction PauseAction;
-
-    
+    #region COMPONENTS
     [SerializeField] private Animator pauseAnimator;
+    private Player_Movement playerMovement;
+    #endregion
+    
+    #region INPUT PARAMETERS
+    [SerializeField] private InputAction PauseAction;
+    private InputAction movementAction;
+    #endregion
 
-    [SerializeField] private GameObject pauseMenu;
-
+    #region STATE PARAMETERS
     public bool IsPaused { get; private set; }
+    public float LastPressedPauseTime { get; private set; }
+    #endregion
 
+    #region MISCELLANEOUS
+    public static SceneController Instance;
+
+    #endregion
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
-     
+        PauseAction.Enable();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Movement>();
+        movementAction = playerMovement.movementAction;
     }
     private void Update()
     {
-        
+        #region TIMERS
+        LastPressedPauseTime -= Time.deltaTime;
+        #endregion
 
         #region INPUT HANDLER
-        if (PauseAction.IsPressed())
+        if (PauseAction.WasPressedThisFrame())
         {
-            Debug.Log("AGNAGN");
             Pause();
         }
         #endregion
+
+
     }
 
 
@@ -35,8 +54,21 @@ public class SceneController : MonoBehaviour
     {
         IsPaused = !IsPaused;
 
+        switch (IsPaused)
+        {
+            case true:
+                Time.timeScale = 0;
+                movementAction.Disable();
+                break;
+            case false:
+                Time.timeScale = 1;
+                movementAction.Enable();
+                break;
+            default:
+        }
+        Debug.Log(Time.timeScale);
         pauseAnimator.SetBool("PauseState", IsPaused);
-        pauseAnimator.SetTrigger("PauseInput");
+        pauseAnimator.SetTrigger("PauseInput");     
     }
     
 }
