@@ -1,67 +1,102 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class WeaponCollection : MonoBehaviour
 {
     public static WeaponCollection Instance;
-    public GameObject[] Weapons;
 
+    #region LISTS
+    public List<GameObject> Weapons;
+    #endregion
+
+    #region INPUT ACTIONS
     [SerializeField] private InputAction switchWeaponDownAction;
     [SerializeField] private InputAction switchWeaponUpAction;
-    bool LastWeaponInCollection;
-    bool FirstWeaponInCollection;
+    #endregion
+
+    #region DELAY VARIABLES
+    public float shotgunDelay = 0.62f;
+    public float smgDelay = 0.1f;
+    #endregion
+
+    public string CurrentWeaponHeld { get; private set; }
 
     private void Awake()
     {
-        switchWeaponDownAction.Enable();
-       // switchWeaponUpAction.Enable();
         Instance = this;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        CurrentWeaponHeld = "Shotgun";
+
+        switchWeaponDownAction.Enable();
+        switchWeaponUpAction.Enable();
     }
 
     // Update is called once per frame
     void Update()
     {
+        #region INPUT HANDLER
         if (CanSwitch() && switchWeaponDownAction.WasPressedThisFrame())
         {
             SwitchWeaponDown();
         }
         if (CanSwitch() && switchWeaponUpAction.WasPressedThisFrame())
         {
-            //SwitchWeaponUp();
+            SwitchWeaponUp();
         }
-
-        LastWeaponInCollection = CheckActiveWeapon() == (Weapons.Length - 1);
-        FirstWeaponInCollection = (CheckActiveWeapon() == 0);
-        Debug.Log(CheckActiveWeapon());
-
+        #endregion
     }
+
+    #region SWITCH METHODS
     private void SwitchWeaponDown()
     {
-        if (CheckActiveWeapon() > -1 && !LastWeaponInCollection)
+        var actW = CheckActiveWeapon();
+
+        if (actW >= 0 && !Weapons[Weapons.Count - 1].activeSelf)
         {
-            Weapons[CheckActiveWeapon()].SetActive(false);
-            Weapons[CheckActiveWeapon() + 1].SetActive(true);
+            Weapons[actW].SetActive(false);
+            Weapons[actW + 1].SetActive(true);
         }
-        else if (LastWeaponInCollection)
+        else if (Weapons[Weapons.Count - 1].activeSelf)
         {
-            Weapons[CheckActiveWeapon()].SetActive(false);
+            Weapons[actW].SetActive(false);
             Weapons[0].SetActive(true);
-            Debug.Log("reached the last weapon");
         }
+
+        CurrentWeaponHeld = Weapons[CheckActiveWeapon()].name;
+       
     }
+    private void SwitchWeaponUp()
+    {
+        var actW = CheckActiveWeapon();
+
+        if (actW > 0)
+        {
+            Weapons[actW].SetActive(false);
+            Weapons[actW - 1].SetActive(true);
+        }
+        else if (actW == 0)
+        {
+            Weapons[actW].SetActive(false);
+            Weapons[Weapons.Count - 1].SetActive(true);
+        }
+
+        CurrentWeaponHeld = Weapons[CheckActiveWeapon()].name;
+    }
+    #endregion
+
+    #region SWITCH STATE CHECK
     private bool CanSwitch()
     {
-        return Weapons.Length > 1;
+        return Weapons.Count > 1;
     }
     private int CheckActiveWeapon()
     {
         int activeWeapon = 0;
-        for (int i = 0; i < Weapons.Length; i++)
+        for (int i = 0; i < Weapons.Count; i++)
         {
             if (Weapons[i].activeSelf)
             {
@@ -70,4 +105,5 @@ public class WeaponCollection : MonoBehaviour
         }
         return activeWeapon;
     }
+    #endregion
 }

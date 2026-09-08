@@ -10,6 +10,9 @@ public class PlayerFireGun : MonoBehaviour
     #region COMPONENTS
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private Transform BulletOrigin;
+    [SerializeField] private float shotDelay;
+
+    private WeaponCollection weaponCollection;
     #endregion
 
     #region EFFECTS
@@ -17,8 +20,7 @@ public class PlayerFireGun : MonoBehaviour
     #endregion
 
     #region STATE PARAMETERS
-    public float LastPressedShotgunShot { get; private set; }
-    private float shotgunShotDelay = 0.62f;
+    public float LastPressedShot { get; private set; }
 
     private Transform PlayerTransform;
     #endregion
@@ -29,21 +31,33 @@ public class PlayerFireGun : MonoBehaviour
     }
     private void Start()
     {
+        weaponCollection = GetComponentInParent<WeaponCollection>();
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
     private void Update()
     {
-
         #region TIMERS
-        LastPressedShotgunShot -= Time.deltaTime;
+        LastPressedShot -= Time.deltaTime;
         #endregion
 
         #region INPUT HANDLER
-        if (CanShoot() && shootAction.WasPressedThisFrame())
+        if (weaponCollection.CurrentWeaponHeld == "Shotgun")
         {
-            Shoot();
-            WeaponEffect.Play();
-            LastPressedShotgunShot = shotgunShotDelay;
+            if (CanShoot() && shootAction.WasPressedThisFrame())
+            {
+                Shoot();
+                WeaponEffect.Play();
+                LastPressedShot = shotDelay;
+            }
+        }
+        else if (weaponCollection.CurrentWeaponHeld == "SMG")
+        {
+            if (CanShoot() && shootAction.IsPressed())
+            {
+                Shoot();
+                WeaponEffect.Play();
+                LastPressedShot = shotDelay;
+            }
         }
         
         #endregion
@@ -68,8 +82,14 @@ public class PlayerFireGun : MonoBehaviour
     #region CHECK METHODS
     private bool CanShoot()
     {
-        return LastPressedShotgunShot < 0;
+        return LastPressedShot < 0;
+    }
+    public float SetShotDelay(float delay)
+    {
+        shotDelay = delay;
+        return shotDelay;
     }
     #endregion
+
 
 }

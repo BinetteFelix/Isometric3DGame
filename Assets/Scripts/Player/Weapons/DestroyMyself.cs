@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DestroyMyself : MonoBehaviour
 {
-    float LifeTime = 1.5f;
+    public float LifeTime = 1.5f;
 
     GameObject[] bulletsInScene;
 
