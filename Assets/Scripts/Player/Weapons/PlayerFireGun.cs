@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,7 +46,7 @@ public class PlayerFireGun : MonoBehaviour
         {
             if (CanShoot() && shootAction.WasPressedThisFrame())
             {
-                Shoot();
+                ShootShotgun();
                 WeaponEffect.Play();
                 LastPressedShot = shotDelay;
             }
@@ -54,7 +55,7 @@ public class PlayerFireGun : MonoBehaviour
         {
             if (CanShoot() && shootAction.IsPressed())
             {
-                Shoot();
+                ShootSMG();
                 WeaponEffect.Play();
                 LastPressedShot = shotDelay;
             }
@@ -64,7 +65,7 @@ public class PlayerFireGun : MonoBehaviour
     }
 
     #region ACTION METHODS
-    private void Shoot()
+    private void ShootSMG()
     {
         GameObject bullet = Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity);
         Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
@@ -76,6 +77,30 @@ public class PlayerFireGun : MonoBehaviour
 
         if (bulletDespawnTimer < 0)
             Destroy(bullet);
+    }
+    private void ShootShotgun()
+    {
+        List<GameObject> bullets = new List<GameObject>();
+
+        for (int i = 0; i < 8; i++)
+        {
+            bullets.Add(BulletPrefab);
+            bullets[i] = Instantiate(BulletPrefab, BulletOrigin.position + new Vector3(Random.Range(0.1f, 0.4f), Random.Range(0.1f, 0.15f), 0), Quaternion.identity);
+        }
+        foreach (GameObject bullet in bullets)
+        {
+            Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+            bulletRB.AddForce(PlayerTransform.forward * 1750);
+        }
+
+        float bulletDespawnTimer = 3;
+        bulletDespawnTimer -= Time.deltaTime;
+
+        if (bulletDespawnTimer < 0)
+        {
+            bullets.Remove(bullets[0]);
+            Destroy(bullets[0]);
+        }
     }
     #endregion
 

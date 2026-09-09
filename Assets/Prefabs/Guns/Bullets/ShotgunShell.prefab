@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 313987724581945314}
   - component: {fileID: 8647587882110674332}
   - component: {fileID: 5993217569501118236}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ShotgunShell
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -153,3 +153,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57966802446537647ace1f5da3e905cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  LifeTime: 1.5
+  damage: 5

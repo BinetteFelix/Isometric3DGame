@@ -1,11 +1,11 @@
-using System.Linq;
 using UnityEngine;
 
 public class DestroyMyself : MonoBehaviour
 {
     public float LifeTime = 1.5f;
-
     GameObject[] bulletsInScene;
+
+    [SerializeField] private float damage;
 
     // Update is called once per frame
     void Update()
@@ -16,16 +16,27 @@ public class DestroyMyself : MonoBehaviour
             Destroy(gameObject);
 
         bulletsInScene = GameObject.FindGameObjectsWithTag("Bullet");
-        if (bulletsInScene.Length > 5)
+        if (bulletsInScene.Length > 50)
         {
             foreach (GameObject bullet in bulletsInScene)
             {
-                DestroyWhenTooMany(bullet);
+                if (bullet != gameObject)
+                    DestroyWhenTooMany(bullet);
             }
         }
     }
     void DestroyWhenTooMany(GameObject bullet)
     {
         Destroy(bullet);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+
+        if (enemy != null)
+        {
+            Destroy(gameObject);
+            enemy.TakeDamage(damage);
+        }
     }
 }

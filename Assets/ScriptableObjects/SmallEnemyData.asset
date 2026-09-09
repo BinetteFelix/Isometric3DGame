@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ebd1513c3394bd4f8748d5954c78327, type: 3}
-  m_Name: Shotgun
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  GunBaseDamage: 5
-  GunName: Leeching Blaster
-  MagicBaseDamage: 0
-  MagicName: 
+  m_Script: {fileID: 11500000, guid: 9ae7915ea97a58e438ee7814b8b3cdea, type: 3}
+  m_Name: SmallEnemyData
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  BaseHealth: 75
