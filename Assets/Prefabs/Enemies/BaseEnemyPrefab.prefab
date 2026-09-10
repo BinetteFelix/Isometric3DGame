@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 8544956419711694134}
   - component: {fileID: 1663025495419472283}
   m_Layer: 0
-  m_Name: SmallEnemy
-  m_TagString: Untagged
+  m_Name: BaseEnemyPrefab
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,11 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c65f46971c16b742aec157ed4f19734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  enemyMAT: {fileID: 2100000, guid: 261ac26c2dc963c4f950e1d6255c4b29, type: 2}
-  colors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  enemyData: {fileID: 11400000, guid: e1dadb7bf00606c438a8b918f2c8bb6d, type: 2}
+  rend: {fileID: 8764727664783535205}
+  flashColor: {r: 1, g: 0.5707547, b: 0.5707547, a: 1}
+  flashDuration: 0.15
+  enemyData: {fileID: 0}
   HealthbarPrefab: {fileID: 647350446515140044, guid: 92d088e23c699df498e6109065cd85cf, type: 3}
 --- !u!65 &1663025495419472283
 BoxCollider:

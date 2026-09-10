@@ -1,10 +1,20 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
     #region COMPONENTS
 
     #endregion
+
+    #region TAKE DAMAGE DATA
+    [SerializeField] private MeshRenderer rend;
+    [SerializeField] private Color flashColor = Color.red;
+    [SerializeField] private float flashDuration = 0.1f;
+    private Color originalColor;
+    #endregion
+
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private GameObject HealthbarPrefab;
     private GameObject healthbarUI;
@@ -33,6 +43,7 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         currentHealth = enemyData.BaseHealth;
+        originalColor = rend.material.color;
     }
 
     // Update is called once per frame
@@ -46,12 +57,28 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth -= damage;
         healthbarUI.GetComponent<HealthUI>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
-
+        Flash();
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Invoke("EnemyDead", flashDuration);
         }
     }
+    private void EnemyDead()
+    {
+        Destroy(gameObject);
+    }
+    private IEnumerator DamageEffect()
+    {
+        rend.material.color = flashColor;
+        yield return new WaitForSeconds(flashDuration);
+        rend.material.color = originalColor;
+    }
+    private void Flash()
+    {
+        StopAllCoroutines();
+        StartCoroutine(DamageEffect());
+    }
+
     private float ConvertToDecimal(float n)
     {
         return n / 100;

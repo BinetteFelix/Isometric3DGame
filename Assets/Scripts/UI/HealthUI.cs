@@ -6,8 +6,6 @@ public class HealthUI : MonoBehaviour
 
     CanvasGroup canvasGroup;
 
-    float fadeVariable;
-
     private void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
