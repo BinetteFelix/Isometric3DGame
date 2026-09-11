@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     public static EnemyController Instance;
-    [SerializeField] private  Transform target;
 
     #region ENEMIES
     private NavMeshAgent removableEnemy;
@@ -16,7 +15,6 @@ public class EnemyController : MonoBehaviour
     #endregion
     [SerializeField] private List<Transform> spawnAreas;
     [SerializeField] private TextMeshProUGUI objectiveText;
-    private float updateDestinationTime;
     public int CurrentWave { get; private set; }
 
     private void Awake()
@@ -33,16 +31,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region TIMERS
-        updateDestinationTime -= Time.deltaTime;
-        #endregion
-
         UpdateEnemyCount(CurrentWave);
-
-        #region DESTINATION HANDLER
-        if (updateDestinationTime < 0)
-            SetDestination();
-        #endregion
     }
     public void UpdateEnemyCount(int wave)
     {
@@ -99,16 +88,4 @@ public class EnemyController : MonoBehaviour
         }
         MarkerHandler.Instance.SetMarkerTarget();
     }
-
-    #region DESTINATON METHODS
-    private void SetDestination()
-    {
-        updateDestinationTime = 0.5f;
-        foreach (var agent in Enemies)
-        {
-            if (agent != null)
-                agent.SetDestination(target.position);
-        }
-    }
-    #endregion
 }
