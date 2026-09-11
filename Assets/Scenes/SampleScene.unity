@@ -507,6 +507,7 @@ MonoBehaviour:
     m_Flags: 0
   BulletPrefab: {fileID: 4785613473457715307, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
   BulletOrigin: {fileID: 690515450}
+  shotgunBulletTransforms: []
   shotDelay: 0.1
   WeaponEffect: {fileID: 401780199}
 --- !u!114 &278822284
@@ -533,9 +534,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1390414938}
     m_Modifications:
+    - target: {fileID: 2762108457620230864, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.64278764
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762108457620230864, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.76604444
+      objectReference: {fileID: 0}
+    - target: {fileID: 2762108457620230864, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 17.3
       objectReference: {fileID: 0}
     - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: InitialModule.size3D
@@ -543,7 +560,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 0.05
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: InitialModule.startSize.scalar
@@ -558,8 +579,24 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 273.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3449047759478907783, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7572224403793415356, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7660445
+      objectReference: {fileID: 0}
+    - target: {fileID: 7572224403793415356, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6427876
+      objectReference: {fileID: 0}
+    - target: {fileID: 7572224403793415356, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8140217340388147559, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -676,6 +713,10 @@ MonoBehaviour:
     m_Flags: 0
   BulletPrefab: {fileID: 4785613473457715307, guid: e55fe67ddbc21784aa5f2f56d1c608bc, type: 3}
   BulletOrigin: {fileID: 796772377}
+  shotgunBulletTransforms:
+  - {fileID: 962017131}
+  - {fileID: 2026316367}
+  - {fileID: 1315720726}
   shotDelay: 0.62
   WeaponEffect: {fileID: 1044048174}
 --- !u!114 &283505157
@@ -6903,6 +6944,11 @@ Transform:
   - {fileID: 72773089}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &962017131 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7572224403793415356, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+  m_PrefabInstance: {fileID: 283505152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &988663092
 GameObject:
   m_ObjectHideFlags: 0
@@ -7597,6 +7643,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165920097}
   m_CullTransparentMesh: 1
+--- !u!4 &1315720726 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2762108457620230864, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+  m_PrefabInstance: {fileID: 283505152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1361256477
 GameObject:
   m_ObjectHideFlags: 0
@@ -8575,6 +8626,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958506306}
   m_CullTransparentMesh: 1
+--- !u!4 &2026316367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8556643415591551544, guid: bfe0a241d3292364faa2b4e5d1509c72, type: 3}
+  m_PrefabInstance: {fileID: 283505152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2075575848
 GameObject:
   m_ObjectHideFlags: 0

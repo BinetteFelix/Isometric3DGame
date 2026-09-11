@@ -11,6 +11,7 @@ public class PlayerFireGun : MonoBehaviour
     #region COMPONENTS
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private Transform BulletOrigin;
+    [SerializeField] private Transform[] shotgunBulletTransforms;
     [SerializeField] private float shotDelay;
 
     private WeaponCollection weaponCollection;
@@ -80,17 +81,33 @@ public class PlayerFireGun : MonoBehaviour
     }
     private void ShootShotgun()
     {
+        int bulletSpawned = 0;
         List<GameObject> bullets = new List<GameObject>();
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
             bullets.Add(BulletPrefab);
             bullets[i] = Instantiate(BulletPrefab, BulletOrigin.position + new Vector3(Random.Range(0.1f, 0.4f), Random.Range(0.1f, 0.15f), 0), Quaternion.identity);
         }
         foreach (GameObject bullet in bullets)
         {
-            Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
-            bulletRB.AddForce(PlayerTransform.forward * 1750);
+            if (bulletSpawned >= 0 && bulletSpawned < 4)
+            {
+                Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+                bulletRB.AddForce(shotgunBulletTransforms[0].forward * 1750);
+            }
+            else if (bulletSpawned > 4 && bulletSpawned < 7)
+            {
+                Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+                bulletRB.AddForce(shotgunBulletTransforms[1].forward * 1750);
+            }
+            else
+            {
+                Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+                bulletRB.AddForce(shotgunBulletTransforms[2].forward * 1750);
+            }
+
+            bulletSpawned++;
         }
 
         float bulletDespawnTimer = 3;
