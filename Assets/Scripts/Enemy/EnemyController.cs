@@ -11,13 +11,10 @@ public class EnemyController : MonoBehaviour
     #region ENEMIES
     private NavMeshAgent removableEnemy;
     [SerializeField] private NavMeshAgent levelOneEnemyPrefab;
-    [SerializeField] public List<NavMeshAgent> levelOneEnemies;
-
     [SerializeField] private NavMeshAgent levelTwoEnemyPrefab;
-    [SerializeField] public List<NavMeshAgent> levelTwoEnemies;
+    [SerializeField] public List<NavMeshAgent> Enemies;
     #endregion
-
-    [SerializeField] private List<Transform> SpawnAreas;
+    [SerializeField] private List<Transform> spawnAreas;
     [SerializeField] private TextMeshProUGUI objectiveText;
     private float updateDestinationTime;
     public int CurrentWave { get; private set; }
@@ -36,135 +33,82 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region TIMERS
         updateDestinationTime -= Time.deltaTime;
+        #endregion
 
         UpdateEnemyCount(CurrentWave);
-        
+
+        #region DESTINATION HANDLER
         if (updateDestinationTime < 0)
-        {
-            updateDestinationTime = 0.5f;
-            foreach (var agent in levelOneEnemies)
-            {
-                if (agent != null)
-                    agent.SetDestination(target.position);
-            }
-            foreach (var agent in levelTwoEnemies)
-            {
-                if (agent != null)
-                    agent.SetDestination(target.position);
-            }
-        }
+            SetDestination();
+        #endregion
     }
     public void UpdateEnemyCount(int wave)
     {
-        switch (wave)
+        bool removeEnemy = false;
+        foreach (NavMeshAgent agent in Enemies)
         {
-            case 0:
-                {
-                    bool removeEnemy = false;
-                    foreach (NavMeshAgent agent in levelOneEnemies)
-                    {
-                        if (agent == null)
-                        {
-                            removableEnemy = agent;
-                            removeEnemy = true;
-                        }
-                    }
-                    if (removeEnemy)
-                    {
-                        levelOneEnemies.Remove(removableEnemy);
-                        MarkerHandler.Instance.RemoveFromList(removableEnemy);
-                    }
-                    SetObjectiveProgress(CurrentWave);
-                    break;
-                }
-            case 1:
-                {
-                    bool removeEnemy = false;
-                    foreach (NavMeshAgent agent in levelTwoEnemies)
-                    {
-                        if (agent == null)
-                        {
-                            removableEnemy = agent;
-                            removeEnemy = true;
-                        }
-                    }
-                    if (removeEnemy)
-                    {
-                        levelTwoEnemies.Remove(removableEnemy);
-                        MarkerHandler.Instance.RemoveFromList(removableEnemy);
-                    }
-                    SetObjectiveProgress(CurrentWave);
-                    break;
-                }
-            default:
-                {
-                    break;
-                }       
+            if (agent == null)
+            {
+                removableEnemy = agent;
+                removeEnemy = true;
+            }
         }
+        if (removeEnemy)
+        {
+            Enemies.Remove(removableEnemy);
+            MarkerHandler.Instance.RemoveFromList(removableEnemy);
+        }
+        SetObjectiveProgress(CurrentWave);
     }
+
+    #region OBJECTIVE UPDATE
     public void SetObjectiveProgress(int wave)
     {
-        switch (wave)
-        {
-            case 0:
-                {
-                    objectiveText.text = "Kill Enemies: " + levelOneEnemies.Count;
-                    break;
-                }
-            case 1:
-                {
-                    objectiveText.text = "Kill Enemies: " + levelTwoEnemies.Count;
-                    break;
-                }
-            default:
-                break;
-        }
+        objectiveText.text = "Kill Enemies: " + Enemies.Count;
 
-        if (levelOneEnemies.Count == 0 && CurrentWave == 0)
+        if (Enemies.Count == 0 && CurrentWave == 0)
         {
             CurrentWave = 1;
             SpawnEnemies(CurrentWave);
         }
     }
+    #endregion
+
     private void SpawnEnemies(int wave)
     {
-        switch (wave)
+        for (int i = 0; i < 4; i++)
         {
-            case 0:
+            for (int j = 0; j < 4; j++)
+            {
+                int randomEnemy = Random.Range(0, 2);
+                NavMeshAgent enemyToSpawn = randomEnemy switch
                 {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            NavMeshAgent newEnemy = Instantiate(levelOneEnemyPrefab, SpawnAreas[i]);
-                            newEnemy.transform.position = SpawnAreas[i].position + new Vector3(Random.Range(0, 5), 0, Random.Range(0, 5));
-                            levelOneEnemies.Add(newEnemy);
-                            MarkerHandler.Instance.AddToList(newEnemy);
-                            SetObjectiveProgress(CurrentWave);
-                        }
-                    }
-                    
-                    break;
-                }
-            case 1:
-                {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
-                        {
-                            NavMeshAgent newEnemy = Instantiate(levelTwoEnemyPrefab, SpawnAreas[i]);
-                            newEnemy.transform.position = SpawnAreas[i].position + new Vector3(Random.Range(0, 5), 0, Random.Range(0, 5));
-                            levelTwoEnemies.Add(newEnemy);
-                            MarkerHandler.Instance.AddToList(newEnemy);
-                            SetObjectiveProgress(CurrentWave);
-                        }
-                    }
-                    break;
-                }
-            default:
-                break;
+                    (0) => levelOneEnemyPrefab,
+                    (1) => levelTwoEnemyPrefab,
+                    _ => levelOneEnemyPrefab,
+                };
+
+                NavMeshAgent newEnemy = Instantiate(enemyToSpawn, spawnAreas[i]);
+                newEnemy.transform.position = spawnAreas[i].position + new Vector3(Random.Range(0, 5), 0, Random.Range(0, 5));
+                Enemies.Add(newEnemy);
+                MarkerHandler.Instance.AddToList(newEnemy);
+                SetObjectiveProgress(CurrentWave);
+            }
         }
         MarkerHandler.Instance.SetMarkerTarget();
     }
+
+    #region DESTINATON METHODS
+    private void SetDestination()
+    {
+        updateDestinationTime = 0.5f;
+        foreach (var agent in Enemies)
+        {
+            if (agent != null)
+                agent.SetDestination(target.position);
+        }
+    }
+    #endregion
 }

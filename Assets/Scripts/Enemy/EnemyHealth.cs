@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     #endregion
 
     #region TAKE DAMAGE DATA
-    [SerializeField] private MeshRenderer rend;
+    [SerializeField] private Renderer rend;
     [SerializeField] private Color flashColor = Color.red;
     [SerializeField] private float flashDuration = 0.1f;
     private Color originalColor;
@@ -19,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject HealthbarPrefab;
     private GameObject healthbarUI;
     private Transform worldSpaceCanvas;
-    private Vector3 healthbarPos = new Vector3(0, 1.5f, 0);
+    private Vector3 healthbarPos = new Vector3(0, 2f, 0);
 
     private float currentHealth;
     public float CurrentHealth

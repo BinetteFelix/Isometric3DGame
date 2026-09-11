@@ -365,7 +365,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: cb1c64c8a4601d14696e4e7fbc116531, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 9f3722f02abafe64f876891f22b2dbed, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &72773089
 Transform:
@@ -6211,7 +6211,7 @@ GameObject:
   - component: {fileID: 438801978}
   - component: {fileID: 438801977}
   - component: {fileID: 438801976}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WorldSpaceCanvas
   m_TagString: WorldSpaceCanvas
   m_Icon: {fileID: 0}
@@ -6264,7 +6264,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
@@ -6979,7 +6979,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
@@ -8355,7 +8355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   target: {fileID: 1734150911}
-  levelOneEnemyPrefab: {fileID: 6507655117496933612, guid: 117008f9c3f0204409f1bdf7d4220053, type: 3}
+  levelOneEnemyPrefab: {fileID: 662678317837331876, guid: 7ed3e345f07e89940ae0c1e00eeb7d1d, type: 3}
   levelOneEnemies: []
   levelTwoEnemyPrefab: {fileID: 8715594717615906509, guid: 27565e1c055cb2f4c8ce2b6d3a11bc64, type: 3}
   levelTwoEnemies: []
