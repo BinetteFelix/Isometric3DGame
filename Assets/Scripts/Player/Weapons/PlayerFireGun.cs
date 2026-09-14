@@ -103,6 +103,7 @@ public class PlayerFireGun : MonoBehaviour
     #region ACTION METHODS
     private void ShootSMG()
     {
+        CancelReload();
         GameObject bullet = Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity);
         Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
 
@@ -119,6 +120,7 @@ public class PlayerFireGun : MonoBehaviour
     }
     private void ShootShotgun()
     {
+        CancelReload();
         int bulletSpawned = 0;
         List<GameObject> bullets = new List<GameObject>();
 
@@ -185,5 +187,9 @@ public class PlayerFireGun : MonoBehaviour
     private void OnEnable()
     {
         bulletAmount.text = $"{Ammo}";
+    }
+    public void CancelReload()
+    {
+        CancelInvoke("ReloadGun");
     }
 }

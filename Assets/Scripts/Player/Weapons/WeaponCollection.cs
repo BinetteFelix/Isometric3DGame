@@ -59,6 +59,7 @@ public class WeaponCollection : MonoBehaviour
     private void SwitchWeaponDown()
     {
         var actW = CheckActiveWeapon();
+        Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
 
         if (actW >= 0 && !Weapons[Weapons.Count - 1].activeSelf)
         {
@@ -81,6 +82,7 @@ public class WeaponCollection : MonoBehaviour
     private void SwitchWeaponUp()
     {
         var actW = CheckActiveWeapon();
+        Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
 
         if (actW > 0)
         {
