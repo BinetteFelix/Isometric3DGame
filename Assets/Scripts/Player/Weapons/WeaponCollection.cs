@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +10,7 @@ public class WeaponCollection : MonoBehaviour
 
     #region LISTS
     public List<GameObject> Weapons;
+    [SerializeField] private List<GameObject> weaponAmmoTypes;
     #endregion
 
     #region INPUT ACTIONS
@@ -20,7 +23,9 @@ public class WeaponCollection : MonoBehaviour
     public float smgDelay = 0.1f;
     #endregion
 
+    #region STATE PARAMETERS
     public string CurrentWeaponHeld { get; private set; }
+    #endregion
 
     private void Awake()
     {
@@ -43,7 +48,7 @@ public class WeaponCollection : MonoBehaviour
         {
             SwitchWeaponDown();
         }
-        if (CanSwitch() && switchWeaponUpAction.WasPressedThisFrame())
+        else if (CanSwitch() && switchWeaponUpAction.WasPressedThisFrame())
         {
             SwitchWeaponUp();
         }
@@ -59,11 +64,15 @@ public class WeaponCollection : MonoBehaviour
         {
             Weapons[actW].SetActive(false);
             Weapons[actW + 1].SetActive(true);
+            weaponAmmoTypes[actW].SetActive(false);
+            weaponAmmoTypes[actW + 1].SetActive(true);
         }
         else if (Weapons[Weapons.Count - 1].activeSelf)
         {
             Weapons[actW].SetActive(false);
             Weapons[0].SetActive(true);
+            weaponAmmoTypes[actW].SetActive(false);
+            weaponAmmoTypes[0].SetActive(true);
         }
 
         CurrentWeaponHeld = Weapons[CheckActiveWeapon()].name;
@@ -77,11 +86,15 @@ public class WeaponCollection : MonoBehaviour
         {
             Weapons[actW].SetActive(false);
             Weapons[actW - 1].SetActive(true);
+            weaponAmmoTypes[actW].SetActive(false);
+            weaponAmmoTypes[actW - 1].SetActive(true);
         }
         else if (actW == 0)
         {
             Weapons[actW].SetActive(false);
             Weapons[Weapons.Count - 1].SetActive(true);
+            weaponAmmoTypes[actW].SetActive(false);
+            weaponAmmoTypes[weaponAmmoTypes.Count - 1].SetActive(true);
         }
 
         CurrentWeaponHeld = Weapons[CheckActiveWeapon()].name;

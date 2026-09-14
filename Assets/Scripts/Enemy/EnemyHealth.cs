@@ -25,11 +25,11 @@ public class EnemyHealth : MonoBehaviour
     {
         get
         {
-            return currentHealth;
+            return Mathf.Clamp(currentHealth, 0, enemyData.BaseHealth);
         }
         set
         {
-            Mathf.Clamp(currentHealth, 0, enemyData.BaseHealth);
+            return;
         }
     }
 
@@ -49,7 +49,6 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         healthbarUI.transform.position = transform.position + healthbarPos;
-
     }
 
     public void TakeDamage(float damage)
