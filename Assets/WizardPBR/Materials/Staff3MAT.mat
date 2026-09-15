@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StaffMAT
+  m_Name: Staff3MAT
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -43,7 +43,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 770bb7509d172f84eb4eac3ffcdd4e7b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1e33c41928c351e49895c4ddb48b4775, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -63,19 +63,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 4f8889a8277f26543a62df7dedb08981, type: 3}
+        m_Texture: {fileID: 2800000, guid: e256c15f8f837e74387338b4d57b7a60, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 770bb7509d172f84eb4eac3ffcdd4e7b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1e33c41928c351e49895c4ddb48b4775, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 6044c3153c24a304b887372850bcc97b, type: 3}
+        m_Texture: {fileID: 2800000, guid: b697144ba8661804f9296c09ba44e908, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 54ba80b99694bc14087c74f5e5b5f29c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 95c4e9877bf7dd54f95451fe8939aa3f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
