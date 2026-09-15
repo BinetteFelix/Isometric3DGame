@@ -5,6 +5,7 @@ public class Player_Movement : MonoBehaviour
 {
     #region COMPONENTS
     private Rigidbody RB;
+    private Animator p_Animator;
     #endregion
 
     [SerializeField] public InputAction movementAction;
@@ -13,11 +14,13 @@ public class Player_Movement : MonoBehaviour
     private int AngleOffset = 45;
     
     private float _moveSpeed = 5;
+    private float _animatingMoveSpeed = 1;
 
     private void Awake()
     {
         movementAction.Enable();
         RB = GetComponent<Rigidbody>();
+        p_Animator = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -29,10 +32,14 @@ public class Player_Movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Debug.Log(_moveInput);
     }
     void GatherInputs()
     {
         _moveInput = new Vector3(movementAction.ReadValue<Vector2>().x, 0, movementAction.ReadValue<Vector2>().y);
+        p_Animator.SetFloat("WalkDirX", _moveInput.x);
+        p_Animator.SetFloat("WalkDirY", _moveInput.z);
+        p_Animator.SetFloat("TraversingSpeed", _animatingMoveSpeed);
     }
     private float CalculateLookDirection()
     {
