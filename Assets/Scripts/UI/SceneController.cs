@@ -40,11 +40,7 @@ public class SceneController : MonoBehaviour
             Pause();
         }
         #endregion
-
-
     }
-
-
     public void Pause()
     {
         IsPaused = !IsPaused;
@@ -64,5 +60,4 @@ public class SceneController : MonoBehaviour
         pauseAnimator.SetBool("PauseState", IsPaused);
         pauseAnimator.SetTrigger("PauseInput");     
     }
-    
 }

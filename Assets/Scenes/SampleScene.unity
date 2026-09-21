@@ -625,7 +625,8 @@ MonoBehaviour:
       m_Action: Reload
       m_Flags: 0
     m_Flags: 0
-  BulletPrefab: {fileID: 4785613473457715307, guid: e55fe67ddbc21784aa5f2f56d1c608bc, type: 3}
+  _usePool: 1
+  BulletPrefab: {fileID: 5993217569501118236, guid: e55fe67ddbc21784aa5f2f56d1c608bc, type: 3}
   BulletOrigin: {fileID: 213490104}
   shotgunBulletTransforms:
   - {fileID: 213490103}
@@ -634,6 +635,7 @@ MonoBehaviour:
   bulletAmount: {fileID: 1186502078}
   shotDelay: 0.62
   reloadSpeed: 2
+  weaponDamage: 8
   WeaponEffect: {fileID: 213490100}
   maxAmmo: 12
 --- !u!1 &301880359
@@ -6714,7 +6716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &811594007
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7487,10 +7489,10 @@ RectTransform:
   - {fileID: 354113294}
   m_Father: {fileID: 1048353578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 510, y: -237.5}
-  m_SizeDelta: {x: 500, y: 175}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1049644400
 MonoBehaviour:
@@ -8180,10 +8182,10 @@ RectTransform:
   - {fileID: 685541700}
   m_Father: {fileID: 1048353578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 510, y: -637.5}
-  m_SizeDelta: {x: 500, y: 175}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1361256479
 MonoBehaviour:
@@ -9546,12 +9548,14 @@ MonoBehaviour:
       m_Action: Reload
       m_Flags: 0
     m_Flags: 0
-  BulletPrefab: {fileID: 4785613473457715307, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
+  _usePool: 1
+  BulletPrefab: {fileID: 5993217569501118236, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
   BulletOrigin: {fileID: 1690737787}
   shotgunBulletTransforms: []
   bulletAmount: {fileID: 1186502078}
   shotDelay: 0.1
   reloadSpeed: 1.5
+  weaponDamage: 14
   WeaponEffect: {fileID: 611509584}
   maxAmmo: 50
 --- !u!1 &2075575848
@@ -9588,10 +9592,10 @@ RectTransform:
   - {fileID: 1144195625}
   m_Father: {fileID: 1048353578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 510, y: -437.5}
-  m_SizeDelta: {x: 500, y: 175}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2075575850
 MonoBehaviour:

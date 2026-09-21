@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Pool;
 
 public class PlayerFireGun : MonoBehaviour
 {
@@ -10,8 +13,13 @@ public class PlayerFireGun : MonoBehaviour
     [SerializeField] private InputAction reloadAction;
     #endregion
 
+    #region OBEJCT POOLING
+    private ObjectPool<Bullet> _bulletPool;
+    [SerializeField] private bool _usePool;
+    #endregion
+
     #region COMPONENTS
-    [SerializeField] private GameObject BulletPrefab;
+    [SerializeField] private Bullet BulletPrefab;
     [SerializeField] private Transform BulletOrigin;
     [SerializeField] private Transform[] shotgunBulletTransforms;
     [SerializeField] private TextMeshProUGUI bulletAmount;
@@ -23,6 +31,7 @@ public class PlayerFireGun : MonoBehaviour
     [Header("Weapon Variables")]
     [SerializeField] private float shotDelay;
     [SerializeField] private float reloadSpeed;
+    [SerializeField] private float weaponDamage;
     #endregion
 
     #region EFFECTS
@@ -57,6 +66,33 @@ public class PlayerFireGun : MonoBehaviour
     }
     private void Start()
     {
+        _usePool = true;
+        _bulletPool = new ObjectPool<Bullet>(
+            () => 
+            {
+                return Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity); 
+
+            },
+            bullet => 
+            {
+                bullet.transform.position = BulletOrigin.position;
+                bullet.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                bullet.gameObject.SetActive(true);
+            },
+            bullet => 
+            {
+                bullet.gameObject.transform.position = BulletOrigin.position;
+                bullet.gameObject.SetActive(false); 
+            },
+            bullet => 
+            { 
+                Destroy(bullet.gameObject); 
+            },
+            false, 
+            50, 
+            100
+            );
+
         ammo = maxAmmo;
         bulletAmount.text = $"{Ammo}";
 
@@ -104,37 +140,33 @@ public class PlayerFireGun : MonoBehaviour
     private void ShootSMG()
     {
         CancelReload();
-        GameObject bullet = Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity);
-        Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+        Bullet bullet = _bulletPool.Get();
+        bullet.SetDamage(weaponDamage);
+        bullet.GetComponent<Rigidbody>().AddForce(BulletOrigin.forward * 1500);
 
         ammo--;
         bulletAmount.text = $"{Ammo}";
 
-        bulletRB.AddForce(PlayerTransform.forward * 1500);
-
-        float bulletDespawnTimer = 3;
-        bulletDespawnTimer -= Time.deltaTime;
-
-        if (bulletDespawnTimer < 0)
-            Destroy(bullet);
+        bullet.Init(DestroyBullet);
     }
     private void ShootShotgun()
     {
         CancelReload();
         int bulletSpawned = 0;
-        List<GameObject> bullets = new List<GameObject>();
+        List<Bullet> bullets = new List<Bullet>();
 
         #region Spawn Bullets
         for (int i = 0; i < 9; i++)
         {
             bullets.Add(BulletPrefab);
-            bullets[i] = Instantiate(BulletPrefab, BulletOrigin.position + new Vector3(Random.Range(0.1f, 0.4f), Random.Range(0.1f, 0.15f), 0), Quaternion.identity);
+            bullets[i] = _usePool ? _bulletPool.Get() : Instantiate(BulletPrefab, BulletOrigin.position + new Vector3(Random.Range(0.1f, 0.4f), Random.Range(0.1f, 0.15f), 0), Quaternion.identity);
         }
         #endregion
 
         #region Calculate Bullet Direction
-        foreach (GameObject bullet in bullets)
+        foreach (Bullet bullet in bullets)
         {
+            bullet.SetDamage(weaponDamage);
             if (bulletSpawned >= 0 && bulletSpawned < 4)
             {
                 Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
@@ -160,13 +192,9 @@ public class PlayerFireGun : MonoBehaviour
         #endregion
 
         #region Despawning Bullets
-        float bulletDespawnTimer = 3;
-        bulletDespawnTimer -= Time.deltaTime;
-
-        if (bulletDespawnTimer < 0)
+        foreach (Bullet bullet in bullets)
         {
-            bullets.Remove(bullets[0]);
-            Destroy(bullets[0]);
+            bullet.Init(DestroyBullet);
         }
         #endregion
     }
@@ -191,5 +219,13 @@ public class PlayerFireGun : MonoBehaviour
     public void CancelReload()
     {
         CancelInvoke("ReloadGun");
+    }
+    public void DestroyBullet(Bullet bullet)
+    {
+        if (_usePool) 
+        {
+            _bulletPool.Release(bullet);
+        }
+        else Destroy(bullet.gameObject);
     }
 }

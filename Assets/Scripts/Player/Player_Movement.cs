@@ -37,7 +37,6 @@ public class Player_Movement : MonoBehaviour
     void GatherInputs()
     {
         _moveInput = new Vector3(movementAction.ReadValue<Vector2>().x, 0, movementAction.ReadValue<Vector2>().y);
-        
     }
     private float CalculateLookDirection()
     {
