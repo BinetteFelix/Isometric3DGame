@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: -6505657057433702751}
   - component: {fileID: 662678317837331876}
   - component: {fileID: 5975259378480345194}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FreeLichHP
   m_TagString: Untagged
   m_Icon: {fileID: 0}

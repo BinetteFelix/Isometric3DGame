@@ -16,6 +16,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private List<Transform> spawnAreas;
     [SerializeField] private TextMeshProUGUI objectiveText;
     public int CurrentWave { get; private set; }
+    public int EnemiesKilled;
+    [SerializeField] private GameObject upgradePanel;
 
     private void Awake()
     {
@@ -57,10 +59,11 @@ public class EnemyController : MonoBehaviour
     {
         objectiveText.text = "Kill Enemies: " + Enemies.Count;
 
-        if (Enemies.Count == 0 && CurrentWave == 0)
+        if (Enemies.Count == 0 && CurrentWave > -1)
         {
             CurrentWave = 1;
             SpawnEnemies(CurrentWave);
+            upgradePanel.SetActive(true);
         }
     }
     #endregion

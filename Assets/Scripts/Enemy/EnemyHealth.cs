@@ -59,6 +59,7 @@ public class EnemyHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Invoke("EnemyDead", flashDuration);
+            EnemyController.Instance.EnemiesKilled++;
         }
     }
     private void EnemyDead()

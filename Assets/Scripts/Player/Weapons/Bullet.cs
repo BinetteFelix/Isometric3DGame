@@ -17,7 +17,6 @@ public class Bullet : MonoBehaviour
     public void Init(Action<Bullet> killAction)
     {
         _killAction = killAction;
-        Debug.Log(killAction);
     }
     
     private void OnTriggerEnter(Collider other)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,6 +25,7 @@ public class PlayerFireGun : MonoBehaviour
     [SerializeField] private Transform[] shotgunBulletTransforms;
     [SerializeField] private TextMeshProUGUI bulletAmount;
 
+    CinemachineImpulseSource cameraShakeSource;
     private WeaponCollection weaponCollection;
     #endregion
 
@@ -96,6 +98,7 @@ public class PlayerFireGun : MonoBehaviour
         ammo = maxAmmo;
         bulletAmount.text = $"{Ammo}";
 
+        cameraShakeSource = GetComponent<CinemachineImpulseSource>();
         weaponCollection = GetComponentInParent<WeaponCollection>();
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -152,6 +155,7 @@ public class PlayerFireGun : MonoBehaviour
     private void ShootShotgun()
     {
         CancelReload();
+        cameraShakeSource.GenerateImpulse();
         int bulletSpawned = 0;
         List<Bullet> bullets = new List<Bullet>();
 

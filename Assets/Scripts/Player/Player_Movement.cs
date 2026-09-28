@@ -5,9 +5,14 @@ public class Player_Movement : MonoBehaviour
 {
     #region COMPONENTS
     private Rigidbody RB;
-    private Animator p_Animator;
     #endregion
 
+
+    #region ANIMATION
+    private Animator p_Animator;
+    PlayerAutoAttacking attacking;
+    private float AnimationWalkingSpeed = 1;
+    #endregion
     [SerializeField] public InputAction movementAction;
 
     private Vector3 _moveInput;
@@ -15,21 +20,49 @@ public class Player_Movement : MonoBehaviour
     private int AngleOffset = 45;
     
     private float _moveSpeed = 3;
-    private float _animatingMoveSpeed = 1;
+    private float _animatingMoveSpeedInDir = 1;
 
+    public bool IsMeleeAttacking;
+
+    public CurrentState state;
+    public enum CurrentState
+    {
+        meleeAttack,
+        rangedAttack,
+        walking,
+        idle,
+    }
     private void Awake()
     {
         movementAction.Enable();
         RB = GetComponent<Rigidbody>();
         p_Animator = GetComponent<Animator>();
+        attacking = GetComponent<PlayerAutoAttacking>();
     }
     private void Update()
     {
         GatherInputs();
-        if(!SceneController.Instance.IsPaused)
+        if(!UIManager.Instance.IsPaused)
             Look();
+        StateHandler();
     }
-
+    private void StateHandler()
+    {
+        if (IsMeleeAttacking)
+        {
+            state = CurrentState.meleeAttack;
+            p_Animator.speed = UpgradeManager.Instance.MeleeAttackSpeed;
+        }
+        else if (_moveInput != Vector3.zero)
+        {
+            state = CurrentState.walking;
+            p_Animator.speed = AnimationWalkingSpeed;
+        }
+        else
+        {
+            state = CurrentState.idle;
+        }
+    }
     private void FixedUpdate()
     {
         Move();
@@ -142,7 +175,7 @@ public class Player_Movement : MonoBehaviour
 
         p_Animator.SetFloat("WalkDirY", WalkDirection.y);
         p_Animator.SetFloat("WalkDirX", WalkDirection.x);
-        p_Animator.SetFloat("TraversingSpeed", _animatingMoveSpeed);
+        p_Animator.SetFloat("TraversingSpeed", _animatingMoveSpeedInDir);
 
         if (p_Animator.GetFloat("WalkDirY") > 0)
             _moveSpeed = 4;
@@ -154,7 +187,7 @@ public class Player_Movement : MonoBehaviour
 
         return angle;
     }
-    private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
+    public float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
     {
         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
