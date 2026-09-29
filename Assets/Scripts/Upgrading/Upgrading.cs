@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeTime : MonoBehaviour
+public class Upgrading : MonoBehaviour
 {
     [SerializeField] float TimeToUpgrade = 15;
     private float timeSet;
@@ -19,6 +19,7 @@ public class UpgradeTime : MonoBehaviour
 
     [SerializeField] private Slider timeSlider;
     [SerializeField] private GameObject UpgradePanel;
+    [SerializeField] private GameObject UpgradeGrid;
 
     // Update is called once per frame
     void Update()
@@ -26,7 +27,6 @@ public class UpgradeTime : MonoBehaviour
         timeSet -= Time.deltaTime;
 
         timeSlider.value = timeSet;
-        Debug.Log(TimeSet);
 
         if (timeSlider.value == 0)
         {
@@ -36,5 +36,19 @@ public class UpgradeTime : MonoBehaviour
     private void OnEnable()
     {
         timeSet = TimeToUpgrade;
+
+        int upgradesActiveOnScreen = 0;
+        Upgrade[] upgradesInGrid = UpgradeGrid.GetComponentsInChildren<Upgrade>(true);
+        foreach (Upgrade upgrade in upgradesInGrid)
+        {
+            int randomUpgradeIndex = Random.Range(0, upgradesInGrid.Length);
+            
+            if (upgradesActiveOnScreen < 4)
+            {
+                upgradesActiveOnScreen++;
+                upgradesInGrid[randomUpgradeIndex].gameObject.SetActive(true);
+            }
+        }
+        
     }
 }

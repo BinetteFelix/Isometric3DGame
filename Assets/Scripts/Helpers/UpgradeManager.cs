@@ -5,7 +5,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
     [SerializeField] private GameObject UpgradeScreen;
 
-    [SerializeField] private GameObject[] upgradeTypes;
+    [SerializeField] public GameObject[] UpgradeTypes;
     
 
     public float MeleeAttackSpeed = 1;
@@ -28,7 +28,6 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     // Update is called once per frame
     void Update()
     {
-        
     }
     private void ObjectiveHandler()
     {
