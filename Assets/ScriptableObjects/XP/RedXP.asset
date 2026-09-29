@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6db279b6f755df4ca591a45f462ca70, type: 3}
-  m_Name: MeleeAttackSpeedUpgrade
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeButton
-  upgradeName: Melee Speed
-  value: 0.75
-  image: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 2d0f5c1beb8fc954ea51b29e6bb0f8ec, type: 3}
+  m_Name: RedXP
+  m_EditorClassIdentifier: Assembly-CSharp::ExperienceData
+  XPAmount: 3

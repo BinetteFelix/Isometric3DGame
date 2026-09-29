@@ -4,11 +4,10 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     #region COMPONENTS
-
+    [SerializeField] private Renderer rend;
     #endregion
 
     #region TAKE DAMAGE DATA
-    [SerializeField] private Renderer rend;
     [SerializeField] private Color flashColor = Color.red;
     [SerializeField] private float flashDuration = 0.1f;
     private Color originalColor;
@@ -59,7 +58,6 @@ public class EnemyHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Invoke("EnemyDead", flashDuration);
-            EnemyController.Instance.EnemiesKilled++;
         }
     }
     private void EnemyDead()
@@ -82,12 +80,9 @@ public class EnemyHealth : MonoBehaviour
     {
         return n / 100;
     }
-    public void UpdateMaxHealth(float damage)
+    private void OnDisable()
     {
-
-    }
-    public void Heal(float damage)
-    {
-
+        EnemyController.Instance.EnemiesKilled++;
+        ExperienceSpawner.Instance.SpawnXP(transform.position);
     }
 }

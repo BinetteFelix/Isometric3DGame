@@ -6,11 +6,15 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     [SerializeField] private GameObject UpgradeScreen;
 
     [SerializeField] public GameObject[] UpgradeTypes;
-    
 
+    #region Upgradeable Variables
     public float MeleeAttackSpeed = 1;
     public float MeleeDamage = 50;
     public float WeaponDamage;
+    public float ShotgunReloadSpeed;
+    public float SMGReloadSpeed;
+    public float MovementSpeed;
+    #endregion
 
     private Objectives objState;
     private enum Objectives
@@ -28,6 +32,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     // Update is called once per frame
     void Update()
     {
+        ObjectiveHandler();
     }
     private void ObjectiveHandler()
     {
@@ -35,27 +40,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
         {
             EnemyController.Instance.EnemiesKilled = 0;
             UpgradeScreen.SetActive(true);
-            
-
         }
-    }
-
-    private void UpgradeType(string name, float value)
-    {
-        
-    }
-    private void ObjectiveType1()
-    {
-        objState = Objectives.obj1;
-        
-    }
-    private void ObjectiveType2()
-    {
-        objState = Objectives.obj2;
-    }
-    private void ObjectiveType3()
-    {
-        objState = Objectives.obj3;
     }
     public void UpgradePlayer(string name, float value)
     {
@@ -74,6 +59,21 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
             case "Weapon Damage":
                 {
                     WeaponDamage += value;
+                    break;
+                }
+            case "Shotgun Reload":
+                {
+                    ShotgunReloadSpeed += value;
+                    break;
+                }
+            case "SMG Reload":
+                {
+                    SMGReloadSpeed += value;
+                    break;
+                }
+            case "Move Speed":
+                {
+                    MovementSpeed += value;
                     break;
                 }
         }

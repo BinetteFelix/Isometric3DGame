@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MeleeDamageUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeButton
   upgradeName: Melee Damage
-  value: 0.5
+  value: 1
   image: {fileID: 0}

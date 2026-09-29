@@ -178,11 +178,13 @@ public class Player_Movement : MonoBehaviour
         p_Animator.SetFloat("TraversingSpeed", _animatingMoveSpeedInDir);
 
         if (p_Animator.GetFloat("WalkDirY") > 0)
-            _moveSpeed = 4;
+            _moveSpeed = UpgradeManager.Instance.MovementSpeed + 1f;
         else if (p_Animator.GetFloat("WalkDirY") < 0)
-            _moveSpeed = 3;
-        else if (p_Animator.GetFloat("WalkDirX") > 0 || p_Animator.GetFloat("WalkDirX") > 0)
-            _moveSpeed = 3.5f;
+            _moveSpeed = UpgradeManager.Instance.MovementSpeed;
+        else if (p_Animator.GetFloat("WalkDirX") > 0 || p_Animator.GetFloat("WalkDirX") < 0)
+            _moveSpeed = UpgradeManager.Instance.MovementSpeed + 0.5f;
+        else
+            _moveSpeed = UpgradeManager.Instance.MovementSpeed;
         #endregion
 
         return angle;
