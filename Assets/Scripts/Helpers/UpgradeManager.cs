@@ -5,8 +5,6 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
     [SerializeField] private GameObject UpgradeScreen;
 
-    [SerializeField] public GameObject[] UpgradeTypes;
-
     #region Upgradeable Variables
     public float MeleeAttackSpeed = 1;
     public float MeleeDamage = 50;

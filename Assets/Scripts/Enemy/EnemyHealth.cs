@@ -83,6 +83,7 @@ public class EnemyHealth : MonoBehaviour
     private void OnDisable()
     {
         EnemyController.Instance.EnemiesKilled++;
-        ExperienceSpawner.Instance.SpawnXP(transform.position);
+        if (ExperienceHandler.HasInstance)
+            ExperienceHandler.Instance.SpawnXP(transform.position);
     }
 }

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlueXP
       objectReference: {fileID: 0}
+    - target: {fileID: 5148293124154476170, guid: 993fffdcd2f525e42a44cc18e51fc0e0, type: 3}
+      propertyPath: xpData
+      value: 
+      objectReference: {fileID: 11400000, guid: 378c4dc2b4a875647a235b0e094ff593, type: 2}
     - target: {fileID: 7586621833374042843, guid: 993fffdcd2f525e42a44cc18e51fc0e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
