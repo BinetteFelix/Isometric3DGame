@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class MarkerHandler : MonoBehaviour
 {
     public static MarkerHandler Instance;
-    [SerializeField] private List<NavMeshAgent> enemies;
+    [SerializeField] private List<GameObject> enemies;
     [SerializeField] private GameObject markerPrefab;
 
     private void Awake()
@@ -22,17 +22,17 @@ public class MarkerHandler : MonoBehaviour
     void Update()
     {
     }
-    public void AddToList(NavMeshAgent enemy)
+    public void AddToList(GameObject enemy)
     {
         enemies.Add(enemy);
     }
-    public void RemoveFromList(NavMeshAgent enemy)
+    public void RemoveFromList(GameObject enemy)
     {
         enemies.Remove(enemy);
     }
     public void SetMarkerTarget()
     {
-        foreach (NavMeshAgent enemyO in enemies)
+        foreach (GameObject enemyO in enemies)
         {
             GameObject marker = Instantiate(markerPrefab, transform);
             marker.GetComponent<MarkerBehavior>().SetTarget(enemyO.transform);

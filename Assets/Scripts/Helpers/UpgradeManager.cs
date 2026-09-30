@@ -3,7 +3,8 @@ using Utility;
 
 public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
-    [SerializeField] private GameObject UpgradeScreen;
+    [SerializeField] private GameObject upgradeScreen;
+    [SerializeField] private GameObject levelUpScreen;
 
     #region Upgradeable Variables
     public float MeleeAttackSpeed = 1;
@@ -37,8 +38,19 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
         if (EnemyController.Instance.EnemiesKilled == 5)
         {
             EnemyController.Instance.EnemiesKilled = 0;
-            UpgradeScreen.SetActive(true);
+            if (!upgradeScreen.activeSelf)
+                OpenUpgradeScreen();
         }
+    }
+    public void OpenUpgradeScreen()
+    {
+        if (!levelUpScreen.activeSelf)
+            upgradeScreen.SetActive(true);
+    }
+    public void OpenLevelUpScreen()
+    {
+        if (!upgradeScreen.activeSelf)
+            levelUpScreen.SetActive(true);
     }
     public void UpgradePlayer(string name, float value)
     {

@@ -17,7 +17,6 @@ public class Experience : MonoBehaviour
     {
         timeSinceSpawn = 60f;
     }
-
     public void ReleaseToPool()
     {
         if (ExperienceHandler.HasInstance)

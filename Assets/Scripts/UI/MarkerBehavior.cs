@@ -6,8 +6,8 @@ public class MarkerBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (Target != null)
-            Look();
+        if (Target.gameObject.activeSelf && Target != null)
+            Track();
         else
             Destroy(gameObject);
         
@@ -24,7 +24,7 @@ public class MarkerBehavior : MonoBehaviour
 
         return angle;
     }
-    void Look()
+    void Track()
     {
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, CalculateLookDirection()));
     }

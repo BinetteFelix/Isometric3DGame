@@ -17,8 +17,12 @@ public class HealthUI : MonoBehaviour
             canvasGroup.alpha -= Time.deltaTime;
             if (canvasGroup.alpha <= 0)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
+    }
+    public void ResetAlpha()
+    {
+        canvasGroup.alpha = 1;
     }
 }

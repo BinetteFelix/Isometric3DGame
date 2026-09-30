@@ -60,9 +60,19 @@ public class EnemyHealth : MonoBehaviour
             Invoke("EnemyDead", flashDuration);
         }
     }
+    public void ResetAttributes()
+    {
+        currentHealth = enemyData.BaseHealth;
+        rend.material.color = originalColor;
+
+        healthbarUI.GetComponent<HealthUI>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+        healthbarUI.GetComponent<HealthUI>().ResetAlpha();
+        healthbarUI.SetActive(true);
+    }
     private void EnemyDead()
     {
-        Destroy(gameObject);
+        if (EnemyController.HasInstance)
+            EnemyController.Instance.EnemyPool.Release(this.gameObject);
     }
     private IEnumerator DamageEffect()
     {
@@ -72,8 +82,11 @@ public class EnemyHealth : MonoBehaviour
     }
     private void Flash()
     {
-        StopAllCoroutines();
-        StartCoroutine(DamageEffect());
+        if (gameObject.activeSelf)
+        {
+            StopAllCoroutines();
+            StartCoroutine(DamageEffect());
+        }   
     }
 
     private float ConvertToDecimal(float n)
@@ -82,7 +95,8 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnDisable()
     {
-        EnemyController.Instance.EnemiesKilled++;
+        if (EnemyController.HasInstance)
+            EnemyController.Instance.EnemiesKilled++;
         if (ExperienceHandler.HasInstance)
             ExperienceHandler.Instance.SpawnXP(transform.position);
     }

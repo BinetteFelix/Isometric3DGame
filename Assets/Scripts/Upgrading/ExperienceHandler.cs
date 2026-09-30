@@ -77,7 +77,8 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
     public void SpawnXP(Vector3 enemyOrigin)
     {
         Experience xp = xpPool.Get();
-        xp.transform.position = new Vector3(enemyOrigin.x, 1.5f, enemyOrigin.z);
+        if (xp != null)
+            xp.transform.position = new Vector3(enemyOrigin.x, 1.5f, enemyOrigin.z);
     }
     #endregion
 
@@ -90,6 +91,8 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
 
         xpText.text = $"{xpCount} / {Mathf.Round(levelUpXPAmount)}";
         levelText.text = Level.ToString();
+
+        UpgradeManager.Instance.OpenLevelUpScreen();
     }
     public void GainXP(float amount)
     {
