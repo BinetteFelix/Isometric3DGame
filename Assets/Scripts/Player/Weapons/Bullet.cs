@@ -6,13 +6,16 @@ public class Bullet : MonoBehaviour
     private float LifeTime = 1.5f;
     private Action<Bullet> _killAction;
     private float bulletDamage;
-
+    [SerializeField] private string bulletState;
     // Update is called once per frame
     void Update()
     {
         LifeTime -= Time.deltaTime;
         if (LifeTime < 0)
             _killAction.Invoke(this);
+
+        if (WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>().state == EyeBall.TearState.poisonous && this.name == "RegularTear(Clone)")
+            Destroy(this.gameObject);
     }
     public void Init(Action<Bullet> killAction)
     {
@@ -25,8 +28,16 @@ public class Bullet : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.TakeDamage(bulletDamage);
-            _killAction.Invoke(this);
+            if (bulletState == "Poisonous")
+            {
+                enemy.DoLingeringDamage(bulletDamage);
+                _killAction.Invoke(this);
+            }
+            else if (bulletState == "Basic")
+            {
+                enemy.TakeDamage(bulletDamage);
+                _killAction.Invoke(this);
+            }
         }
     }
     private void OnEnable()

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using TMPro;
 using Unity.Cinemachine;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -16,7 +14,6 @@ public class PlayerFireGun : MonoBehaviour
 
     #region OBEJCT POOLING
     private ObjectPool<Bullet> _bulletPool;
-    [SerializeField] private bool _usePool;
     #endregion
 
     #region COMPONENTS
@@ -59,6 +56,7 @@ public class PlayerFireGun : MonoBehaviour
             return;
         }
     }
+    
     #endregion
 
     private void Awake()
@@ -68,10 +66,10 @@ public class PlayerFireGun : MonoBehaviour
     }
     private void Start()
     {
-        _usePool = true;
         _bulletPool = new ObjectPool<Bullet>(
             () => 
             {
+                
                 return Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity); 
 
             },
@@ -109,25 +107,12 @@ public class PlayerFireGun : MonoBehaviour
         #endregion
 
         #region INPUT HANDLER
-        if (weaponCollection.CurrentWeaponHeld == "Shotgun")
+        if (CanShoot() && shootAction.WasPressedThisFrame())
         {
-            if (CanShoot() && shootAction.WasPressedThisFrame())
-            {
-                ShootShotgun();
-                WeaponEffect.Play();
-                LastPressedShot = shotDelay;
-            }
+            ShootShotgun();
+            WeaponEffect.Play();
+            LastPressedShot = shotDelay;
         }
-        else if (weaponCollection.CurrentWeaponHeld == "SMG")
-        {
-            if (CanShoot() && shootAction.IsPressed())
-            {
-                ShootSMG();
-                WeaponEffect.Play();
-                LastPressedShot = shotDelay;
-            }
-        }
-
         if (Ammo <= 0 && shootAction.WasPressedThisFrame())
         {
             Invoke("ReloadGun", reloadSpeed);
@@ -137,20 +122,6 @@ public class PlayerFireGun : MonoBehaviour
             Invoke("ReloadGun", reloadSpeed);
         }
         #endregion
-    }
-
-    #region ACTION METHODS
-    private void ShootSMG()
-    {
-        CancelReload();
-        Bullet bullet = _bulletPool.Get();
-        bullet.SetDamage(weaponDamage);
-        bullet.GetComponent<Rigidbody>().AddForce(BulletOrigin.forward * 1500);
-
-        ammo--;
-        bulletAmount.text = $"{Ammo}";
-
-        bullet.Init(DestroyBullet);
     }
     private void ShootShotgun()
     {
@@ -163,7 +134,7 @@ public class PlayerFireGun : MonoBehaviour
         for (int i = 0; i < 9; i++)
         {
             bullets.Add(BulletPrefab);
-            bullets[i] = _usePool ? _bulletPool.Get() : Instantiate(BulletPrefab, BulletOrigin.position + new Vector3(Random.Range(0.1f, 0.4f), Random.Range(0.1f, 0.15f), 0), Quaternion.identity);
+            bullets[i] = _bulletPool.Get();
         }
         #endregion
 
@@ -207,8 +178,6 @@ public class PlayerFireGun : MonoBehaviour
         ammo = maxAmmo;
         bulletAmount.text = $"{Ammo}";
     }
-    #endregion
-
     #region CHECK METHODS
     private bool CanShoot()
     {
@@ -226,10 +195,6 @@ public class PlayerFireGun : MonoBehaviour
     }
     public void DestroyBullet(Bullet bullet)
     {
-        if (_usePool) 
-        {
-            _bulletPool.Release(bullet);
-        }
-        else Destroy(bullet.gameObject);
+        _bulletPool.Release(bullet);
     }
 }

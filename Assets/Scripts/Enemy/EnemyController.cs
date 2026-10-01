@@ -14,6 +14,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #endregion
     [SerializeField] private Transform spawnArea;
     [SerializeField] private TextMeshProUGUI objectiveText;
+    [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
     public int EnemiesKilled;
 
@@ -42,7 +43,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             },
             enemy =>
             {
-                DestroyImmediate(enemy);
+                Destroy(enemy);
             },
             false,
             10,
@@ -51,14 +52,12 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         #endregion
 
         SpawnEnemies();
-
-        
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(Enemies.Count);
         UpdateEnemyCount();
 
         if (Enemies.Count == 0 && HasSpawnedEnemies)
@@ -82,6 +81,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             Enemies.Remove(removableEnemy);
             MarkerHandler.Instance.RemoveFromList(removableEnemy);
         }
+        else
+            removableEnemy = null;
     }
 
     #region OBJECTIVE UPDATE
@@ -94,6 +95,16 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     private void SpawnEnemies()
     {
+        Debug.Log("Spawned Enemies");
+        Enemies.Clear();
+        EnemyPool.Dispose();
+        HealthUI[] healthBars = worldSpaceCanvas.GetComponentsInChildren<HealthUI>(true);
+        foreach (HealthUI healthBar in healthBars)
+        {
+            Destroy(healthBar.gameObject);
+        }
+        MarkerHandler.Instance.ResetList();
+
         for (int i = 0; i < 20; i++)
         {
             GameObject newEnemy = EnemyPool.Get();

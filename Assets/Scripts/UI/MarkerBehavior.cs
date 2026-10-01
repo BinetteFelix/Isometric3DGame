@@ -6,10 +6,10 @@ public class MarkerBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (Target.gameObject.activeSelf && Target != null)
+        if (Target != null && Target.gameObject.activeSelf)
             Track();
         else
-            Destroy(gameObject);
+            MarkerHandler.Instance.markerPool.Release(this.gameObject);
         
     }
     public void SetTarget(Transform position)

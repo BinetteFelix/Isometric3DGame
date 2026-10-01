@@ -2023,6 +2023,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747811121}
   m_CullTransparentMesh: 1
+--- !u!1 &756913992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 756913993}
+  m_Layer: 0
+  m_Name: TearPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &756913993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756913992}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &761605448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2620,6 +2651,11 @@ RectTransform:
   m_AnchoredPosition: {x: 775, y: 450}
   m_SizeDelta: {x: 350, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!198 &907181331 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3383351566615546012, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+  m_PrefabInstance: {fileID: 1623570085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &930153317
 GameObject:
   m_ObjectHideFlags: 0
@@ -4286,6 +4322,75 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6299483002713346844, guid: 52d5363d2616a6b44ac7947862444028, type: 3}
   m_PrefabInstance: {fileID: 1240658586}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1271775923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7985420645996442200, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+  m_PrefabInstance: {fileID: 1623570085}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1271775925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271775923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ec9767bcb59d247aab9dbf3162aab8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EyeBall
+  shootAction:
+    m_Name: Shoot
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: a4399343-41cd-456d-b504-39cd0b89b9dc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c1da3229-f366-4ddb-bc83-ce7046d7dc6d
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Shoot
+      m_Flags: 0
+    m_Flags: 0
+  reloadAction:
+    m_Name: Reload
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 33faa87a-3eee-42a7-ac30-e93f72dd722e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 178fa975-2f25-41b6-bbad-699d8455eb00
+      m_Path: <Keyboard>/r
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Reload
+      m_Flags: 0
+    m_Flags: 0
+  tearPrefabs:
+  - {fileID: 5993217569501118236, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
+  - {fileID: 962715937460870850, guid: 48f4b5bdc14745943a95a5b6394a493d, type: 3}
+  tearOrigin: {fileID: 1689801519}
+  tearAmount: {fileID: 1186502078}
+  shotDelay: 0.1
+  reloadSpeed: 1
+  eyeDamage: 14
+  TearParent: {fileID: 756913993}
+  state: 0
+  rend: {fileID: 1271775928}
+  WeaponEffect: {fileID: 907181331}
+  maxAmmo: 50
+--- !u!23 &1271775928 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8489590639369884557, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+  m_PrefabInstance: {fileID: 1623570085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1275683958
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,6 +5595,14 @@ PrefabInstance:
       propertyPath: 'weaponAmmoTypes.Array.data[1]'
       value: 
       objectReference: {fileID: 1476729829}
+    - target: {fileID: 2630824730340319005, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_Name
+      value: TearOrigin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3717864555740394692, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_Name
+      value: EyeShotEffect
+      objectReference: {fileID: 0}
     - target: {fileID: 3869208899396373752, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
       propertyPath: animator
       value: 
@@ -5527,6 +5640,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6151937926411236647, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: reloadSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6151937926411236647, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: BulletPrefab
+      value: 
+      objectReference: {fileID: 962715937460870850, guid: 48f4b5bdc14745943a95a5b6394a493d, type: 3}
+    - target: {fileID: 6151937926411236647, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
       propertyPath: bulletAmount
       value: 
       objectReference: {fileID: 1186502078}
@@ -5534,7 +5655,24 @@ PrefabInstance:
       propertyPath: bulletAmount
       value: 
       objectReference: {fileID: 1186502078}
-    m_RemovedComponents: []
+    - target: {fileID: 7985420645996442200, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495530057687838967, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495530057687838967, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8495530057687838967, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6151937926411236647, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -5547,6 +5685,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1816753678243204, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
       insertIndex: 4
       addedObject: {fileID: 895473513}
+    - targetCorrespondingSourceObject: {fileID: 7985420645996442200, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1271775925}
   m_SourcePrefab: {fileID: 100100000, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
 --- !u!1001 &1675986476
 PrefabInstance:
@@ -5653,6 +5794,11 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3041848238700946156, guid: 4a75c4e5c61587c4c9d8a553b8291159, type: 3}
   m_PrefabInstance: {fileID: 1675986476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1689801519 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8495530057687838967, guid: def4df924e6be974aae5a45a356cdf82, type: 3}
+  m_PrefabInstance: {fileID: 1623570085}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1746185182
 GameObject:
@@ -5892,6 +6038,7 @@ MonoBehaviour:
   - {fileID: 8715594717615906509, guid: 27565e1c055cb2f4c8ce2b6d3a11bc64, type: 3}
   spawnArea: {fileID: 1089798450}
   objectiveText: {fileID: 1958506308}
+  worldSpaceCanvas: {fileID: 438801975}
   EnemiesKilled: 0
 --- !u!1 &1820553708
 GameObject:
@@ -6325,6 +6472,8 @@ MonoBehaviour:
   ShotgunReloadSpeed: 0
   SMGReloadSpeed: 0
   MovementSpeed: 3
+  PoisonDamage: 5
+  shootActions: []
 --- !u!114 &1958506308 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2149714928715683238, guid: 8f8a2ee077b21f944944e0e570b29c3a, type: 3}
@@ -7017,3 +7166,4 @@ SceneRoots:
   - {fileID: 1475241426}
   - {fileID: 1910536398}
   - {fileID: 1969552006}
+  - {fileID: 756913993}

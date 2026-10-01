@@ -61,7 +61,9 @@ public class PlayerAutoAttacking : MonoBehaviour
         yield return new WaitForSeconds(attackInterval);
 
         if (enemy != null)
+        {
             enemy.GetComponent<EnemyHealth>().TakeDamage(UpgradeManager.Instance.MeleeDamage);
+        }
 
         movement.IsMeleeAttacking = false;
         lastAttackTime = attackInterval;

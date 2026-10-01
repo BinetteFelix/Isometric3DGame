@@ -19,6 +19,7 @@ public class EnemyHealth : MonoBehaviour
     private Transform worldSpaceCanvas;
     private Vector3 healthbarPos = new Vector3(0, 2f, 0);
 
+    private float DamageToTake;
     private float currentHealth;
     public float CurrentHealth
     {
@@ -49,10 +50,10 @@ public class EnemyHealth : MonoBehaviour
     {
         healthbarUI.transform.position = transform.position + healthbarPos;
     }
-
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        DamageToTake = damage;
+        currentHealth -= DamageToTake;
         healthbarUI.GetComponent<HealthUI>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
         Flash();
         if (currentHealth <= 0)
@@ -60,6 +61,22 @@ public class EnemyHealth : MonoBehaviour
             Invoke("EnemyDead", flashDuration);
         }
     }
+
+    #region LingeringDamage
+    public void DoLingeringDamage(float damage)
+    {
+        TakeDamage(damage);
+        CancelInvoke(nameof(TakeLingeringDamage));
+        if (currentHealth > 0)
+            InvokeRepeating(nameof(TakeLingeringDamage), 1f, 1f);
+    }
+    private void TakeLingeringDamage()
+    {
+        DamageToTake = UpgradeManager.Instance.PoisonDamage;
+        TakeDamage(DamageToTake);
+    }
+    #endregion
+
     public void ResetAttributes()
     {
         currentHealth = enemyData.BaseHealth;

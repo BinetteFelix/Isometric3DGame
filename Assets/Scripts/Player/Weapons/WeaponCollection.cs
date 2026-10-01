@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -59,7 +57,10 @@ public class WeaponCollection : MonoBehaviour
     private void SwitchWeaponDown()
     {
         var actW = CheckActiveWeapon();
-        Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
+        if (Weapons[actW].name == "SMG")
+            Weapons[actW].GetComponent<EyeBall>().CancelReload();
+        else
+            Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
 
         if (actW >= 0 && !Weapons[Weapons.Count - 1].activeSelf)
         {
@@ -82,7 +83,10 @@ public class WeaponCollection : MonoBehaviour
     private void SwitchWeaponUp()
     {
         var actW = CheckActiveWeapon();
-        Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
+        if (Weapons[actW].name == "SMG")
+            Weapons[actW].GetComponent<EyeBall>().CancelReload();
+        else 
+            Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
 
         if (actW > 0)
         {

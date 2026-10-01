@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utility;
 
 public class UpgradeManager : SingletonBehaviour<UpgradeManager>
@@ -13,8 +14,11 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float ShotgunReloadSpeed;
     public float SMGReloadSpeed;
     public float MovementSpeed;
+    public float PoisonDamage;
     #endregion
 
+
+    [SerializeField] private InputAction[] shootActions;
     private Objectives objState;
     private enum Objectives
     {
@@ -46,11 +50,13 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     {
         if (!levelUpScreen.activeSelf)
             upgradeScreen.SetActive(true);
+        Time.timeScale = 0;
     }
     public void OpenLevelUpScreen()
     {
         if (!upgradeScreen.activeSelf)
             levelUpScreen.SetActive(true);
+        Time.timeScale = 0;
     }
     public void UpgradePlayer(string name, float value)
     {
@@ -87,6 +93,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                     break;
                 }
         }
+        Time.timeScale = 1;
     }
     public override void Instantiate()
     {

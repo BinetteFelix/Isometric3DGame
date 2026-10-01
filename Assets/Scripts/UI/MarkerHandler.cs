@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Pool;
 
 public class MarkerHandler : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MarkerHandler : MonoBehaviour
     [SerializeField] private List<GameObject> enemies;
     [SerializeField] private GameObject markerPrefab;
 
+    public ObjectPool<GameObject> markerPool;
     private void Awake()
     {
         Instance = this;
@@ -16,6 +18,29 @@ public class MarkerHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        #region Pooling
+        markerPool = new ObjectPool<GameObject>(
+            () =>
+            {
+                return Instantiate(markerPrefab, transform);
+            },
+            marker =>
+            {
+                marker.gameObject.SetActive(true);
+            },
+            marker =>
+            {
+                marker.gameObject.SetActive(false);
+            },
+            marker =>
+            {
+                DestroyImmediate(marker);
+            },
+            false,
+            10,
+            100
+            );
+        #endregion
     }
 
     // Update is called once per frame
@@ -30,11 +55,15 @@ public class MarkerHandler : MonoBehaviour
     {
         enemies.Remove(enemy);
     }
+    public void ResetList()
+    {
+        enemies.Clear();
+    }
     public void SetMarkerTarget()
     {
         foreach (GameObject enemyO in enemies)
         {
-            GameObject marker = Instantiate(markerPrefab, transform);
+            GameObject marker = markerPool.Get();
             marker.GetComponent<MarkerBehavior>().SetTarget(enemyO.transform);
         }
     }
