@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float LifeTime = 1.5f;
+    private float LifeTime = 0.5f;
     private Action<Bullet> _killAction;
     private float bulletDamage;
     [SerializeField] private string bulletState;
+
+    private EyeBall eyeBall;
+    private void Start()
+    {
+        eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -14,7 +20,7 @@ public class Bullet : MonoBehaviour
         if (LifeTime < 0)
             _killAction.Invoke(this);
 
-        if (WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>().state == EyeBall.TearState.poisonous && this.name == "RegularTear(Clone)")
+        if (eyeBall.state == EyeBall.TearState.poisonous && this.name == "RegularTear(Clone)")
             Destroy(this.gameObject);
     }
     public void Init(Action<Bullet> killAction)
@@ -42,7 +48,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnEnable()
     {
-        LifeTime = 1.5f;
+        LifeTime = 0.5f;
     }
     public void SetDamage(float damage)
     {

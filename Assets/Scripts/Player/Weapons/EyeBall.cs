@@ -50,14 +50,14 @@ public class EyeBall : MonoBehaviour
 
     private Transform PlayerTransform;
 
-    public int maxAmmo;
+    public int MaxAmmo;
     private int ammo;
     [HideInInspector]
     public int Ammo
     {
         get
         {
-            return Mathf.Clamp(ammo, 0, maxAmmo);
+            return Mathf.Clamp(ammo, 0, MaxAmmo);
         }
         set
         {
@@ -106,7 +106,7 @@ public class EyeBall : MonoBehaviour
             );
         #endregion
 
-        ammo = maxAmmo;
+        ammo = MaxAmmo;
         tearAmount.text = $"{Ammo}";
 
         cameraShakeSource = GetComponent<CinemachineImpulseSource>();
@@ -158,7 +158,7 @@ public class EyeBall : MonoBehaviour
     }
     private void Reload()
     {
-        ammo = maxAmmo;
+        ammo = MaxAmmo;
         tearAmount.text = $"{Ammo}";
     }
     #endregion
@@ -176,7 +176,7 @@ public class EyeBall : MonoBehaviour
     }
     public void CancelReload()
     {
-        CancelInvoke("ReloadGun");
+        CancelInvoke("Reload");
     }
     public void DestroyBullet(Bullet bullet)
     {

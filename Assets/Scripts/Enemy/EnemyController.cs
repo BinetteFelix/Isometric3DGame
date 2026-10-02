@@ -11,12 +11,14 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     private GameObject removableEnemy;
     [SerializeField] public List<GameObject> Enemies;
     [SerializeField] public List<NavMeshAgent> EnemyTypes;
+    public float EnemiesToSpawn;
     #endregion
     [SerializeField] private Transform spawnArea;
-    [SerializeField] private TextMeshProUGUI objectiveText;
+    [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
     public int EnemiesKilled;
+    public int enemyKilledLoopNumber;
 
     public ObjectPool<GameObject> EnemyPool;
 
@@ -51,19 +53,20 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             );
         #endregion
 
+        EnemiesToSpawn = 20;
         SpawnEnemies();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Enemies.Count);
         UpdateEnemyCount();
 
-        if (Enemies.Count == 0 && HasSpawnedEnemies)
+        if (Enemies.Count == 0 && HasSpawnedEnemies && EnemiesKilled > 0)
         {
             RespawnEnemies();
         }
+        
     }
     public void UpdateEnemyCount()
     {
@@ -88,24 +91,25 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #region OBJECTIVE UPDATE
     public void RespawnEnemies()
     {
-        SpawnEnemies();
         UpgradeManager.Instance.OpenUpgradeScreen();
-    }
-    #endregion
+        EnemiesToSpawn++;
 
-    private void SpawnEnemies()
-    {
-        Debug.Log("Spawned Enemies");
         Enemies.Clear();
         EnemyPool.Dispose();
-        HealthUI[] healthBars = worldSpaceCanvas.GetComponentsInChildren<HealthUI>(true);
-        foreach (HealthUI healthBar in healthBars)
+        EnemyHealthBar[] healthBars = worldSpaceCanvas.GetComponentsInChildren<EnemyHealthBar>(true);
+        foreach (EnemyHealthBar healthBar in healthBars)
         {
             Destroy(healthBar.gameObject);
         }
         MarkerHandler.Instance.ResetList();
 
-        for (int i = 0; i < 20; i++)
+        SpawnEnemies();
+    }
+    #endregion
+
+    private void SpawnEnemies()
+    {
+        for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
             newEnemy.transform.position = spawnArea.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
@@ -115,7 +119,11 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         MarkerHandler.Instance.SetMarkerTarget();
         HasSpawnedEnemies = true;
     }
-
+    public void UpdateEnemyCountUI()
+    {
+        enemyKilledLoopNumber++;
+        enemiesKilledText.text = EnemiesKilled.ToString();
+    }
     public override void Instantiate()
     {
     }

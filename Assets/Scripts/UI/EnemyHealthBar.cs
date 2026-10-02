@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthUI : MonoBehaviour
+public class EnemyHealthBar : MonoBehaviour
 {
     public Image HealthBar;
 

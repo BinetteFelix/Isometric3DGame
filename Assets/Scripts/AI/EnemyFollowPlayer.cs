@@ -34,9 +34,9 @@ public class EnemyFollowPlayer : MonoBehaviour
     private void SetDestination()
     {
         Collider[] collider = Physics.OverlapSphere(transform.position, ViewRadius);
-        foreach (Collider c in collider)
+        foreach (Collider col in collider)
         {
-            if (c.tag == "Player")
+            if (col.tag == "Player")
             {
                 target = GameObject.FindGameObjectWithTag("Player").transform;
                 updateDestinationTime = 0.5f;

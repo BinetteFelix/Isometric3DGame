@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utility;
@@ -15,17 +16,12 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float SMGReloadSpeed;
     public float MovementSpeed;
     public float PoisonDamage;
+    public float MaxTearAmount;
+    public float MaxShotgunAmmo;
     #endregion
 
 
     [SerializeField] private InputAction[] shootActions;
-    private Objectives objState;
-    private enum Objectives
-    {
-        obj1,
-        obj2,
-        obj3
-    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,11 +35,14 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     }
     private void ObjectiveHandler()
     {
-        if (EnemyController.Instance.EnemiesKilled == 5)
+        if (EnemyController.Instance.enemyKilledLoopNumber == 5)
         {
-            EnemyController.Instance.EnemiesKilled = 0;
+            EnemyController.Instance.enemyKilledLoopNumber = 0;
             if (!upgradeScreen.activeSelf)
+            {
                 OpenUpgradeScreen();
+            }
+                
         }
     }
     public void OpenUpgradeScreen()
@@ -90,6 +89,23 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
             case "Move Speed":
                 {
                     MovementSpeed += value;
+                    break;
+                }
+            case "Poison Tears":
+                {
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    eyeBall.SwitchTearState(EyeBall.TearState.poisonous);
+                    PoisonDamage = value;
+                    break;
+                }
+            case "Max Tears":
+                {
+                    MaxTearAmount += value;
+                    break;
+                }
+            case "Max Shotgun Ammo":
+                {
+                    MaxShotgunAmmo += value;
                     break;
                 }
         }

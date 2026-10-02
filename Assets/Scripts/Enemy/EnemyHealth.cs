@@ -54,7 +54,7 @@ public class EnemyHealth : MonoBehaviour
     {
         DamageToTake = damage;
         currentHealth -= DamageToTake;
-        healthbarUI.GetComponent<HealthUI>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+        healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
         Flash();
         if (currentHealth <= 0)
         {
@@ -82,8 +82,8 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = enemyData.BaseHealth;
         rend.material.color = originalColor;
 
-        healthbarUI.GetComponent<HealthUI>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
-        healthbarUI.GetComponent<HealthUI>().ResetAlpha();
+        healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+        healthbarUI.GetComponent<EnemyHealthBar>().ResetAlpha();
         healthbarUI.SetActive(true);
     }
     private void EnemyDead()
@@ -113,8 +113,12 @@ public class EnemyHealth : MonoBehaviour
     private void OnDisable()
     {
         if (EnemyController.HasInstance)
+        {
             EnemyController.Instance.EnemiesKilled++;
+            EnemyController.Instance.UpdateEnemyCountUI();
+        }
         if (ExperienceHandler.HasInstance)
             ExperienceHandler.Instance.SpawnXP(transform.position);
+
     }
 }
