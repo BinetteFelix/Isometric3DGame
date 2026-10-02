@@ -16,16 +16,18 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float SMGReloadSpeed;
     public float MovementSpeed;
     public float PoisonDamage;
+    public int PierceAmount;
     public float MaxTearAmount;
     public float MaxShotgunAmmo;
     #endregion
 
+    private float nextUpgradeKillNumber;
 
     [SerializeField] private InputAction[] shootActions;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        nextUpgradeKillNumber = 5;
     }
 
     // Update is called once per frame
@@ -35,20 +37,20 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     }
     private void ObjectiveHandler()
     {
-        if (EnemyController.Instance.enemyKilledLoopNumber == 5)
+        if (EnemyController.Instance.enemyKilledLoopNumber == nextUpgradeKillNumber)
         {
             EnemyController.Instance.enemyKilledLoopNumber = 0;
             if (!upgradeScreen.activeSelf)
             {
                 OpenUpgradeScreen();
             }
-                
         }
     }
     public void OpenUpgradeScreen()
     {
         if (!levelUpScreen.activeSelf)
             upgradeScreen.SetActive(true);
+        nextUpgradeKillNumber += 2;
         Time.timeScale = 0;
     }
     public void OpenLevelUpScreen()
@@ -94,8 +96,19 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
             case "Poison Tears":
                 {
                     EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
-                    eyeBall.SwitchTearState(EyeBall.TearState.poisonous);
+                    eyeBall.SwitchTearState(EyeBall.EyeballState.poisonous);
                     PoisonDamage = value;
+                    break;
+                }
+            case "Piercing":
+                {
+                    PierceAmount++;
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    foreach(Bullet tear in eyeBall.tearPrefabs)
+                    {
+                        tear.state = Bullet.TearState.piercing;
+                        tear.PiercingAmount = PierceAmount;
+                    }
                     break;
                 }
             case "Max Tears":

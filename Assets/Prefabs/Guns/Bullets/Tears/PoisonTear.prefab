@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: bulletState
       value: Poisonous
       objectReference: {fileID: 0}
+    - target: {fileID: 5993217569501118236, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
+      propertyPath: PiercingAmount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7428770765724915508, guid: c9e3c0206503e9a47a87b415acf53a23, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

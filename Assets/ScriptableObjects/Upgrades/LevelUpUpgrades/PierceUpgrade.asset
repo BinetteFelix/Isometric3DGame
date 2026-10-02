@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PierceUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeButton
   upgradeName: Piercing
-  value: 0
+  value: 1
   image: {fileID: 0}

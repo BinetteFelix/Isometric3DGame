@@ -16,9 +16,9 @@ public class EyeBall : MonoBehaviour
     #endregion
 
     #region COMPONENTS
-    [SerializeField] private Bullet[] tearPrefabs;
+    [SerializeField] public Bullet[] tearPrefabs;
     [SerializeField] private Transform tearOrigin;
-    [SerializeField] private TextMeshProUGUI tearAmount;
+    [SerializeField] private TextMeshProUGUI tearAmountText;
 
     CinemachineImpulseSource cameraShakeSource;
     private WeaponCollection weaponCollection;
@@ -33,11 +33,11 @@ public class EyeBall : MonoBehaviour
 
     [SerializeField] private Transform TearParent;
 
-    public TearState state;
-    public enum TearState
+    public EyeballState state;
+    public enum EyeballState
     {
         basic,
-        poisonous
+        poisonous,
     }
 
     #region EFFECTS
@@ -78,9 +78,9 @@ public class EyeBall : MonoBehaviour
         tearPool = new ObjectPool<Bullet>(
             () =>
             {
-                if (state == TearState.basic)
+                if (state == EyeballState.basic)
                     return Instantiate(tearPrefabs[0], tearOrigin.position, Quaternion.identity);
-                else if (state == TearState.poisonous)
+                else if (state == EyeballState.poisonous)
                     return Instantiate(tearPrefabs[1], tearOrigin.position, Quaternion.identity);
                 else
                     return null;
@@ -107,7 +107,7 @@ public class EyeBall : MonoBehaviour
         #endregion
 
         ammo = MaxAmmo;
-        tearAmount.text = $"{Ammo}";
+        tearAmountText.text = $"{Ammo}";
 
         cameraShakeSource = GetComponent<CinemachineImpulseSource>();
         weaponCollection = GetComponentInParent<WeaponCollection>();
@@ -142,7 +142,7 @@ public class EyeBall : MonoBehaviour
     {
         CancelReload();
         Bullet bullet = tearPool.Get();
-        if (bullet.name == "RegularTear(Clone)" && state == TearState.poisonous)
+        if (bullet.name == "RegularTear(Clone)" && state == EyeballState.poisonous)
         {
             tearPool.Release(bullet);
             tearPool.Clear();
@@ -152,14 +152,14 @@ public class EyeBall : MonoBehaviour
         bullet.GetComponent<Rigidbody>().AddForce(tearOrigin.forward * 1500);
 
         ammo--;
-        tearAmount.text = $"{Ammo}";
+        tearAmountText.text = $"{Ammo}";
 
         bullet.Init(DestroyBullet);
     }
     private void Reload()
     {
         ammo = MaxAmmo;
-        tearAmount.text = $"{Ammo}";
+        tearAmountText.text = $"{Ammo}";
     }
     #endregion
 
@@ -172,7 +172,7 @@ public class EyeBall : MonoBehaviour
 
     private void OnEnable()
     {
-        tearAmount.text = $"{Ammo}";
+        tearAmountText.text = $"{Ammo}";
     }
     public void CancelReload()
     {
@@ -182,15 +182,15 @@ public class EyeBall : MonoBehaviour
     {
         tearPool.Release(bullet);
     }
-    public void SwitchTearState(TearState newState)
+    public void SwitchTearState(EyeballState newState)
     {
         state = newState;
         tearPool.Clear();
-        if (newState == TearState.basic)
+        if (newState == EyeballState.basic)
         {
             rend.materials[1].color = Color.blue;
         }
-        else if (newState == TearState.poisonous)
+        else if (newState == EyeballState.poisonous)
         {
             rend.materials[1].color = Color.greenYellow;
         }

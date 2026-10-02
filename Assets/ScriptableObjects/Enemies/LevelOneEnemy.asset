@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ae7915ea97a58e438ee7814b8b3cdea, type: 3}
   m_Name: LevelOneEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  BaseHealth: 75
+  BaseHealth: 45

@@ -9,6 +9,16 @@ public class Bullet : MonoBehaviour
     [SerializeField] private string bulletState;
 
     private EyeBall eyeBall;
+
+    public int PiercingAmount;
+    private int enemiesPierced;
+
+    public TearState state;
+    public enum TearState
+    {
+        piercing,
+        directHitting
+    }
     private void Start()
     {
         eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
@@ -20,7 +30,7 @@ public class Bullet : MonoBehaviour
         if (LifeTime < 0)
             _killAction.Invoke(this);
 
-        if (eyeBall.state == EyeBall.TearState.poisonous && this.name == "RegularTear(Clone)")
+        if (eyeBall.state == EyeBall.EyeballState.poisonous && this.name == "RegularTear(Clone)")
             Destroy(this.gameObject);
     }
     public void Init(Action<Bullet> killAction)
@@ -34,21 +44,46 @@ public class Bullet : MonoBehaviour
 
         if (enemy != null)
         {
-            if (bulletState == "Poisonous")
+            if (state == TearState.piercing)
             {
-                enemy.DoLingeringDamage(bulletDamage);
-                _killAction.Invoke(this);
+                if (enemiesPierced < PiercingAmount)
+                {
+                    enemiesPierced++;
+                    PierceAndDamage(enemy);
+                }
+                else
+                    DirectDamage(enemy);
             }
-            else if (bulletState == "Basic")
+            else if (state == TearState.directHitting)
             {
-                enemy.TakeDamage(bulletDamage);
-                _killAction.Invoke(this);
+                DirectDamage(enemy);
             }
+        }
+    }
+    private void PierceAndDamage(EnemyHealth enemy)
+    {
+        if (bulletState == "Poisonous")
+            enemy.DoLingeringDamage(bulletDamage);
+        else if (bulletState == "Basic")
+            enemy.TakeDamage(bulletDamage);
+    }
+    private void DirectDamage(EnemyHealth enemy)
+    {
+        if (bulletState == "Poisonous")
+        {
+            enemy.DoLingeringDamage(bulletDamage);
+            _killAction.Invoke(this);
+        }
+        else if (bulletState == "Basic")
+        {
+            enemy.TakeDamage(bulletDamage);
+            _killAction.Invoke(this);
         }
     }
     private void OnEnable()
     {
         LifeTime = 0.5f;
+        enemiesPierced = 0;
     }
     public void SetDamage(float damage)
     {

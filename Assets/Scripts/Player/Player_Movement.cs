@@ -7,7 +7,6 @@ public class Player_Movement : MonoBehaviour
     private Rigidbody RB;
     #endregion
 
-
     #region ANIMATION
     private Animator p_Animator;
     PlayerAutoAttacking attacking;
