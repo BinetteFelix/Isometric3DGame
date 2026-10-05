@@ -7,6 +7,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
     [SerializeField] private GameObject upgradeScreen;
     [SerializeField] private GameObject levelUpScreen;
+    [SerializeField] private Transform tearOrigin;
 
     #region Upgradeable Variables
     public float MeleeAttackSpeed = 1;
@@ -21,13 +22,13 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float MaxShotgunAmmo;
     #endregion
 
-    private float nextUpgradeKillNumber;
+    private float nextUpgradeKillCount;
 
     [SerializeField] private InputAction[] shootActions;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        nextUpgradeKillNumber = 5;
+        nextUpgradeKillCount = 5;
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     }
     private void ObjectiveHandler()
     {
-        if (EnemyController.Instance.enemyKilledLoopNumber == nextUpgradeKillNumber)
+        if (EnemyController.Instance.enemyKilledLoopNumber == nextUpgradeKillCount)
         {
             EnemyController.Instance.enemyKilledLoopNumber = 0;
             if (!upgradeScreen.activeSelf)
@@ -48,15 +49,13 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     }
     public void OpenUpgradeScreen()
     {
-        if (!levelUpScreen.activeSelf)
-            upgradeScreen.SetActive(true);
-        nextUpgradeKillNumber += 2;
+        upgradeScreen.SetActive(true);
+        nextUpgradeKillCount += 2;
         Time.timeScale = 0;
     }
     public void OpenLevelUpScreen()
     {
-        if (!upgradeScreen.activeSelf)
-            levelUpScreen.SetActive(true);
+        levelUpScreen.SetActive(true);
         Time.timeScale = 0;
     }
     public void UpgradePlayer(string name, float value)
@@ -109,6 +108,11 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                         tear.state = Bullet.TearState.piercing;
                         tear.PiercingAmount = PierceAmount;
                     }
+                    foreach (Bullet tear in tearOrigin.GetComponentsInChildren<Bullet>(true))
+                    {
+                        tear.state = Bullet.TearState.piercing;
+                        tear.PiercingAmount = PierceAmount;
+                    }
                     break;
                 }
             case "Max Tears":
@@ -122,7 +126,8 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                     break;
                 }
         }
-        Time.timeScale = 1;
+        if (!UIManager.Instance.IsPaused)
+            Time.timeScale = 1;
     }
     public override void Instantiate()
     {

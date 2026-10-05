@@ -911,7 +911,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   rend: {fileID: 13700000}
-  experienceObject: {fileID: 0}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.15
   enemyData: {fileID: 11400000, guid: e1dadb7bf00606c438a8b918f2c8bb6d, type: 2}
@@ -950,4 +949,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0042af828fce4d943a8d734c429831cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowPlayer
+  attackRangeTransform: {fileID: 400048}
+  attackRange: 2.5
+  AttackSpeed: 1
   ViewRadius: 10
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128
+  State: 0

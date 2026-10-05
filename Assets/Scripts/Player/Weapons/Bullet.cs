@@ -22,6 +22,8 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+        state = TearState.directHitting;
+        PiercingAmount = 0;
     }
     // Update is called once per frame
     void Update()

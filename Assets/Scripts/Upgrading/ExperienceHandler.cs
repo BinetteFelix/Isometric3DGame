@@ -12,7 +12,7 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
 
     #region UI
     [SerializeField] private TextMeshProUGUI xpText;
-    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI[] levelTexts;
     #endregion
 
     public int Level;
@@ -90,7 +90,8 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
         Level++;
 
         xpText.text = $"{xpCount} / {Mathf.Round(levelUpXPAmount)}";
-        levelText.text = Level.ToString();
+        foreach (TextMeshProUGUI text in levelTexts)
+            text.text = Level.ToString();
 
         UpgradeManager.Instance.OpenLevelUpScreen();
     }

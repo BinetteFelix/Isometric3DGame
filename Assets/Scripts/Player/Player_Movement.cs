@@ -10,6 +10,7 @@ public class Player_Movement : MonoBehaviour
     #region ANIMATION
     private Animator p_Animator;
     PlayerAutoAttacking attacking;
+    PlayerHealth health;
     private float AnimationWalkingSpeed = 1;
     #endregion
     [SerializeField] public InputAction movementAction;
@@ -37,11 +38,12 @@ public class Player_Movement : MonoBehaviour
         RB = GetComponent<Rigidbody>();
         p_Animator = GetComponent<Animator>();
         attacking = GetComponent<PlayerAutoAttacking>();
+        health = GetComponent<PlayerHealth>();
     }
     private void Update()
     {
         GatherInputs();
-        if(!UIManager.Instance.IsPaused)
+        if(!UIManager.Instance.IsPaused && !health.PlayerIsDead)
             Look();
         StateHandler();
     }

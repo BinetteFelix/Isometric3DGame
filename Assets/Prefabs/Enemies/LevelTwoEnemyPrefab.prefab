@@ -90,4 +90,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0042af828fce4d943a8d734c429831cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowPlayer
+  attackRangeTransform: {fileID: 0}
+  attackRange: 3
+  AttackSpeed: 1
   ViewRadius: 10
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 0
+  State: 0
