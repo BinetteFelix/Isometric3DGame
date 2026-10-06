@@ -52,11 +52,13 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
         upgradeScreen.SetActive(true);
         nextUpgradeKillCount += 2;
         Time.timeScale = 0;
+        UIManager.Instance.SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
     }
     public void OpenLevelUpScreen()
     {
         levelUpScreen.SetActive(true);
         Time.timeScale = 0;
+        UIManager.Instance.SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
     }
     public void UpgradePlayer(string name, float value)
     {
@@ -128,6 +130,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
         }
         if (!UIManager.Instance.IsPaused)
             Time.timeScale = 1;
+        UIManager.Instance.SetCursorState(CursorLockMode.Confined, CursorMode.Auto, UIManager.Instance.cursor);
     }
     public override void Instantiate()
     {

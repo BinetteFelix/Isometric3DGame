@@ -94,6 +94,7 @@ public class PlayerHealth : MonoBehaviour
 
         animator.SetTrigger("TookDamage");
         animator.SetBool("DeadState", PlayerIsDead);
+        UIManager.Instance.Invoke(nameof(PlayerDead), 0.9f);
     }
     private IEnumerator DamageEffect()
     {

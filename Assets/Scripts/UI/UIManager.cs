@@ -7,9 +7,12 @@ public class UIManager : SingletonBehaviour<UIManager>
     #region COMPONENTS
     [SerializeField] private Animator pauseAnimator;
     private Player_Movement playerMovement;
-    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject pausePanel; 
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] public Texture2D cursor;
+
     #endregion
-    
+
     #region INPUT PARAMETERS
     [SerializeField] private InputAction PauseAction;
     private InputAction movementAction;
@@ -29,7 +32,7 @@ public class UIManager : SingletonBehaviour<UIManager>
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Movement>();
         movementAction = playerMovement.movementAction;
         pausePanel.SetActive(true);
-        Cursor.lockState = CursorLockMode.Confined;
+        SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
     }
     private void Update()
     {
@@ -49,19 +52,30 @@ public class UIManager : SingletonBehaviour<UIManager>
             case true:
                 Time.timeScale = 0;
                 movementAction.Disable();
-                Cursor.lockState = CursorLockMode.None;
+                SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
                 break;
             case false:
                 Time.timeScale = 1;
                 movementAction.Enable();
-                Cursor.lockState = CursorLockMode.Confined;
+                SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
                 break;
             default:
         }
         pauseAnimator.SetBool("PauseState", IsPaused);
         pauseAnimator.SetTrigger("PauseInput");     
     }
+    public void PlayerDead()
+    {
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
+        playerMovement.movementAction.Disable();
+    }
 
+    public void SetCursorState(CursorLockMode lockmode, CursorMode mode, Texture2D texture)
+    {
+        Cursor.lockState = lockmode;
+        Cursor.SetCursor(texture, Vector2.zero, mode);
+    }
     public override void Instantiate()
     {
     }

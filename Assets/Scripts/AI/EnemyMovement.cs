@@ -118,7 +118,7 @@ public class EnemyMovement : MonoBehaviour
         }
         player[0].GetComponent<PlayerHealth>().TakeDamage(25);      //deals damage if the player is still in range after the set time frame, otherwise don't do any damage
 
-        float attackInterval = 2;
+        float attackInterval = 1.5f;
         yield return new WaitForSeconds(attackInterval);
 
         isAttacking = false;

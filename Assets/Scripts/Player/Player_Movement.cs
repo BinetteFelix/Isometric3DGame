@@ -5,6 +5,7 @@ public class Player_Movement : MonoBehaviour
 {
     #region COMPONENTS
     private Rigidbody RB;
+    [SerializeField] private GameObject InputTypeScreen;
     #endregion
 
     #region ANIMATION
@@ -13,17 +14,20 @@ public class Player_Movement : MonoBehaviour
     PlayerHealth health;
     private float AnimationWalkingSpeed = 1;
     #endregion
+
     [SerializeField] public InputAction movementAction;
+    [SerializeField] private InputAction lookAction;
 
     private Vector3 _moveInput;
+    private Vector2 _lookInput;
     private Vector2 WalkDirection;
     private int AngleOffset = 45;
-    
     private float _moveSpeed = 3;
     private float _animatingMoveSpeedInDir = 1;
 
     public bool IsMeleeAttacking;
 
+    public bool IsUsingController {  get; private set; }
     public CurrentState state;
     public enum CurrentState
     {
@@ -35,6 +39,7 @@ public class Player_Movement : MonoBehaviour
     private void Awake()
     {
         movementAction.Enable();
+        lookAction.Enable();
         RB = GetComponent<Rigidbody>();
         p_Animator = GetComponent<Animator>();
         attacking = GetComponent<PlayerAutoAttacking>();
@@ -42,10 +47,12 @@ public class Player_Movement : MonoBehaviour
     }
     private void Update()
     {
+        IsUsingController = true;
         GatherInputs();
         if(!UIManager.Instance.IsPaused && !health.PlayerIsDead)
             Look();
         StateHandler();
+        
     }
     private void StateHandler()
     {
@@ -71,100 +78,106 @@ public class Player_Movement : MonoBehaviour
     void GatherInputs()
     {
         _moveInput = new Vector3(movementAction.ReadValue<Vector2>().x, 0, movementAction.ReadValue<Vector2>().y);
+        _lookInput = new Vector2(lookAction.ReadValue<Vector2>().x, lookAction.ReadValue<Vector2>().y);
     }
     private float CalculateLookDirection()
     {
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
         Vector2 mouseOnScreen = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue());
-        float angle = -AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen) - AngleOffset;
+        Vector2 positionToLookTowards = lookAction.IsPressed() ? _lookInput : mouseOnScreen;
+        if (lookAction.IsPressed())
+            Cursor.lockState = CursorLockMode.Locked;
+        else
+            Cursor.lockState = CursorLockMode.Confined;
+        float angle = -AngleBetweenTwoPoints(positionOnScreen, positionToLookTowards) - AngleOffset;
 
         #region Walk Animation Direction
 
         #region Forward
         // Walk Forward Conditions
-        if (mouseOnScreen.x > 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.x > 0)
+        if (positionToLookTowards.x > 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.x > 0)
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.x < 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.x < 0)
+        else if (positionToLookTowards.x < 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.x < 0)
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.z > 0)
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.z > 0)
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.z < 0)
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.z < 0)
             WalkDirection = new Vector2(0, 1);
 
         // Walk Forward in Corner
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x > 0 || _moveInput.z > 0) && !(_moveInput.x < 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x > 0 || _moveInput.z > 0) && !(_moveInput.x < 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x > 0 || _moveInput.z < 0) && !(_moveInput.x < 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x > 0 || _moveInput.z < 0) && !(_moveInput.x < 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z > 0) && !(_moveInput.x > 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z > 0) && !(_moveInput.x > 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(0, 1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z < 0) && !(_moveInput.x > 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z < 0) && !(_moveInput.x > 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(0, 1);
         #endregion
 
         #region Backward
         // Walk Backward Conditions
-        else if (mouseOnScreen.x > 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.x < 0)
+        else if (positionToLookTowards.x > 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.x < 0)
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.x < 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.x > 0)
+        else if (positionToLookTowards.x < 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.x > 0)
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.z < 0)
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.z < 0)
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.z > 0)
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.z > 0)
             WalkDirection = new Vector2(0, -1);
 
         // Walk Backward in Corner
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x < 0 || _moveInput.z < 0) && !(_moveInput.x > 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x < 0 || _moveInput.z < 0) && !(_moveInput.x > 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x < 0 || _moveInput.z > 0) && !(_moveInput.x > 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x < 0 || _moveInput.z > 0) && !(_moveInput.x > 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z < 0) && !(_moveInput.x < 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z < 0) && !(_moveInput.x < 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(0, -1);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z > 0) && !(_moveInput.x < 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z > 0) && !(_moveInput.x < 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(0, -1);
         #endregion
 
         #region Left
         // Walk Left Conditions
-        else if (mouseOnScreen.x > 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.z > 0)
+        else if (positionToLookTowards.x > 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.z > 0)
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.x < 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.z < 0)
+        else if (positionToLookTowards.x < 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.z < 0)
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.x < 0)
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.x < 0)
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.x > 0)
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.x > 0)
             WalkDirection = new Vector2(-1, 0);
 
         // Walk Left in Corner
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x < 0 && _moveInput.z > 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x < 0 && _moveInput.z > 0))
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x > 0 && _moveInput.z > 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x > 0 && _moveInput.z > 0))
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(-1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z < 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z < 0))
             WalkDirection = new Vector2(-1, 0);
         #endregion
 
         #region Right
         // Walk Right Conditions
-        else if (mouseOnScreen.x > 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.z < 0)
+        else if (positionToLookTowards.x > 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.z < 0)
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.x < 0.5f && (mouseOnScreen.y > 0.25f && mouseOnScreen.y < 0.75f) && _moveInput.z > 0)
+        else if (positionToLookTowards.x < 0.5f && (positionToLookTowards.y > 0.25f && positionToLookTowards.y < 0.75f) && _moveInput.z > 0)
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.x < 0)
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.x < 0)
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.25f && mouseOnScreen.x < 0.75f) && _moveInput.x > 0)
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.25f && positionToLookTowards.x < 0.75f) && _moveInput.x > 0)
             WalkDirection = new Vector2(1, 0);
 
         // Walk Right in Corner
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x > 0 && _moveInput.z < 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x > 0 && _moveInput.z < 0))
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x > 0.75f) && (_moveInput.x < 0 && _moveInput.z < 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x > 0.75f) && (_moveInput.x < 0 && _moveInput.z < 0))
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.y > 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y > 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x > 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(1, 0);
-        else if (mouseOnScreen.y < 0.5f && (mouseOnScreen.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z > 0))
+        else if (positionToLookTowards.y < 0.5f && (positionToLookTowards.x < 0.25f) && (_moveInput.x < 0 || _moveInput.z > 0))
             WalkDirection = new Vector2(1, 0);
         #endregion
 
@@ -197,7 +210,7 @@ public class Player_Movement : MonoBehaviour
 
     void Look()
     {
-        transform.rotation = Quaternion.Euler(new Vector3(0, CalculateLookDirection(), 0).ToIso());
+        transform.rotation = Quaternion.Euler(new Vector3(0, CalculateLookDirection(), 0));
     }
     void Move()
     {
