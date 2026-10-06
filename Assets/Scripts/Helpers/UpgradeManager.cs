@@ -7,7 +7,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
     [SerializeField] private GameObject upgradeScreen;
     [SerializeField] private GameObject levelUpScreen;
-    [SerializeField] private Transform tearOrigin;
+    private GameObject tearOrigin;
 
     #region Upgradeable Variables
     public float MeleeAttackSpeed = 1;
@@ -110,7 +110,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                         tear.state = Bullet.TearState.piercing;
                         tear.PiercingAmount = PierceAmount;
                     }
-                    foreach (Bullet tear in tearOrigin.GetComponentsInChildren<Bullet>(true))
+                    foreach (Bullet tear in eyeBall.TearParent.GetComponentsInChildren<Bullet>(true))
                     {
                         tear.state = Bullet.TearState.piercing;
                         tear.PiercingAmount = PierceAmount;

@@ -31,7 +31,7 @@ public class EyeBall : MonoBehaviour
     [SerializeField] private float eyeDamage;
     #endregion
 
-    [SerializeField] private Transform TearParent;
+    public GameObject TearParent;
 
     public EyeballState state;
     public enum EyeballState
@@ -74,6 +74,9 @@ public class EyeBall : MonoBehaviour
     }
     private void Start()
     {
+        TearParent = new GameObject();
+        TearParent.name = "TearPool";
+
         #region TEAR POOL
         tearPool = new ObjectPool<Bullet>(
             () =>
@@ -87,7 +90,7 @@ public class EyeBall : MonoBehaviour
             },
             bullet =>
             {
-                bullet.transform.SetParent(TearParent);
+                bullet.transform.SetParent(TearParent.transform);
                 bullet.transform.position = tearOrigin.position;
                 bullet.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 bullet.gameObject.SetActive(true);

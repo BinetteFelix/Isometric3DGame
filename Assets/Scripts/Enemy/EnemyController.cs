@@ -13,6 +13,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     [SerializeField] public List<NavMeshAgent> EnemyTypes;
     public float EnemiesToSpawn;
     #endregion
+
     [SerializeField] private Transform spawnArea;
     [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
@@ -62,9 +63,10 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     {
         UpdateEnemyCount();
 
-        if (Enemies.Count == 0 && HasSpawnedEnemies && EnemiesKilled > 0)
+        if (Enemies.Count == 0 && HasSpawnedEnemies && (EnemiesKilled > 0 || UIManager.Instance.JustResetGame))
         {
             RespawnEnemies();
+            UIManager.Instance.JustResetGame = false;
         }
         
     }
@@ -118,6 +120,16 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         }
         MarkerHandler.Instance.SetMarkerTarget();
         HasSpawnedEnemies = true;
+    }
+    public void ClearAllEnemies()
+    {
+        foreach (GameObject enemy in spawnArea.GetComponentsInChildren<GameObject>(true))
+        {
+            enemy.SetActive(false);
+        }
+        Enemies.Clear();
+        MarkerHandler.Instance.ResetList();
+        EnemyPool.Clear();
     }
     public void UpdateEnemyCountUI()
     {

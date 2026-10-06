@@ -103,6 +103,22 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
         if (xpCount >= levelUpXPAmount)
             LevelUp();
     }
+    public void ResetLevel()
+    {
+        Level = 0;
+        foreach(TextMeshProUGUI levelText in levelTexts)
+            levelText.text = Level.ToString();
+
+        xpCount = 0;
+        levelUpXPAmount = startLevelUpXPAmount;
+        xpText.text = $"{xpCount} / {Mathf.Round(levelUpXPAmount)}";
+
+        foreach (Experience xp in GetComponentsInChildren<Experience>())
+        {
+            xpPool.Release(xp);
+        }
+        xpPool.Clear();
+    }
     #endregion
 
     #region INSTANCE HANDLER

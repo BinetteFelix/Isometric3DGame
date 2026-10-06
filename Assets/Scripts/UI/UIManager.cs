@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Utility;
 
 public class UIManager : SingletonBehaviour<UIManager>
@@ -9,8 +11,10 @@ public class UIManager : SingletonBehaviour<UIManager>
     private Player_Movement playerMovement;
     [SerializeField] private GameObject pausePanel; 
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] WorldSpaceUIParent worldSpaceCanvas;
     [SerializeField] public Texture2D cursor;
-
+    [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private GameObject[] FirstSelected;
     #endregion
 
     #region INPUT PARAMETERS
@@ -20,10 +24,11 @@ public class UIManager : SingletonBehaviour<UIManager>
 
     #region STATE PARAMETERS
     public bool IsPaused { get; private set; }
+    private int gameSceneIndex = 1;
     #endregion
 
     #region MISCELLANEOUS
-
+    public bool JustResetGame;
     #endregion
 
     private void Start()
@@ -53,6 +58,7 @@ public class UIManager : SingletonBehaviour<UIManager>
                 Time.timeScale = 0;
                 movementAction.Disable();
                 SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
+                eventSystem.SetSelectedGameObject(FirstSelected[0]);
                 break;
             case false:
                 Time.timeScale = 1;
@@ -69,14 +75,31 @@ public class UIManager : SingletonBehaviour<UIManager>
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
         playerMovement.movementAction.Disable();
+        SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
+        eventSystem.SetSelectedGameObject(FirstSelected[1]);
     }
-
     public void SetCursorState(CursorLockMode lockmode, CursorMode mode, Texture2D texture)
     {
         Cursor.lockState = lockmode;
         Cursor.SetCursor(texture, Vector2.zero, mode);
     }
+    public void ResetGame()
+    {
+        SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
+        Time.timeScale = 1;
+        gameOverPanel.SetActive(false);
+        ExperienceHandler.Instance.ResetLevel();
+        //playerMovement.movementAction.Enable();
+        EnemyController.Instance.ClearAllEnemies();
+        worldSpaceCanvas.DestroyWorldspaceObjects();
+        JustResetGame = true;
+        SceneManager.LoadScene(gameSceneIndex);
+    }
+
+
+    #region INSTANCE HANDLER
     public override void Instantiate()
     {
     }
+    #endregion
 }

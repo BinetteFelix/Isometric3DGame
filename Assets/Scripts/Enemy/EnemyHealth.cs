@@ -112,7 +112,7 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnDisable()
     {
-        if (EnemyController.HasInstance)
+        if (EnemyController.HasInstance && currentHealth <= 0)
         {
             EnemyController.Instance.EnemiesKilled++;
             EnemyController.Instance.UpdateEnemyCountUI();

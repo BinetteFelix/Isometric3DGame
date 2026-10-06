@@ -589,7 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
     m_Mode: 2
-    m_WrapAround: 1
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2420,37 +2420,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747811121}
   m_CullTransparentMesh: 1
---- !u!1 &756913992
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 756913993}
-  m_Layer: 0
-  m_Name: TearPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &756913993
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 756913992}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &761605448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9996,7 +9965,7 @@ MonoBehaviour:
   shotDelay: 0.1
   reloadSpeed: 1
   eyeDamage: 14
-  TearParent: {fileID: 756913993}
+  TearParent: {fileID: 0}
   state: 0
   rend: {fileID: 1271775928}
   WeaponEffect: {fileID: 907181331}
@@ -11758,7 +11727,12 @@ MonoBehaviour:
   pauseAnimator: {fileID: 811594010}
   pausePanel: {fileID: 811594006}
   gameOverPanel: {fileID: 1099274702}
+  worldSpaceCanvas: {fileID: 438801976}
   cursor: {fileID: 2800000, guid: 078836e3c797f0e4a997a8d92cc5c7c5, type: 3}
+  eventSystem: {fileID: 301880361}
+  FirstSelected:
+  - {fileID: 1049644398}
+  - {fileID: 2000712011}
   PauseAction:
     m_Name: Pause
     m_Type: 1
@@ -11784,6 +11758,7 @@ MonoBehaviour:
       m_Action: Pause
       m_Flags: 0
     m_Flags: 0
+  JustResetGame: 0
 --- !u!1001 &1763927510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12426,7 +12401,6 @@ MonoBehaviour:
   _destroyOnLevelChange: 0
   upgradeScreen: {fileID: 1895466788}
   levelUpScreen: {fileID: 988245612}
-  tearOrigin: {fileID: 756913993}
   MeleeAttackSpeed: 1
   MeleeDamage: 25
   WeaponDamage: 0
@@ -12588,7 +12562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
     m_Mode: 2
-    m_WrapAround: 1
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -12620,7 +12594,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1746185184}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: Pause
+        m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13101,7 +13075,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2075575851}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1746185184}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ResetGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2075575851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13425,4 +13411,3 @@ SceneRoots:
   - {fileID: 1475241426}
   - {fileID: 1910536398}
   - {fileID: 1969552006}
-  - {fileID: 756913993}
