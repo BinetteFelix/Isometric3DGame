@@ -5,7 +5,6 @@ public class Player_Movement : MonoBehaviour
 {
     #region COMPONENTS
     private Rigidbody RB;
-    [SerializeField] private GameObject InputTypeScreen;
     #endregion
 
     #region ANIMATION

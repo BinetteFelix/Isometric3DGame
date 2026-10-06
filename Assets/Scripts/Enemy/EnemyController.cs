@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 using Utility;
 
 public class EnemyController : SingletonBehaviour<EnemyController>
@@ -14,7 +15,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     public float EnemiesToSpawn;
     #endregion
 
-    [SerializeField] private Transform spawnArea;
+    [SerializeField] public Transform spawnArea;
     [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
@@ -26,6 +27,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        spawnArea = GameObject.FindGameObjectWithTag("EnemySpawnArea").transform;
         #region Pooling
         EnemyPool = new ObjectPool<GameObject>(
             () =>
@@ -53,7 +55,6 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             100
             );
         #endregion
-
         EnemiesToSpawn = 20;
         SpawnEnemies();
     }
@@ -66,9 +67,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         if (Enemies.Count == 0 && HasSpawnedEnemies && (EnemiesKilled > 0 || UIManager.Instance.JustResetGame))
         {
             RespawnEnemies();
-            UIManager.Instance.JustResetGame = false;
         }
-        
     }
     public void UpdateEnemyCount()
     {
@@ -93,8 +92,11 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #region OBJECTIVE UPDATE
     public void RespawnEnemies()
     {
-        UpgradeManager.Instance.OpenUpgradeScreen();
-        EnemiesToSpawn++;
+        if (!UIManager.Instance.JustResetGame)
+        {
+            UpgradeManager.Instance.OpenUpgradeScreen();
+            EnemiesToSpawn++;
+        }
 
         Enemies.Clear();
         EnemyPool.Dispose();
@@ -104,13 +106,15 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             Destroy(healthBar.gameObject);
         }
         MarkerHandler.Instance.ResetList();
-
+        MarkerHandler.Instance.SetMarkerTarget();
         SpawnEnemies();
+        UIManager.Instance.JustResetGame = false;
     }
     #endregion
 
     private void SpawnEnemies()
     {
+        Debug.Log("Tried spawn Enemies");
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
@@ -123,11 +127,14 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     }
     public void ClearAllEnemies()
     {
-        foreach (GameObject enemy in spawnArea.GetComponentsInChildren<GameObject>(true))
-        {
-            enemy.SetActive(false);
-        }
+        EnemiesToSpawn = 20;
         Enemies.Clear();
+        
+        foreach (NavMeshAgent enemy in spawnArea.GetComponentsInChildren<NavMeshAgent>(true))
+        {
+            MarkerHandler.Instance.RemoveFromList(enemy.gameObject);
+            EnemyPool.Release(enemy.gameObject);
+        }
         MarkerHandler.Instance.ResetList();
         EnemyPool.Clear();
     }

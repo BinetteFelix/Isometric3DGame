@@ -9,4 +9,10 @@ public class DrawSpawnAreas : MonoBehaviour
         Gizmos.color = Color.orangeRed;
         Gizmos.DrawCube(transform.position, AreaSize);
     }
+    private void Start()
+    {
+        EnemyController.Instance.spawnArea = gameObject.transform;
+        EnemyController.Instance.ClearAllEnemies();
+        MarkerHandler.Instance.ResetList();
+    }
 }

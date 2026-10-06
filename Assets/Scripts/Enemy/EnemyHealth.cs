@@ -117,7 +117,7 @@ public class EnemyHealth : MonoBehaviour
             EnemyController.Instance.EnemiesKilled++;
             EnemyController.Instance.UpdateEnemyCountUI();
         }
-        if (ExperienceHandler.HasInstance)
+        if (ExperienceHandler.HasInstance && currentHealth <= 0)
             ExperienceHandler.Instance.SpawnXP(transform.position);
 
     }

@@ -65,13 +65,13 @@ public class UIManager : SingletonBehaviour<UIManager>
                 movementAction.Enable();
                 SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
                 break;
-            default:
         }
         pauseAnimator.SetBool("PauseState", IsPaused);
         pauseAnimator.SetTrigger("PauseInput");     
     }
     public void PlayerDead()
     {
+        Debug.Log("player dead");
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
         playerMovement.movementAction.Disable();
@@ -88,14 +88,15 @@ public class UIManager : SingletonBehaviour<UIManager>
         SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
-        ExperienceHandler.Instance.ResetLevel();
-        //playerMovement.movementAction.Enable();
-        EnemyController.Instance.ClearAllEnemies();
         worldSpaceCanvas.DestroyWorldspaceObjects();
         JustResetGame = true;
+        ExperienceHandler.Instance.ResetLevel();
+        Invoke(nameof(ResetActualScene), 0.1f);
+    }
+    private void ResetActualScene()
+    {
         SceneManager.LoadScene(gameSceneIndex);
     }
-
 
     #region INSTANCE HANDLER
     public override void Instantiate()

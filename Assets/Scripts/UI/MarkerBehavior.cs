@@ -10,7 +10,6 @@ public class MarkerBehavior : MonoBehaviour
             Track();
         else
             MarkerHandler.Instance.markerPool.Release(this.gameObject);
-        
     }
     public void SetTarget(Transform position)
     {
