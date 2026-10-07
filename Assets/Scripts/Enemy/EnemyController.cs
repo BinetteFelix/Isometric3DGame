@@ -83,7 +83,6 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         if (removeEnemy)
         {
             Enemies.Remove(removableEnemy);
-            MarkerHandler.Instance.RemoveFromList(removableEnemy);
         }
         else
             removableEnemy = null;
@@ -97,7 +96,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             UpgradeManager.Instance.OpenUpgradeScreen();
             EnemiesToSpawn++;
         }
-
+        
         Enemies.Clear();
         EnemyPool.Dispose();
         EnemyHealthBar[] healthBars = worldSpaceCanvas.GetComponentsInChildren<EnemyHealthBar>(true);
@@ -105,8 +104,6 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         {
             Destroy(healthBar.gameObject);
         }
-        MarkerHandler.Instance.ResetList();
-        MarkerHandler.Instance.SetMarkerTarget();
         SpawnEnemies();
         UIManager.Instance.JustResetGame = false;
     }
@@ -114,29 +111,28 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     private void SpawnEnemies()
     {
-        Debug.Log("Tried spawn Enemies");
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
             newEnemy.transform.position = spawnArea.position + new Vector3(Random.Range(-22.5f, 22.5f), 0, Random.Range(-22.5f, 22.5f));
             Enemies.Add(newEnemy);
-            MarkerHandler.Instance.AddToList(newEnemy);
+            //MarkerHandler.Instance.AddToList(newEnemy);
+            
         }
-        MarkerHandler.Instance.SetMarkerTarget();
+        //MarkerHandler.Instance.SetMarkerTarget();
         HasSpawnedEnemies = true;
     }
     public void ClearAllEnemies()
     {
         EnemiesToSpawn = 20;
         Enemies.Clear();
-        
+        EnemiesKilled = 0;
+        enemiesKilledText.text = EnemiesKilled.ToString();
+
         foreach (NavMeshAgent enemy in spawnArea.GetComponentsInChildren<NavMeshAgent>(true))
         {
-            MarkerHandler.Instance.RemoveFromList(enemy.gameObject);
             EnemyPool.Release(enemy.gameObject);
         }
-        MarkerHandler.Instance.ResetList();
-        EnemyPool.Clear();
     }
     public void UpdateEnemyCountUI()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     #region COMPONENTS
-    [SerializeField] private Renderer rend;
+    [SerializeField] public Renderer rend;
     #endregion
 
     #region TAKE DAMAGE DATA
@@ -13,11 +13,11 @@ public class EnemyHealth : MonoBehaviour
     private Color originalColor;
     #endregion
 
-    [SerializeField] private EnemyData enemyData;
-    [SerializeField] private GameObject HealthbarPrefab;
+    public float BaseHealth;
+    public GameObject HealthbarPrefab;
     private GameObject healthbarUI;
     private Transform worldSpaceCanvas;
-    private Vector3 healthbarPos = new Vector3(0, 2f, 0);
+    public Vector3 healthbarPos = new Vector3(0, 2f, 0);
 
     private float DamageToTake;
     private float currentHealth;
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
     {
         get
         {
-            return Mathf.Clamp(currentHealth, 0, enemyData.BaseHealth);
+            return Mathf.Clamp(currentHealth, 0, BaseHealth);
         }
         set
         {
@@ -41,7 +41,7 @@ public class EnemyHealth : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentHealth = enemyData.BaseHealth;
+        currentHealth = BaseHealth;
         originalColor = rend.material.color;
     }
 
@@ -79,7 +79,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void ResetAttributes()
     {
-        currentHealth = enemyData.BaseHealth;
+        currentHealth = BaseHealth;
         rend.material.color = originalColor;
 
         healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);

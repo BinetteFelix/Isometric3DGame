@@ -5,6 +5,7 @@ public class PlayerAutoAttacking : MonoBehaviour
 {
     #region COMPONENTS
     [SerializeField] private Player_Movement movement;
+    PlayerHealth health;
     [SerializeField]private Transform attackRangeTransform;
     [SerializeField] private float meleeAttackRange;
     public bool IsInMeleeRange {  get; private set; }
@@ -20,12 +21,15 @@ public class PlayerAutoAttacking : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        health = GetComponent<PlayerHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        StateMachine();
+        if (!health.IsTakingDamage)
+            StateMachine();
+
         lastAttackTime -= Time.deltaTime;
     }
     
@@ -67,6 +71,10 @@ public class PlayerAutoAttacking : MonoBehaviour
 
         movement.IsMeleeAttacking = false;
         lastAttackTime = attackInterval;
+    }
+    public void CancelAttack()
+    {
+        StopCoroutine(nameof(DoMeleeAttack));
     }
     private void OnDrawGizmosSelected()
     {

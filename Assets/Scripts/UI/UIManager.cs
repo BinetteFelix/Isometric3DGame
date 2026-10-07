@@ -71,7 +71,6 @@ public class UIManager : SingletonBehaviour<UIManager>
     }
     public void PlayerDead()
     {
-        Debug.Log("player dead");
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
         playerMovement.movementAction.Disable();
@@ -85,10 +84,12 @@ public class UIManager : SingletonBehaviour<UIManager>
     }
     public void ResetGame()
     {
+        //MarkerHandler.Instance.ResetList();
         SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
         Time.timeScale = 1;
         gameOverPanel.SetActive(false);
         worldSpaceCanvas.DestroyWorldspaceObjects();
+        worldSpaceCanvas.ResetAlpha();
         JustResetGame = true;
         ExperienceHandler.Instance.ResetLevel();
         Invoke(nameof(ResetActualScene), 0.1f);

@@ -827,10 +827,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400048}
   - component: {fileID: 9500000}
-  - component: {fileID: 8522656804054891244}
-  - component: {fileID: -6505657057433702751}
   - component: {fileID: 662678317837331876}
-  - component: {fileID: 5975259378480345194}
   m_Layer: 8
   m_Name: FreeLichHP
   m_TagString: Untagged
@@ -847,7 +844,7 @@ Transform:
   m_GameObject: {fileID: 100048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.4526417, y: 0, z: -4.2676244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -877,45 +874,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &8522656804054891244
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100048}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 2, z: 1.25}
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &-6505657057433702751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c65f46971c16b742aec157ed4f19734, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  rend: {fileID: 13700000}
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
-  flashDuration: 0.15
-  BaseHealth: 0
-  HealthbarPrefab: {fileID: 647350446515140044, guid: 92d088e23c699df498e6109065cd85cf, type: 3}
-  healthbarPos: {x: 0, y: 2, z: 0}
 --- !u!195 &662678317837331876
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -938,22 +896,3 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5975259378480345194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0042af828fce4d943a8d734c429831cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowPlayer
-  attackRange: 2.5
-  AttackSpeed: 1
-  ViewRadius: 10
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 128
-  State: 0

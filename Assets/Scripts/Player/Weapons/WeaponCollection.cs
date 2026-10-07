@@ -85,7 +85,7 @@ public class WeaponCollection : MonoBehaviour
         var actW = CheckActiveWeapon();
         if (Weapons[actW].name == "SMG")
             Weapons[actW].GetComponent<EyeBall>().CancelReload();
-        else 
+        else
             Weapons[actW].GetComponent<PlayerFireGun>().CancelReload();
 
         if (actW > 0)

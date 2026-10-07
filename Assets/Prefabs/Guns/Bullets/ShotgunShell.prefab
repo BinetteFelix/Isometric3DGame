@@ -153,5 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57966802446537647ace1f5da3e905cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  LifeTime: 1.5
-  damage: 15
+  bulletState: Basic
+  PiercingAmount: 0
+  state: 0

@@ -10,8 +10,8 @@ public class EnemyMovement : MonoBehaviour
 
     private Animator animator;
     Collider[] player;
-    [SerializeField] private Transform attackRangeTransform;
-    [SerializeField] private float attackRange;
+    Transform attackRangeTransform;
+    public float attackRange;
     public bool IsInAttackRange { get; private set; }
     private bool isAttacking;
     private float lastAttackTime;
@@ -36,8 +36,10 @@ public class EnemyMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        whatIsPlayer = 1 << LayerMask.NameToLayer("Player");
         animator = GetComponent<Animator>();
         m_Agent = GetComponent<NavMeshAgent>();
+        attackRangeTransform = transform;
     }
 
     // Update is called once per frame
@@ -146,7 +148,7 @@ public class EnemyMovement : MonoBehaviour
     #region CHECK METHODS
     private bool CanAttack()
     {
-        return IsInAttackRange & isAttacking == false;
+        return IsInAttackRange & !isAttacking;
     }
     
     #endregion

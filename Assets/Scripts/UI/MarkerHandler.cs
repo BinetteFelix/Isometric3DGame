@@ -51,13 +51,15 @@ public class MarkerHandler : MonoBehaviour
     {
         enemies.Add(enemy);
     }
-    public void RemoveFromList(GameObject enemy)
-    {
-        enemies.Remove(enemy);
-    }
     public void ResetList()
     {
         enemies.Clear();
+        MarkerBehavior[] markers = GetComponentsInChildren<MarkerBehavior>();
+        for (int i = 0; i < markers.Length; i++)
+        {
+            markerPool.Release(markers[i].gameObject);
+        }
+        markerPool.Dispose();
     }
     public void SetMarkerTarget()
     {

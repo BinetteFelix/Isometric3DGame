@@ -13,6 +13,5 @@ public class DrawSpawnAreas : MonoBehaviour
     {
         EnemyController.Instance.spawnArea = gameObject.transform;
         EnemyController.Instance.ClearAllEnemies();
-        MarkerHandler.Instance.ResetList();
     }
 }

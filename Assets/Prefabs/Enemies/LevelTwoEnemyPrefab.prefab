@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: enemyData
       value: 
       objectReference: {fileID: 11400000, guid: 406a37f9bfda0a6428d12230f096bbe2, type: 2}
+    - target: {fileID: 8544956419711694134, guid: 19a05baefe3517e488ed9fb9ece022e4, type: 3}
+      propertyPath: healthbarPos.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2967525253443664154, guid: 19a05baefe3517e488ed9fb9ece022e4, type: 3}
     m_RemovedGameObjects: []
@@ -90,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0042af828fce4d943a8d734c429831cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowPlayer
-  attackRangeTransform: {fileID: 0}
   attackRange: 3
   AttackSpeed: 1
   ViewRadius: 10

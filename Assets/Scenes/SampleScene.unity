@@ -2934,6 +2934,7 @@ MonoBehaviour:
     m_Flags: 0
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.1
+  IsTakingDamage: 0
   BaseHealth: 200
 --- !u!1 &895920688
 GameObject:
@@ -10649,7 +10650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1483744673
 RectTransform:
   m_ObjectHideFlags: 0

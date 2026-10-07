@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     private GameObject healthbarUI;
     private Animator animator;
     private Player_Movement movement;
+    private PlayerAutoAttacking autoAttacking;
     [SerializeField] InputAction damageAction;
     #endregion
 
@@ -18,7 +19,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float flashDuration = 0.1f;
     private Color originalColor;
     #endregion
-
+    public bool IsTakingDamage;
     public bool PlayerIsDead {  get; private set; }
     public float BaseHealth;
     private float DamageToTake;
@@ -39,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<Player_Movement>();
+        autoAttacking = GetComponent<PlayerAutoAttacking>();
         damageAction.Enable();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,7 +59,6 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-
         if (currentHealth <= 0 || damage >= currentHealth)
         {
             CancelInvoke(nameof(ReEnableInput));
@@ -77,6 +78,9 @@ public class PlayerHealth : MonoBehaviour
         DamageToTake = damage;
         currentHealth -= DamageToTake;
         healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+
+        IsTakingDamage = true;
+        autoAttacking.CancelAttack();
     }
     private float ConvertToDecimal(float n)
     {
@@ -106,6 +110,7 @@ public class PlayerHealth : MonoBehaviour
     private void ReEnableInput()
     {
         movement.movementAction.Enable();
+        IsTakingDamage = false;
     }
     private void Flash()
     {

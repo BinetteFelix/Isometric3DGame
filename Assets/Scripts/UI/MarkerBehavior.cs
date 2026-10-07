@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class MarkerBehavior : MonoBehaviour
 {
-    private Transform Target;
+    public Transform Target;
 
     private void Update()
     {
         if (Target != null && Target.gameObject.activeSelf)
             Track();
         else
-            MarkerHandler.Instance.markerPool.Release(this.gameObject);
+            MarkerHandler.Instance.markerPool.Release(gameObject);
     }
-    public void SetTarget(Transform position)
+    public void SetTarget(Transform target)
     {
-        Target = position;
+        Target = target;
     }
     private float CalculateLookDirection()
     {
