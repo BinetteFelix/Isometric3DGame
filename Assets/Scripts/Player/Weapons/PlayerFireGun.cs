@@ -20,7 +20,7 @@ public class PlayerFireGun : MonoBehaviour
     [SerializeField] private Bullet BulletPrefab;
     [SerializeField] private Transform BulletOrigin;
     [SerializeField] private Transform[] shotgunBulletTransforms;
-    [SerializeField] private TextMeshProUGUI bulletAmount;
+    [SerializeField] public TextMeshProUGUI bulletAmount;
 
     CinemachineImpulseSource cameraShakeSource;
     private WeaponCollection weaponCollection;

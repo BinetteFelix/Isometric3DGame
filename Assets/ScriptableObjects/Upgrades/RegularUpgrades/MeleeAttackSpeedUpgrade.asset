@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MeleeAttackSpeedUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeButton
   upgradeName: Melee Speed
-  value: 0.75
+  value: 1.05
   image: {fileID: 0}

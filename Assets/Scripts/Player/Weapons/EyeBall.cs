@@ -18,7 +18,7 @@ public class EyeBall : MonoBehaviour
     #region COMPONENTS
     [SerializeField] public Bullet[] tearPrefabs;
     [SerializeField] private Transform tearOrigin;
-    [SerializeField] private TextMeshProUGUI tearAmountText;
+    [SerializeField] public TextMeshProUGUI tearAmountText;
 
     CinemachineImpulseSource cameraShakeSource;
     private WeaponCollection weaponCollection;
@@ -31,7 +31,7 @@ public class EyeBall : MonoBehaviour
     [SerializeField] private float eyeDamage;
     #endregion
 
-    public GameObject TearParent;
+    [HideInInspector] public GameObject TearParent;
 
     public EyeballState state;
     public enum EyeballState

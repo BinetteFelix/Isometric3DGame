@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -15,6 +17,8 @@ public class UIManager : SingletonBehaviour<UIManager>
     [SerializeField] public Texture2D cursor;
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject[] FirstSelected;
+    [SerializeField] private List<GameObject> ammoType;
+    [SerializeField] private TextMeshProUGUI ammoAmount;
     #endregion
 
     #region INPUT PARAMETERS
@@ -98,7 +102,12 @@ public class UIManager : SingletonBehaviour<UIManager>
     {
         SceneManager.LoadScene(gameSceneIndex);
     }
-
+    public void SetAmmoUI()
+    {
+        WeaponCollection.Instance.SetUI(ammoType);
+        WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>().tearAmountText = ammoAmount;
+        WeaponCollection.Instance.Weapons[0].GetComponent<PlayerFireGun>().bulletAmount = ammoAmount;
+    }
     #region INSTANCE HANDLER
     public override void Instantiate()
     {

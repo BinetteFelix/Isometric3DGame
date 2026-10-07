@@ -65,6 +65,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 406a37f9bfda0a6428d12230f096bbe2, type: 2}
     - target: {fileID: 8544956419711694134, guid: 19a05baefe3517e488ed9fb9ece022e4, type: 3}
+      propertyPath: BaseHealth
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8544956419711694134, guid: 19a05baefe3517e488ed9fb9ece022e4, type: 3}
       propertyPath: healthbarPos.y
       value: 2
       objectReference: {fileID: 0}

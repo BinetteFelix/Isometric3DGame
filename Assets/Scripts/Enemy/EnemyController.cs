@@ -114,7 +114,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
-            newEnemy.transform.position = spawnArea.position + new Vector3(Random.Range(-22.5f, 22.5f), 0, Random.Range(-22.5f, 22.5f));
+            newEnemy.transform.position = spawnArea.position + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
             Enemies.Add(newEnemy);
             //MarkerHandler.Instance.AddToList(newEnemy);
             

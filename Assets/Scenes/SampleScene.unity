@@ -2438,7 +2438,7 @@ PrefabInstance:
       objectReference: {fileID: 1895466788}
     - target: {fileID: 4789008009231781624, guid: 39f236b0eedbd7449b2d6cc4c7259037, type: 3}
       propertyPath: m_text
-      value: +0.75
+      value: +5%
       objectReference: {fileID: 0}
     - target: {fileID: 6299483002713346844, guid: 39f236b0eedbd7449b2d6cc4c7259037, type: 3}
       propertyPath: m_Pivot.x
@@ -4121,7 +4121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42ba402820f603c409b4257122ac6e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  AreaSize: {x: 45, y: 1, z: 45}
+  AreaSize: {x: 20, y: 1, z: 20}
 --- !u!1 &1091569009
 GameObject:
   m_ObjectHideFlags: 0
@@ -11733,6 +11733,10 @@ MonoBehaviour:
   FirstSelected:
   - {fileID: 1049644398}
   - {fileID: 2000712011}
+  ammoType:
+  - {fileID: 1867861777}
+  - {fileID: 1476729829}
+  ammoAmount: {fileID: 1186502078}
   PauseAction:
     m_Name: Pause
     m_Type: 1

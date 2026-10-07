@@ -913,7 +913,7 @@ MonoBehaviour:
   rend: {fileID: 13700000}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.15
-  BaseHealth: 0
+  BaseHealth: 45
   HealthbarPrefab: {fileID: 647350446515140044, guid: 92d088e23c699df498e6109065cd85cf, type: 3}
   healthbarPos: {x: 0, y: 2, z: 0}
 --- !u!195 &662678317837331876

@@ -32,6 +32,7 @@ public class WeaponCollection : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        UIManager.Instance.SetAmmoUI();
         CurrentWeaponHeld = "Shotgun";
 
         switchWeaponDownAction.Enable();
@@ -104,6 +105,10 @@ public class WeaponCollection : MonoBehaviour
         }
 
         CurrentWeaponHeld = Weapons[CheckActiveWeapon()].name;
+    }
+    public void SetUI(List<GameObject> ammoType)
+    {
+        weaponAmmoTypes = ammoType;
     }
     #endregion
 

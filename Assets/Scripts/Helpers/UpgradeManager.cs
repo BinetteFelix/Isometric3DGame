@@ -71,7 +71,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                 }
             case "Melee Speed":
                 {
-                    MeleeAttackSpeed += value;
+                    MeleeAttackSpeed *= value;
                     break;
                 }
             case "Weapon Damage":
