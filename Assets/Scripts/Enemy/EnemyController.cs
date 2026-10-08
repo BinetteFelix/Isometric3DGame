@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -18,6 +19,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     [SerializeField] public Transform spawnArea;
     public float SpawnRadius;
+    public float minSpawnRadius = 7;
     [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
@@ -31,6 +33,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        terrorToSpawn = 3;
     }
 
     // Update is called once per frame
@@ -66,7 +69,6 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #region OBJECTIVE UPDATE
     public void RespawnEnemies()
     {
-        terrorToSpawn = 3;
         if (!UIManager.Instance.JustResetGame)
         {
             UpgradeManager.Instance.OpenUpgradeScreen();
@@ -87,6 +89,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     private void SpawnEnemies()
     {
+        terrorToSpawn = 3;
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
@@ -95,6 +98,12 @@ public class EnemyController : SingletonBehaviour<EnemyController>
                 terrorToSpawn--;
 
             Vector3 spawnCircle = Random.insideUnitCircle * SpawnRadius;
+
+            while ((spawnCircle.x < minSpawnRadius && spawnCircle.x > -minSpawnRadius) && (spawnCircle.y < minSpawnRadius && spawnCircle.y > -minSpawnRadius))
+            {
+                spawnCircle = Random.insideUnitCircle * SpawnRadius;
+            }
+
             newEnemy.transform.position = new Vector3(spawnCircle.x, 0, spawnCircle.y);
             Enemies.Add(newEnemy);
             //MarkerHandler.Instance.AddToList(newEnemy);

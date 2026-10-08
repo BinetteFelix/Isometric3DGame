@@ -43,6 +43,7 @@ public class Player_Movement : MonoBehaviour
         p_Animator = GetComponent<Animator>();
         attacking = GetComponent<PlayerAutoAttacking>();
         health = GetComponent<PlayerHealth>();
+        UIManager.Instance.OnGameSceneLoad();
     }
     private void Update()
     {
