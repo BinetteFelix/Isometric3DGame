@@ -1,4 +1,3 @@
-using Unity.Cinemachine;
 using UnityEngine;
 using Utility;
 
@@ -13,18 +12,11 @@ public class MainMenuCameraBehavior : SingletonBehaviour<MainMenuCameraBehavior>
         animator = GetComponent<Animator>();
         panelButtons = MainMenuButtonEnabler.Instance.GetComponentsInChildren<PanelMovingMainMenu>(true);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void MoveCamera(int nextPosIndex, string triggerName)
     {
         animator.SetTrigger(triggerName);
         animator.SetInteger("CurrentIndex", nextPosIndex);
     }
-
     public override void Instantiate()
     {
     }
