@@ -5,6 +5,8 @@ public class EnemyHealth : MonoBehaviour
 {
     #region COMPONENTS
     [SerializeField] public Renderer rend;
+    BoxCollider collider;
+    Animator animator;
     #endregion
 
     #region TAKE DAMAGE DATA
@@ -18,7 +20,9 @@ public class EnemyHealth : MonoBehaviour
     private GameObject healthbarUI;
     private Transform worldSpaceCanvas;
     public Vector3 healthbarPos = new Vector3(0, 2f, 0);
-
+    public float deathAnimationLength;
+    public bool EnemyIsDead {  get; private set; }
+    bool tookHit;
     private float DamageToTake;
     private float currentHealth;
     public float CurrentHealth
@@ -41,6 +45,8 @@ public class EnemyHealth : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        animator = GetComponent<Animator>();
+        collider = GetComponent<BoxCollider>();
         currentHealth = BaseHealth;
         originalColor = rend.material.color;
     }
@@ -52,14 +58,34 @@ public class EnemyHealth : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        if (EnemyIsDead)
+            return;
+
         DamageToTake = damage;
         currentHealth -= DamageToTake;
         healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
         Flash();
-        if (currentHealth <= 0)
+
+        if (currentHealth <= 0 && !EnemyIsDead)
         {
-            Invoke("EnemyDead", flashDuration);
+            if (EnemyController.HasInstance && currentHealth <= 0)
+            {
+                EnemyController.Instance.EnemiesKilled++;
+                EnemyController.Instance.UpdateEnemyCountUI();
+            }
+            animator.SetBool("Dead", true);
+            animator.SetTrigger("TakeHit");
+            Invoke("EnemyDead", deathAnimationLength);
+            collider.enabled = false;
+            EnemyIsDead = true;
+            return;
         }
+
+        if (!tookHit && currentHealth > 0 || damage < currentHealth && !EnemyIsDead)
+            animator.SetTrigger("TakeHit");
+
+        tookHit = true;
+        return;
     }
 
     #region LingeringDamage
@@ -81,6 +107,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = BaseHealth;
         rend.material.color = originalColor;
+        EnemyIsDead = false;
 
         healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
         healthbarUI.GetComponent<EnemyHealthBar>().ResetAlpha();
@@ -96,6 +123,7 @@ public class EnemyHealth : MonoBehaviour
         rend.material.color = flashColor;
         yield return new WaitForSeconds(flashDuration);
         rend.material.color = originalColor;
+        tookHit = false;
     }
     private void Flash()
     {
@@ -112,11 +140,6 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnDisable()
     {
-        if (EnemyController.HasInstance && currentHealth <= 0)
-        {
-            EnemyController.Instance.EnemiesKilled++;
-            EnemyController.Instance.UpdateEnemyCountUI();
-        }
         if (ExperienceHandler.HasInstance && currentHealth <= 0)
             ExperienceHandler.Instance.SpawnXP(transform.position);
 

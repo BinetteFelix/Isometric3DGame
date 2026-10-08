@@ -2,21 +2,25 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent m_Agent;
     private Transform target;
     private float updateDestinationTime;
-
+    EnemyHealth health;
     private Animator animator;
     Collider[] player;
-    Transform attackRangeTransform;
+
+
+    [Header("Attack Variables")]
+    public float BaseDamage;
     public float attackRange;
     public bool IsInAttackRange { get; private set; }
     private bool isAttacking;
     private float lastAttackTime;
     public float AttackSpeed;
-
+    Transform attackRangeTransform;
     private float walkAnimThreshold = 0.75f;
         
     #region GIZMOS
@@ -39,6 +43,7 @@ public class EnemyMovement : MonoBehaviour
         whatIsPlayer = 1 << LayerMask.NameToLayer("Player");
         animator = GetComponent<Animator>();
         m_Agent = GetComponent<NavMeshAgent>();
+        health = GetComponent<EnemyHealth>();
         attackRangeTransform = transform;
     }
 
@@ -51,7 +56,7 @@ public class EnemyMovement : MonoBehaviour
         #endregion
 
         #region DESTINATION HANDLER
-        if (updateDestinationTime < 0)
+        if (updateDestinationTime < 0 && !health.EnemyIsDead)
         {
             SetDestination();
             player = Physics.OverlapSphere(attackRangeTransform.position, attackRange, whatIsPlayer);
@@ -65,6 +70,10 @@ public class EnemyMovement : MonoBehaviour
             }
             animator.SetBool("InAttackRange", IsInAttackRange);
         }
+        else if (health.EnemyIsDead)
+        {
+            m_Agent.velocity = Vector3.zero;
+        }
         
         #endregion
 
@@ -77,7 +86,10 @@ public class EnemyMovement : MonoBehaviour
             State = EnemyState.attacking;
         }
         else
+        {
             State = EnemyState.idle;
+        }
+            
 
         StateHandler();
     }
@@ -94,7 +106,10 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (State == EnemyState.attacking)
         {
-            StartCoroutine(DoAttack());
+            if (health.EnemyIsDead)
+                StopCoroutine(DoAttack());
+            else
+                StartCoroutine(DoAttack());
         }
         else if (State == EnemyState.tookDamage)
         {
@@ -108,7 +123,7 @@ public class EnemyMovement : MonoBehaviour
     private IEnumerator DoAttack()
     {
         isAttacking = true;
-        float randomAttack = Random.Range(0, 1);
+        float randomAttack = Random.Range(0, 1.1f);
         animator.SetFloat("WhichAttack", randomAttack);
         animator.SetTrigger("DoAttack");
 
@@ -118,7 +133,8 @@ public class EnemyMovement : MonoBehaviour
             timeInRange += Time.deltaTime;
             yield return null;
         }
-        player[0].GetComponent<PlayerHealth>().TakeDamage(25);      //deals damage if the player is still in range after the set time frame, otherwise don't do any damage
+        if (!health.EnemyIsDead)
+            player[0].GetComponent<PlayerHealth>().TakeDamage(BaseDamage);      //deals damage if the player is still in range after the set time frame, otherwise don't do any damage
 
         float attackInterval = 1.5f;
         yield return new WaitForSeconds(attackInterval);
@@ -148,7 +164,7 @@ public class EnemyMovement : MonoBehaviour
     #region CHECK METHODS
     private bool CanAttack()
     {
-        return IsInAttackRange & !isAttacking;
+        return IsInAttackRange & !isAttacking & !health.EnemyIsDead;
     }
     
     #endregion

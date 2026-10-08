@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject healthbarPrefab;
     private GameObject healthbarUI;
     private Animator animator;
+    CinemachineImpulseSource cameraShakeSource;
     private Player_Movement movement;
     private PlayerAutoAttacking autoAttacking;
     [SerializeField] InputAction damageAction;
@@ -39,6 +41,7 @@ public class PlayerHealth : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        cameraShakeSource = GetComponent<CinemachineImpulseSource>();
         movement = GetComponent<Player_Movement>();
         autoAttacking = GetComponent<PlayerAutoAttacking>();
         damageAction.Enable();
@@ -63,11 +66,15 @@ public class PlayerHealth : MonoBehaviour
         {
             CancelInvoke(nameof(ReEnableInput));
             Invoke(nameof(PlayerDead), flashDuration);
+            cameraShakeSource.GenerateImpulse();
+            return;
         }
         else
         {
             animator.SetTrigger("TookDamage");
             Invoke(nameof(ReEnableInput), 1f);
+            cameraShakeSource.GenerateImpulse();
+
         }
         DoDamage(damage);
         Flash();

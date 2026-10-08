@@ -2,7 +2,7 @@
 - Project name: Isometric3DGame
 - Unity version: Unity 6000.5.1f1
 - Active game object:
-  - Name: Lich12
+  - Name: EyeShotEffect
   - Tag: Untagged
-  - Layer: Enemy
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

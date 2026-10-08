@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float LifeTime = 0.5f;
+    private float LifeTime = 0.25f;
     private Action<Bullet> _killAction;
     private float bulletDamage;
     [SerializeField] private string bulletState;
@@ -84,7 +84,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnEnable()
     {
-        LifeTime = 0.5f;
+        LifeTime = 0.25f;
         enemiesPierced = 0;
     }
     public void SetDamage(float damage)

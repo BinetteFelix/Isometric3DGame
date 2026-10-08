@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,9 +17,12 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #endregion
 
     [SerializeField] public Transform spawnArea;
+    public float SpawnRadius;
     [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
+    int terrorToSpawn = 3;
+    int soulEaterToSpawn;
     public int EnemiesKilled;
     public int enemyKilledLoopNumber;
 
@@ -28,12 +32,16 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     void Start()
     {
         spawnArea = GameObject.FindGameObjectWithTag("EnemySpawnArea").transform;
+
         #region Pooling
         EnemyPool = new ObjectPool<GameObject>(
             () =>
             {
-                int randomEnemyIndex = Random.Range(0, EnemyTypes.Count);
-                return Instantiate(EnemyTypes[randomEnemyIndex].gameObject, spawnArea);
+                if (terrorToSpawn > 0)
+                    return Instantiate(EnemyTypes[0].gameObject, spawnArea);
+                else
+                    return Instantiate(EnemyTypes[1].gameObject, spawnArea);
+
             },
             enemy =>
             {
@@ -55,7 +63,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
             100
             );
         #endregion
-        EnemiesToSpawn = 20;
+
+        EnemiesToSpawn = 50;
         SpawnEnemies();
     }
 
@@ -91,6 +100,7 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #region OBJECTIVE UPDATE
     public void RespawnEnemies()
     {
+        terrorToSpawn = 3;
         if (!UIManager.Instance.JustResetGame)
         {
             UpgradeManager.Instance.OpenUpgradeScreen();
@@ -114,7 +124,12 @@ public class EnemyController : SingletonBehaviour<EnemyController>
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
-            newEnemy.transform.position = spawnArea.position + new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));
+
+            if (newEnemy.name == "Terrorbringer0(Clone)")
+                terrorToSpawn--;
+
+            Vector3 spawnCircle = Random.insideUnitCircle * SpawnRadius;
+            newEnemy.transform.position = new Vector3(spawnCircle.x, 0, spawnCircle.y);
             Enemies.Add(newEnemy);
             //MarkerHandler.Instance.AddToList(newEnemy);
             

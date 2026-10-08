@@ -69,9 +69,7 @@ public class PlayerFireGun : MonoBehaviour
         _bulletPool = new ObjectPool<Bullet>(
             () => 
             {
-                
                 return Instantiate(BulletPrefab, BulletOrigin.position, Quaternion.identity); 
-
             },
             bullet => 
             {
