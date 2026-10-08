@@ -7,7 +7,6 @@ using TMPro;
 public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
 {
     public List<Experience> ExperienceTypes = new List<Experience>();
-    
     public ObjectPool<Experience> xpPool;
 
     #region UI

@@ -11,9 +11,12 @@ public class UIManager : SingletonBehaviour<UIManager>
     #region COMPONENTS
     [SerializeField] private Animator pauseAnimator;
     private Player_Movement playerMovement;
-    [SerializeField] private GameObject pausePanel; 
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject saveScreen;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] WorldSpaceUIParent worldSpaceCanvas;
+    [SerializeField] GameObject screenSpaceCanvas;
+    [SerializeField] GameObject mainMenuCanvas;
     [SerializeField] public Texture2D cursor;
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private GameObject[] FirstSelected;
@@ -38,15 +41,23 @@ public class UIManager : SingletonBehaviour<UIManager>
     private void Start()
     {
         PauseAction.Enable();
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Movement>();
-        movementAction = playerMovement.movementAction;
         pausePanel.SetActive(true);
-        SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
+        saveScreen.SetActive(true);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Movement>();
+            movementAction = playerMovement.movementAction;
+
+            SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
+        }
+        else
+            SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
     }
     private void Update()
     {
         #region INPUT HANDLER
-        if (PauseAction.WasPressedThisFrame())
+        if (PauseAction.WasPressedThisFrame() && SceneManager.GetActiveScene().buildIndex == 1)
         {
             Pause();
         }
@@ -60,13 +71,15 @@ public class UIManager : SingletonBehaviour<UIManager>
         {
             case true:
                 Time.timeScale = 0;
-                movementAction.Disable();
+                if (playerMovement != null)
+                    movementAction.Disable();
                 SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
                 eventSystem.SetSelectedGameObject(FirstSelected[0]);
                 break;
             case false:
                 Time.timeScale = 1;
-                movementAction.Enable();
+                if (playerMovement != null)
+                    movementAction.Enable();
                 SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
                 break;
         }
@@ -101,6 +114,25 @@ public class UIManager : SingletonBehaviour<UIManager>
     private void ResetActualScene()
     {
         SceneManager.LoadScene(gameSceneIndex);
+    }
+    public void StartGame()
+    {
+        SceneManager.LoadScene(gameSceneIndex);
+
+        mainMenuCanvas.SetActive(false);
+        screenSpaceCanvas.SetActive(true);
+        worldSpaceCanvas.gameObject.SetActive(true);
+        SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
+    }
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        mainMenuCanvas.SetActive(true);
+        screenSpaceCanvas.SetActive(false);
+        worldSpaceCanvas.gameObject.SetActive(false);
+        ResetGame();
+        CancelInvoke(nameof(ResetActualScene));
+        SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
     }
     public void SetAmmoUI()
     {

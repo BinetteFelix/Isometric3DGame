@@ -31,47 +31,13 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        spawnArea = GameObject.FindGameObjectWithTag("EnemySpawnArea").transform;
-
-        #region Pooling
-        EnemyPool = new ObjectPool<GameObject>(
-            () =>
-            {
-                if (terrorToSpawn > 0)
-                    return Instantiate(EnemyTypes[0].gameObject, spawnArea);
-                else
-                    return Instantiate(EnemyTypes[1].gameObject, spawnArea);
-
-            },
-            enemy =>
-            {
-                if (!enemy.activeSelf)
-                    enemy.GetComponent<EnemyHealth>().ResetAttributes();
-
-                enemy.gameObject.SetActive(true);
-            },
-            enemy =>
-            {
-                enemy.gameObject.SetActive(false);
-            },
-            enemy =>
-            {
-                Destroy(enemy);
-            },
-            false,
-            10,
-            100
-            );
-        #endregion
-
-        EnemiesToSpawn = 50;
-        SpawnEnemies();
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateEnemyCount();
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            UpdateEnemyCount();
 
         if (Enemies.Count == 0 && HasSpawnedEnemies && (EnemiesKilled > 0 || UIManager.Instance.JustResetGame))
         {
@@ -153,6 +119,47 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     {
         enemyKilledLoopNumber++;
         enemiesKilledText.text = EnemiesKilled.ToString();
+    }
+    public void InitializeStart()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            spawnArea = GameObject.FindGameObjectWithTag("EnemySpawnArea").transform;
+
+            #region Pooling
+            EnemyPool = new ObjectPool<GameObject>(
+                () =>
+                {
+                    if (terrorToSpawn > 0)
+                        return Instantiate(EnemyTypes[0].gameObject, spawnArea);
+                    else
+                        return Instantiate(EnemyTypes[1].gameObject, spawnArea);
+
+                },
+                enemy =>
+                {
+                    if (!enemy.activeSelf)
+                        enemy.GetComponent<EnemyHealth>().ResetAttributes();
+
+                    enemy.gameObject.SetActive(true);
+                },
+                enemy =>
+                {
+                    enemy.gameObject.SetActive(false);
+                },
+                enemy =>
+                {
+                    Destroy(enemy);
+                },
+                false,
+                10,
+                100
+                );
+            #endregion
+
+            EnemiesToSpawn = 50;
+            SpawnEnemies();
+        }
     }
     public override void Instantiate()
     {

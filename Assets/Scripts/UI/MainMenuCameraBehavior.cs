@@ -1,13 +1,17 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using Utility;
 
-public class MainMenuCameraBehavior : MonoBehaviour
+public class MainMenuCameraBehavior : SingletonBehaviour<MainMenuCameraBehavior>
 {
+    private PanelMovingMainMenu[] panelButtons;
+
     Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponent<Animator>();
+        panelButtons = MainMenuButtonEnabler.Instance.GetComponentsInChildren<PanelMovingMainMenu>(true);
     }
 
     // Update is called once per frame
@@ -19,5 +23,9 @@ public class MainMenuCameraBehavior : MonoBehaviour
     {
         animator.SetTrigger(triggerName);
         animator.SetInteger("CurrentIndex", nextPosIndex);
+    }
+
+    public override void Instantiate()
+    {
     }
 }

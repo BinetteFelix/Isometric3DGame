@@ -19,5 +19,9 @@ public class MainMenu3DButton : MonoBehaviour
         rend.material.color = Color.black;
         if (moving != null )
             moving.MovePanel();
+        if (MainMenuButtonEnabler.HasInstance && this.name != "PlayButton")
+            MainMenuButtonEnabler.Instance.SetButtonsActive();
+        if (this.name == "PlayButton")
+            UIManager.Instance.StartGame();
     }
 }

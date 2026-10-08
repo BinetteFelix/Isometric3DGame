@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class WorldSpaceUIParent : MonoBehaviour
 {
-    private Transform camTransform;
-    private Canvas canvasComponent;
+    public Transform camTransform;
     private CanvasGroup canvasGroup;
     void Start()
     {
-        // Find the main camera automatically
-        camTransform = Camera.main.transform;
-        canvasComponent = GetComponent<Canvas>();
-        canvasComponent.worldCamera = Camera.main;
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -30,7 +25,6 @@ public class WorldSpaceUIParent : MonoBehaviour
             if (obj != this.gameObject.GetComponent<RectTransform>())
                 Destroy(obj.gameObject);
         }
-        canvasComponent.worldCamera = Camera.main;
     }
     public void ResetAlpha()
     {
