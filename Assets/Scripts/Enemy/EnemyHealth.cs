@@ -78,7 +78,6 @@ public class EnemyHealth : MonoBehaviour
             Invoke("EnemyDead", deathAnimationLength);
             collider.enabled = false;
             EnemyIsDead = true;
-            return;
         }
 
         if (!tookHit && currentHealth > 0 || damage < currentHealth && !EnemyIsDead)
@@ -116,7 +115,7 @@ public class EnemyHealth : MonoBehaviour
     private void EnemyDead()
     {
         if (EnemyController.HasInstance)
-            EnemyController.Instance.EnemyPool.Release(this.gameObject);
+            EnemyController.Instance.EnemyPool.Release(gameObject);
     }
     private IEnumerator DamageEffect()
     {

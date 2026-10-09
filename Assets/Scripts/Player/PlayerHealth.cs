@@ -62,6 +62,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        DoDamage(damage);
+        Flash();
         if (currentHealth <= 0 || damage >= currentHealth)
         {
             CancelInvoke(nameof(ReEnableInput));
@@ -74,10 +76,8 @@ public class PlayerHealth : MonoBehaviour
             animator.SetTrigger("TookDamage");
             Invoke(nameof(ReEnableInput), 1f);
             cameraShakeSource.GenerateImpulse();
-
+            return;
         }
-        DoDamage(damage);
-        Flash();
     }
     private void DoDamage(float damage)
     {

@@ -92,7 +92,6 @@ public class PlayerFireGun : MonoBehaviour
             );
 
         ammo = maxAmmo;
-        bulletAmount.text = $"{Ammo}";
 
         cameraShakeSource = GetComponent<CinemachineImpulseSource>();
         weaponCollection = GetComponentInParent<WeaponCollection>();
@@ -176,6 +175,7 @@ public class PlayerFireGun : MonoBehaviour
         ammo = maxAmmo;
         bulletAmount.text = $"{Ammo}";
     }
+
     #region CHECK METHODS
     private bool CanShoot()
     {
@@ -183,10 +183,6 @@ public class PlayerFireGun : MonoBehaviour
     }
     #endregion
 
-    private void OnEnable()
-    {
-        bulletAmount.text = $"{Ammo}";
-    }
     public void CancelReload()
     {
         CancelInvoke("ReloadGun");
