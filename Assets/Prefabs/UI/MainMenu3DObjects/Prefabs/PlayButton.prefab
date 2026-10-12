@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5a3ebda5b4a91bd42bc49b8416764902, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 28418dac5e92e3b49ab09b43b1fef81e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d347aee78bba5e44a9de75aae16a26e, type: 2}
     - target: {fileID: 919132149155446097, guid: 28418dac5e92e3b49ab09b43b1fef81e, type: 3}
       propertyPath: m_Name
       value: PlayButton

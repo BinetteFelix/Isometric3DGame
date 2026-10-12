@@ -6,18 +6,30 @@ public class MainMenu3DButton : MonoBehaviour
     [SerializeField] private Renderer rend;
     private PanelMovingMainMenu moving;
     private bool hasPressed;
+    [SerializeField] private Color startColor;
+    [SerializeField] private Color hoverColor;
+    [SerializeField] private Color clickColor;
 
     private void Start()
     {
+        rend.material.color = startColor;
         moving = GetComponent<PanelMovingMainMenu>();
     }
     private void OnMouseDown()
     {
-        rend.material.color = Color.gray3;
+        rend.material.color = clickColor;
+    }
+    private void OnMouseEnter()
+    {
+        rend.material.color = hoverColor;
+    }
+    private void OnMouseExit()
+    {
+        rend.material.color = startColor;
     }
     private void OnMouseUp()
     {
-        rend.material.color = Color.black;
+        rend.material.color = startColor;
         if (moving != null )
             moving.MovePanel();
         if (MainMenuButtonEnabler.HasInstance && this.name != "PlayButton" && !hasPressed)

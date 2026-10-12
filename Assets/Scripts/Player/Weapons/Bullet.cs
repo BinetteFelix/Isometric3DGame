@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float LifeTime = 0.25f;
+    private float lifeTime = 0.25f;
+    public float Range = 0.25f;
     private Action<Bullet> _killAction;
     private float bulletDamage;
     [SerializeField] private string bulletState;
@@ -28,8 +29,8 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LifeTime -= Time.deltaTime;
-        if (LifeTime < 0)
+        lifeTime -= Time.deltaTime;
+        if (lifeTime < 0)
             _killAction.Invoke(this);
 
         if (eyeBall.state == EyeBall.EyeballState.poisonous && this.name == "RegularTear(Clone)")
@@ -84,7 +85,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnEnable()
     {
-        LifeTime = 0.25f;
+        lifeTime = Range;
         enemiesPierced = 0;
     }
     public void SetDamage(float damage)

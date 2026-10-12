@@ -21,8 +21,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     [SerializeField] private TextMeshProUGUI enemiesKilledText;
     [SerializeField] private GameObject worldSpaceCanvas;
     public bool HasSpawnedEnemies { get; private set; }
-    int terrorToSpawn = 3;
-    int soulEaterToSpawn;
+    int terrorToSpawn = 2;
+    int soulEaterToSpawn = 3;
     public int EnemiesKilled;
     public int enemyKilledLoopNumber;
 
@@ -31,7 +31,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        terrorToSpawn = 3;
+        terrorToSpawn = 2;
+        soulEaterToSpawn = 3;
     }
 
     // Update is called once per frame
@@ -87,13 +88,16 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     private void SpawnEnemies()
     {
-        terrorToSpawn = 3;
+        terrorToSpawn = 2;
+        soulEaterToSpawn = 3;
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
 
             if (newEnemy.name == "Terrorbringer0(Clone)")
                 terrorToSpawn--;
+            if (newEnemy.name == "Soul Eater0(Clone)")
+                soulEaterToSpawn--;
 
             Vector3 spawnCircle = Random.insideUnitCircle * SpawnRadius;
 
@@ -139,8 +143,10 @@ public class EnemyController : SingletonBehaviour<EnemyController>
                 {
                     if (terrorToSpawn > 0)
                         return Instantiate(EnemyTypes[0].gameObject, spawnArea);
-                    else
+                    else if (soulEaterToSpawn > 0)
                         return Instantiate(EnemyTypes[1].gameObject, spawnArea);
+                    else
+                        return Instantiate(EnemyTypes[2].gameObject, spawnArea);
 
                 },
                 enemy =>

@@ -19,6 +19,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public int PierceAmount;
     public float MaxTearAmount;
     public float MaxShotgunAmmo;
+    public float tearLifeTime;
     #endregion
 
     private float nextUpgradeKillCount;
@@ -63,37 +64,39 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     {
         switch (name)
         {
-            case "Melee Damage":
+            case "Damage":
                 {
-                    MeleeDamage += value;
+                    MeleeDamage *= 1 + value;
+                    WeaponDamage *= 1 + value;
+
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    foreach (Bullet tear in eyeBall.tearPrefabs)
+                    {
+                        tear.SetDamage(WeaponDamage);
+                    }
+                    foreach (Bullet tear in eyeBall.TearParent.GetComponentsInChildren<Bullet>(true))
+                    {
+                        tear.SetDamage(WeaponDamage);
+                    }
                     break;
                 }
-            case "Melee Speed":
+            case "Speed":
                 {
-                    MeleeAttackSpeed *= value;
+                    MeleeAttackSpeed *= 1 + value;
                     break;
                 }
-            case "Weapon Damage":
+            case "Reload":
                 {
-                    WeaponDamage += value;
+                    ShotgunReloadSpeed *= value;
+                    SMGReloadSpeed *= value;
                     break;
                 }
-            case "Shotgun Reload":
+            case "Move":
                 {
-                    ShotgunReloadSpeed += value;
+                    MovementSpeed *= 1 + value;
                     break;
                 }
-            case "SMG Reload":
-                {
-                    SMGReloadSpeed += value;
-                    break;
-                }
-            case "Move Speed":
-                {
-                    MovementSpeed += value;
-                    break;
-                }
-            case "Poison Tears":
+            case "Poison":
                 {
                     EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
                     eyeBall.SwitchTearState(EyeBall.EyeballState.poisonous);
@@ -124,6 +127,20 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
             case "Max Shotgun Ammo":
                 {
                     MaxShotgunAmmo += value;
+                    break;
+                }
+            case "Range":
+                {
+                    tearLifeTime *= 1 + value;
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    foreach (Bullet tear in eyeBall.tearPrefabs)
+                    {
+                        tear.Range = tearLifeTime;
+                    }
+                    foreach (Bullet tear in eyeBall.TearParent.GetComponentsInChildren<Bullet>(true))
+                    {
+                        tear.Range = tearLifeTime;
+                    }
                     break;
                 }
         }

@@ -13,8 +13,6 @@ public class UpgradeCreator : EditorWindow
     GameObject upgradePanel;
     GameObject upgradeLayoutPrefab;
 
-
-
     [MenuItem("Tools/UpgradeCreator")]
     public static void ShowWindow()
     {
@@ -75,6 +73,7 @@ public class UpgradeCreator : EditorWindow
 
         #region Spawning in Scene (For testing)
         GameObject newUpgrade = Instantiate(upgradeLayoutPrefab, upgradeGrid);
+        newUpgrade.name = upgradeName;
 
         #region Add ScriptableObject
         UpgradeData data = CreateInstance<UpgradeData>();
@@ -91,23 +90,28 @@ public class UpgradeCreator : EditorWindow
         #endregion
 
         #region Add Image Child
-        GameObject newImage = new GameObject();
-        newImage.transform.SetParent(newUpgrade.transform);
-        newImage.transform.position = newUpgrade.transform.position + new Vector3(0, -25f / 3, 0);
+        GameObject newUpgradeImage = new GameObject();
+        newUpgradeImage.name = "Image";
+        newUpgradeImage.transform.SetParent(newUpgrade.transform);
 
-        Image imageComponent = newImage.AddComponent<Image>();
+        Image imageComponent = newUpgradeImage.AddComponent<Image>();
+        imageComponent.rectTransform.anchoredPosition = new Vector2(0, -15f);
         imageComponent.rectTransform.sizeDelta = new Vector2(75, 75);
+        imageComponent.transform.localScale = new Vector3(3, 3, 3);
         imageComponent.sprite = upgradeImage;
+        imageComponent.preserveAspect = true;
         #endregion
 
         #region Add Name Child
         GameObject newUpgradeName = new GameObject();
+        newUpgradeName.name = "Name";
         newUpgradeName.transform.SetParent(newUpgrade.transform);
-        newUpgradeName.transform.position = newUpgrade.transform.position + new Vector3(-15f, 42.5f);
 
         TextMeshProUGUI nameComponent = newUpgradeName.AddComponent<TextMeshProUGUI>();
-        nameComponent.rectTransform.sizeDelta = new Vector2(75, 25);
-        nameComponent.fontSize = 16;
+        nameComponent.rectTransform.anchoredPosition = new Vector2(-67, 135);
+        nameComponent.rectTransform.sizeDelta = new Vector2(175, 25);
+        nameComponent.transform.localScale = Vector3.one;
+        nameComponent.fontSize = 38;
         nameComponent.horizontalAlignment = HorizontalAlignmentOptions.Left;
         nameComponent.verticalAlignment = VerticalAlignmentOptions.Middle;
         nameComponent.text = upgradeName;
@@ -115,12 +119,14 @@ public class UpgradeCreator : EditorWindow
 
         #region Add Value Child
         GameObject newUpgradeValue = new GameObject();
+        newUpgradeValue.name = "Value";
         newUpgradeValue.transform.SetParent(newUpgrade.transform);
-        newUpgradeValue.transform.position = newUpgrade.transform.position + new Vector3(-15f, 27.5f);
 
         TextMeshProUGUI valueComponent = newUpgradeValue.AddComponent<TextMeshProUGUI>();
-        valueComponent.rectTransform.sizeDelta = new Vector2(75, 25);
-        valueComponent.fontSize = 12;
+        valueComponent.rectTransform.anchoredPosition = new Vector2(-67, 95);
+        valueComponent.rectTransform.sizeDelta = new Vector2(175, 25);
+        valueComponent.transform.localScale = Vector3.one;
+        valueComponent.fontSize = 32;
         valueComponent.horizontalAlignment = HorizontalAlignmentOptions.Left;
         valueComponent.verticalAlignment = VerticalAlignmentOptions.Middle;
         valueComponent.text = "+ " + upgradeValue.ToString();

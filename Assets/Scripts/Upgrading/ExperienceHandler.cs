@@ -1,14 +1,15 @@
 using System.Collections.Generic;
-using UnityEngine;
-using Utility;
-using UnityEngine.Pool;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
+using Utility;
 
 public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
 {
     public List<Experience> ExperienceTypes = new List<Experience>();
     public ObjectPool<Experience> xpPool;
-
+    [SerializeField] public Transform spawnArea;
     #region UI
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI[] levelTexts;
@@ -44,34 +45,40 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
     }
     private void Start()
     {
-        #region XP Pooling
-        xpPool = new ObjectPool<Experience>(
-            () =>
-            {
-                int randomXPType = Random.Range(0, ExperienceTypes.Count);
-                return Instantiate(ExperienceTypes[randomXPType], transform);
-            },
-            xp =>
-            {
-                xp.gameObject.SetActive(true);
-            },
-            xp =>
-            {
-                xp.gameObject.SetActive(false);
-            },
-            xp =>
-            {
-                Destroy(xp.gameObject);
-            },
-            false,
-            5,
-            100
-            );
-        #endregion
-
         levelUpXPAmount = startLevelUpXPAmount;
     }
+    public void InitializeStart()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            spawnArea = GameObject.FindGameObjectWithTag("XPSpawnArea").transform;
 
+            #region XP Pooling
+            xpPool = new ObjectPool<Experience>(
+                () =>
+                {
+                    int randomXPType = Random.Range(0, ExperienceTypes.Count);
+                    return Instantiate(ExperienceTypes[randomXPType], spawnArea);
+                },
+                xp =>
+                {
+                    xp.gameObject.SetActive(true);
+                },
+                xp =>
+                {
+                    xp.gameObject.SetActive(false);
+                },
+                xp =>
+                {
+                    Destroy(xp.gameObject);
+                },
+                false,
+                5,
+                100
+                );
+            #endregion
+        }
+    }
     #region XP SPAWNING
     public void SpawnXP(Vector3 enemyOrigin)
     {

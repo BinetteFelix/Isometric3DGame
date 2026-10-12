@@ -10,11 +10,6 @@ public class UploadScore : MonoBehaviour
     [SerializeField] private Transform scoreBoard;
     [SerializeField] private TextMeshProUGUI timePlayed;
     bool HasSavedScore;
-
-    private void Start()
-    {
-        HasSavedScore = false;
-    }
     public void Upload()
     {
         if (inputField.text == string.Empty)
@@ -34,5 +29,9 @@ public class UploadScore : MonoBehaviour
             errorMessageText.gameObject.SetActive(false);
             HasSavedScore = true;
         }
+    }
+    private void OnEnable()
+    {
+        HasSavedScore = false;
     }
 }

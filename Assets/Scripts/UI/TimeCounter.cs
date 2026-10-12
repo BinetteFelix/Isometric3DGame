@@ -4,13 +4,9 @@ using UnityEngine;
 public class TimeCounter : MonoBehaviour
 {
     private float timePassed;
-    private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI timerText;
     private bool isTimerRunning;
 
-    private void Start()
-    {
-        timerText = GetComponent<TextMeshProUGUI>();
-    }
     // Update is called once per frame
     void Update()
     {
@@ -29,5 +25,6 @@ public class TimeCounter : MonoBehaviour
     private void OnEnable()
     {
         isTimerRunning = true;
+        timerText.text = $"{00}:{00}";
     }
 }
