@@ -15,6 +15,7 @@ public class PlayerAutoAttacking : MonoBehaviour
     #endregion
 
     Collider[] enemies;
+    [SerializeField] private ParticleSystem staffSwingEffect;
     [SerializeField] private LayerMask whatIsEnemy;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,6 +59,7 @@ public class PlayerAutoAttacking : MonoBehaviour
     {
         animator.speed = UpgradeManager.Instance.MeleeAttackSpeed;
         movement.IsMeleeAttacking = true;
+        staffSwingEffect.Play();
         animator.SetFloat("RandomMeleeAttack", Random.Range(0, 2));
         animator.SetTrigger("DoAttack");
 
@@ -66,7 +68,9 @@ public class PlayerAutoAttacking : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.GetComponent<EnemyHealth>().TakeDamage(UpgradeManager.Instance.MeleeDamage);
+            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+            enemyHealth.PlayEffect(4);
+            enemyHealth.TakeDamage(UpgradeManager.Instance.MeleeDamage);
         }
 
         movement.IsMeleeAttacking = false;

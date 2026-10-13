@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private string bulletState;
 
     private EyeBall eyeBall;
+    [SerializeField] private ParticleSystem[] hitEffect;
 
     public int PiercingAmount;
     private int enemiesPierced;
@@ -33,7 +34,10 @@ public class Bullet : MonoBehaviour
         if (lifeTime < 0)
             _killAction.Invoke(this);
 
-        if (eyeBall.state == EyeBall.EyeballState.poisonous && this.name == "RegularTear(Clone)")
+        if (eyeBall.state == EyeBall.EyeballState.poisonous && (this.name == "RegularTear(Clone)" || this.name == "ReaperTear(Clone)") || 
+            eyeBall.state == EyeBall.EyeballState.reaper && (this.name == "RegularTear(Clone)" || this.name == "PoisonTear(Clone)") || 
+            eyeBall.state == EyeBall.EyeballState.basic && (this.name == "PoisonTear(Clone)" || this.name == "ReaperTear(Clone)")
+            )
             Destroy(this.gameObject);
     }
     public void Init(Action<Bullet> killAction)
@@ -44,7 +48,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-
+        
         if (enemy != null)
         {
             if (state == TearState.piercing)
@@ -61,14 +65,27 @@ public class Bullet : MonoBehaviour
             {
                 DirectDamage(enemy);
             }
+            if (eyeBall.state == EyeBall.EyeballState.reaper)
+                enemy.InitHealthSteal();
         }
     }
     private void PierceAndDamage(EnemyHealth enemy)
     {
         if (bulletState == "Poisonous")
+        {
             enemy.DoLingeringDamage(bulletDamage);
+            enemy.PlayEffect(1);
+        }
         else if (bulletState == "Basic")
+        {
             enemy.TakeDamage(bulletDamage);
+            enemy.PlayEffect(2);
+        }
+        else if (bulletState == "Reaper")
+        {
+            enemy.TakeDamage(bulletDamage);
+            enemy.PlayEffect(3);
+        }
     }
     private void DirectDamage(EnemyHealth enemy)
     {
@@ -76,11 +93,19 @@ public class Bullet : MonoBehaviour
         {
             enemy.DoLingeringDamage(bulletDamage);
             _killAction.Invoke(this);
+            enemy.PlayEffect(1);
         }
         else if (bulletState == "Basic")
         {
             enemy.TakeDamage(bulletDamage);
             _killAction.Invoke(this);
+            enemy.PlayEffect(2);
+        }
+        else if(bulletState == "Reaper")
+        {
+            enemy.TakeDamage(bulletDamage);
+            _killAction.Invoke(this);
+            enemy.PlayEffect(3);
         }
     }
     private void OnEnable()

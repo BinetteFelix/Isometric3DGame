@@ -70,7 +70,8 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
                 },
                 xp =>
                 {
-                    Destroy(xp.gameObject);
+                    if (xp != null && xp.gameObject.activeSelf)
+                        Destroy(xp.gameObject);
                 },
                 false,
                 5,

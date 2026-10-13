@@ -162,7 +162,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
                 },
                 enemy =>
                 {
-                    Destroy(enemy);
+                    if (enemy != null && enemy.activeSelf)
+                        Destroy(enemy);
                 },
                 false,
                 10,

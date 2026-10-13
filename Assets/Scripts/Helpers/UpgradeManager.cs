@@ -17,8 +17,8 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float MovementSpeed;
     public float PoisonDamage;
     public int PierceAmount;
-    public float MaxTearAmount;
-    public float MaxShotgunAmmo;
+    public int MaxTearAmount;
+    public int MaxShotgunAmmo;
     public float tearLifeTime;
     #endregion
 
@@ -121,12 +121,14 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                 }
             case "Max Tears":
                 {
-                    MaxTearAmount += value;
+                    MaxTearAmount += Mathf.RoundToInt(value);
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    eyeBall.UpgradeMaxTears();
                     break;
                 }
             case "Max Shotgun Ammo":
                 {
-                    MaxShotgunAmmo += value;
+                    MaxShotgunAmmo += Mathf.RoundToInt(value);
                     break;
                 }
             case "Range":
@@ -141,6 +143,12 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                     {
                         tear.Range = tearLifeTime;
                     }
+                    break;
+                }
+            case "Reaper":
+                {
+                    EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
+                    eyeBall.SwitchTearState(EyeBall.EyeballState.reaper);
                     break;
                 }
         }

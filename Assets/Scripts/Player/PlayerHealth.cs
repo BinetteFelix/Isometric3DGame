@@ -11,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
     private GameObject healthbarUI;
     private Animator animator;
     CinemachineImpulseSource cameraShakeSource;
+    [SerializeField] private ParticleSystem healEffect;
     private Player_Movement movement;
     private PlayerAutoAttacking autoAttacking;
     [SerializeField] InputAction damageAction;
@@ -21,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float flashDuration = 0.1f;
     private Color originalColor;
     #endregion
+
     public bool IsTakingDamage;
     public bool PlayerIsDead {  get; private set; }
     public float BaseHealth;
@@ -59,7 +61,20 @@ public class PlayerHealth : MonoBehaviour
         if (damageAction.WasPressedThisFrame())
             TakeDamage(10);
     }
-
+    public void InitHeal(float health)
+    {
+        DoHeal(health);
+        healEffect.Play();
+        if (currentHealth < BaseHealth)
+        {
+            cameraShakeSource.GenerateImpulse();
+        }
+    }
+    private void DoHeal(float health)
+    {
+        currentHealth += health;
+        healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+    }
     public void TakeDamage(float damage)
     {
         DoDamage(damage);

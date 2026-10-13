@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] public Renderer rend;
     BoxCollider collider;
     Animator animator;
+    PlayerHealth player;
     #endregion
 
     #region TAKE DAMAGE DATA
@@ -15,12 +16,16 @@ public class EnemyHealth : MonoBehaviour
     private Color originalColor;
     #endregion
 
+    [SerializeField] private GameObject meshObj;
     public float BaseHealth;
     public GameObject HealthbarPrefab;
     private GameObject healthbarUI;
     private Transform worldSpaceCanvas;
     public Vector3 healthbarPos = new Vector3(0, 2f, 0);
     public float deathAnimationLength;
+    [SerializeField] private ParticleSystem[] effects;
+
+    private bool playerIsStealingHealth;
     public bool EnemyIsDead {  get; private set; }
     bool tookHit;
     private float DamageToTake;
@@ -45,6 +50,7 @@ public class EnemyHealth : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         animator = GetComponent<Animator>();
         collider = GetComponent<BoxCollider>();
         currentHealth = BaseHealth;
@@ -75,7 +81,9 @@ public class EnemyHealth : MonoBehaviour
             }
             animator.SetBool("Dead", true);
             animator.SetTrigger("TakeHit");
-            Invoke("EnemyDead", deathAnimationLength);
+            Invoke(nameof(DisableMesh), deathAnimationLength);
+            effects[0].Play();
+            Invoke("EnemyDead", deathAnimationLength + 1.5f);
             collider.enabled = false;
             EnemyIsDead = true;
         }
@@ -111,6 +119,11 @@ public class EnemyHealth : MonoBehaviour
         healthbarUI.GetComponent<EnemyHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
         healthbarUI.GetComponent<EnemyHealthBar>().ResetAlpha();
         healthbarUI.SetActive(true);
+        meshObj.SetActive(true);
+    }
+    private void DisableMesh()
+    {
+        meshObj.SetActive(false);
     }
     private void EnemyDead()
     {
@@ -132,15 +145,35 @@ public class EnemyHealth : MonoBehaviour
             StartCoroutine(DamageEffect());
         }   
     }
-
+    public void PlayEffect(int indexInArray)
+    {
+        effects[indexInArray].Play();
+    }
     private float ConvertToDecimal(float n)
     {
         return n / 100;
+    }
+    public void InitHealthSteal()
+    {
+        playerIsStealingHealth = true;
+    }
+    private void StealHealth()
+    {
+        player.InitHeal(BaseHealth / 20);
     }
     private void OnDisable()
     {
         if (ExperienceHandler.HasInstance && currentHealth <= 0)
             ExperienceHandler.Instance.SpawnXP(transform.position);
 
+        if (playerIsStealingHealth)
+        {
+            StealHealth(); 
+            playerIsStealingHealth = false;
+        }
+    }
+    private void OnEnable()
+    {
+        effects[5].Play();
     }
 }

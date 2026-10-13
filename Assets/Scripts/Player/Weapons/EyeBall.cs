@@ -38,6 +38,7 @@ public class EyeBall : MonoBehaviour
     {
         basic,
         poisonous,
+        reaper
     }
 
     #region EFFECTS
@@ -85,6 +86,8 @@ public class EyeBall : MonoBehaviour
                     return Instantiate(tearPrefabs[0], tearOrigin.position, Quaternion.identity);
                 else if (state == EyeballState.poisonous)
                     return Instantiate(tearPrefabs[1], tearOrigin.position, Quaternion.identity);
+                else if (state == EyeballState.reaper)
+                    return Instantiate(tearPrefabs[2], tearOrigin.position, Quaternion.identity);
                 else
                     return null;
             },
@@ -185,17 +188,25 @@ public class EyeBall : MonoBehaviour
     {
         tearPool.Release(bullet);
     }
+    public void UpgradeMaxTears()
+    {
+        MaxAmmo = UpgradeManager.Instance.MaxTearAmount;
+    }
     public void SwitchTearState(EyeballState newState)
     {
         state = newState;
         tearPool.Clear();
-        if (newState == EyeballState.basic)
+        if (state == EyeballState.basic)
         {
             rend.materials[1].color = Color.blue;
         }
-        else if (newState == EyeballState.poisonous)
+        else if (state == EyeballState.poisonous)
         {
             rend.materials[1].color = Color.greenYellow;
+        }
+        else if (state == EyeballState.reaper)
+        {
+            rend.materials[1].color = Color.darkRed;
         }
     }
 }
