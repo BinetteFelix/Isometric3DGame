@@ -26,7 +26,6 @@ public class AutoPickup : MonoBehaviour
             {
                 DrawInXP(xpColliders[0].gameObject);
             }
-            
         }
     }
     private void DrawInXP(GameObject xpObj)

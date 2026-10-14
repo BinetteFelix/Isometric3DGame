@@ -124,6 +124,9 @@ public class EnemyHealth : MonoBehaviour
     private void DisableMesh()
     {
         meshObj.SetActive(false);
+
+        if (ExperienceHandler.HasInstance && currentHealth <= 0)
+            ExperienceHandler.Instance.SpawnXP(transform.position);
     }
     private void EnemyDead()
     {
@@ -163,9 +166,6 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnDisable()
     {
-        if (ExperienceHandler.HasInstance && currentHealth <= 0)
-            ExperienceHandler.Instance.SpawnXP(transform.position);
-
         if (playerIsStealingHealth)
         {
             StealHealth(); 

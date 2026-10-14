@@ -43,7 +43,7 @@ public class EyeBall : MonoBehaviour
 
     #region EFFECTS
     [SerializeField] private Renderer rend;
-    [SerializeField] private ParticleSystem WeaponEffect;
+    [SerializeField] private ParticleSystem[] eyeballStatusEffect;
     #endregion
 
     #region STATE PARAMETERS
@@ -129,7 +129,6 @@ public class EyeBall : MonoBehaviour
         if (CanShoot() && shootAction.IsPressed())
         {
             Shoot();
-            WeaponEffect.Play();
             LastPressedShot = shotDelay;
         }
         if (Ammo <= 0 && shootAction.WasPressedThisFrame())
@@ -198,15 +197,30 @@ public class EyeBall : MonoBehaviour
         tearPool.Clear();
         if (state == EyeballState.basic)
         {
-            rend.materials[1].color = Color.blue;
+            rend.materials[1].color = Color.purple;
+
+            SetStatusEffect(0);
         }
         else if (state == EyeballState.poisonous)
         {
             rend.materials[1].color = Color.greenYellow;
+
+            SetStatusEffect(1);
         }
         else if (state == EyeballState.reaper)
         {
             rend.materials[1].color = Color.darkRed;
+
+            SetStatusEffect(2);
         }
+    }
+    private void SetStatusEffect(int statusEffectIndex)
+    {
+        foreach (ParticleSystem statusEffect in eyeballStatusEffect)
+        {
+            statusEffect.gameObject.SetActive(false);
+        }
+        eyeballStatusEffect[statusEffectIndex].gameObject.SetActive(true);
+        eyeballStatusEffect[statusEffectIndex].Play();
     }
 }
