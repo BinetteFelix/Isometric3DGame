@@ -1,24 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
-public class Upgrade : MonoBehaviour, IPointerClickHandler
+public class Upgrade : MonoBehaviour
 {
-    public InputAction upgradeAction;
     public UpgradeData UpgradeData;
     public GameObject Panel;
-    public void OnPointerClick(PointerEventData eventData)
+    public void SendUpgradeInfo()
     {
         UpgradeManager.Instance.UpgradePlayer(UpgradeData.upgradeName, UpgradeData.value);
         Panel.SetActive(false);
-    }
-    private void Update()
-    {
-        if (upgradeAction.WasPressedThisFrame())
-        {
-            UpgradeManager.Instance.UpgradePlayer(UpgradeData.upgradeName, UpgradeData.value);
-            Panel.SetActive(false);
-            Debug.Log(UpgradeData.upgradeName);
-        }
     }
 }

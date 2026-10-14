@@ -1132,6 +1132,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ec8f632a-6a8b-4ad5-8738-2dfe438ebd69"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pausing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6419d078-4136-4aae-9242-298ccf612a8e"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",

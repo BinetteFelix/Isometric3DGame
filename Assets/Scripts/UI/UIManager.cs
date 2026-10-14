@@ -18,7 +18,7 @@ public class UIManager : SingletonBehaviour<UIManager>
     [SerializeField] GameObject mainMenuCanvas;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] public Texture2D cursor;
-    [SerializeField] private EventSystem eventSystem;
+    [SerializeField] public EventSystem eventSystem;
     [SerializeField] private GameObject[] FirstSelected;
     [SerializeField] private List<GameObject> ammoType;
     [SerializeField] private TextMeshProUGUI ammoAmount;
