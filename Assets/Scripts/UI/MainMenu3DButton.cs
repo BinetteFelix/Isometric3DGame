@@ -15,6 +15,13 @@ public class MainMenu3DButton : MonoBehaviour
         rend.material.color = startColor;
         moving = GetComponent<PanelMovingMainMenu>();
     }
+    private void Update()
+    {
+        if (InputManager.Instance.actions.UI.PressSouth.WasPressedThisFrame())
+        {
+            UIManager.Instance.StartGame();
+        }
+    }
     private void OnMouseDown()
     {
         rend.material.color = clickColor;

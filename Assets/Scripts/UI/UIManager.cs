@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Utility;
 
@@ -23,11 +22,10 @@ public class UIManager : SingletonBehaviour<UIManager>
     [SerializeField] private GameObject[] FirstSelected;
     [SerializeField] private List<GameObject> ammoType;
     [SerializeField] private TextMeshProUGUI ammoAmount;
+    [SerializeField] private GameObject playButton;
     #endregion
 
     #region INPUT PARAMETERS
-    [SerializeField] private InputAction PauseAction;
-    private InputAction movementAction;
     #endregion
 
     #region STATE PARAMETERS
@@ -41,14 +39,15 @@ public class UIManager : SingletonBehaviour<UIManager>
 
     private void Start()
     {
-        PauseAction.Enable();
+        InputManager.Instance.actions.UI.Pausing.Enable();
         pausePanel.SetActive(true);
         saveScreen.SetActive(true);
+        eventSystem.SetSelectedGameObject(playButton);
     }
     private void Update()
     {
         #region INPUT HANDLER
-        if (PauseAction.WasPressedThisFrame() && SceneManager.GetActiveScene().buildIndex == 1)
+        if (InputManager.Instance.actions.UI.Pausing.WasPressedThisFrame() && SceneManager.GetActiveScene().buildIndex == 1)
         {
             Pause();
         }
@@ -62,13 +61,13 @@ public class UIManager : SingletonBehaviour<UIManager>
         {
             case true:
                 Time.timeScale = 0;
-                movementAction.Disable();
+                InputManager.Instance.actions.Player.Move.Disable();
                 SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
                 eventSystem.SetSelectedGameObject(FirstSelected[0]);
                 break;
             case false:
                 Time.timeScale = 1;
-                movementAction.Enable();
+                InputManager.Instance.actions.Player.Move.Enable();
                 SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
                 break;
         }
@@ -79,7 +78,9 @@ public class UIManager : SingletonBehaviour<UIManager>
     {
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
-        playerMovement.movementAction.Disable();
+        InputManager.Instance.actions.Player.Move.Disable();
+        InputManager.Instance.actions.Player.Look.Disable();
+        InputManager.Instance.actions.Player.LookController.Disable();
         SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
         eventSystem.SetSelectedGameObject(FirstSelected[1]);
     }
@@ -108,6 +109,11 @@ public class UIManager : SingletonBehaviour<UIManager>
     {
         SceneManager.LoadScene(gameSceneIndex);
 
+        InputManager.Instance.actions.Player.Move.Enable();
+        InputManager.Instance.actions.Player.Look.Enable();
+        InputManager.Instance.actions.Player.LookController.Enable();
+        InputManager.Instance.actions.UI.Pausing.Enable();
+
         mainMenuCanvas.SetActive(false);
         screenSpaceCanvas.SetActive(true);
         worldSpaceCanvas.gameObject.SetActive(true);
@@ -120,11 +126,16 @@ public class UIManager : SingletonBehaviour<UIManager>
         mainMenuCanvas.SetActive(true);
         worldSpaceCanvas.gameObject.SetActive(false);
         Invoke(nameof(DisableOnScreenCanvas), 0.1f);
+        
+        InputManager.Instance.actions.Player.Move.Disable();
+        InputManager.Instance.actions.Player.Look.Disable();
+        InputManager.Instance.actions.Player.LookController.Disable();
+        InputManager.Instance.actions.UI.Pausing.Disable();
 
         #region Unpause
         IsPaused = false;
         Time.timeScale = 1;
-        movementAction.Disable();
+        InputManager.Instance.actions.Player.Move.Disable();
         SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
         eventSystem.SetSelectedGameObject(FirstSelected[0]);
         pauseAnimator.SetBool("PauseState", IsPaused);
@@ -144,8 +155,6 @@ public class UIManager : SingletonBehaviour<UIManager>
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Movement>();
-            movementAction = playerMovement.movementAction;
             SetCursorState(CursorLockMode.Confined, CursorMode.Auto, cursor);
         }
         else

@@ -14,11 +14,8 @@ public class Player_Movement : MonoBehaviour
     private float AnimationWalkingSpeed = 1;
     #endregion
 
-    [SerializeField] public InputAction movementAction;
-    [SerializeField] private InputAction lookAction;
-
     private Vector3 _moveInput;
-    private Vector2 _lookInput;
+    private Vector2 _controllerLookInput;
     private Vector2 WalkDirection;
     private int AngleOffset = 45;
     private float _moveSpeed = 3;
@@ -26,7 +23,6 @@ public class Player_Movement : MonoBehaviour
 
     public bool IsMeleeAttacking;
 
-    public bool IsUsingController {  get; private set; }
     public CurrentState state;
     public enum CurrentState
     {
@@ -37,20 +33,18 @@ public class Player_Movement : MonoBehaviour
     }
     private void Awake()
     {
-        movementAction.Enable();
-        lookAction.Enable();
         RB = GetComponent<Rigidbody>();
         p_Animator = GetComponent<Animator>();
         attacking = GetComponent<PlayerAutoAttacking>();
         health = GetComponent<PlayerHealth>();
         UIManager.Instance.OnGameSceneLoad();
     }
+    private void Start()
+    {
+    }
     private void Update()
     {
-        IsUsingController = true;
         GatherInputs();
-        if(!UIManager.Instance.IsPaused && !health.PlayerIsDead)
-            Look();
         StateHandler();
         
     }
@@ -74,21 +68,25 @@ public class Player_Movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        if (!UIManager.Instance.IsPaused && !health.PlayerIsDead)
+            Look();
     }
     void GatherInputs()
     {
-        _moveInput = new Vector3(movementAction.ReadValue<Vector2>().x, 0, movementAction.ReadValue<Vector2>().y);
-        _lookInput = new Vector2(lookAction.ReadValue<Vector2>().x, lookAction.ReadValue<Vector2>().y);
+        _moveInput = new Vector3(InputManager.Instance.actions.Player.Move.ReadValue<Vector2>().x, 0, InputManager.Instance.actions.Player.Move.ReadValue<Vector2>().y);
+        _controllerLookInput = InputManager.Instance.actions.Player.LookController.ReadValue<Vector2>();
     }
     private float CalculateLookDirection()
     {
         Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
-        Vector2 mouseOnScreen = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue());
-        Vector2 positionToLookTowards = lookAction.IsPressed() ? _lookInput : mouseOnScreen;
-        if (lookAction.IsPressed())
+        Vector2 mouseOnScreen = Camera.main.ScreenToViewportPoint(InputManager.Instance.actions.Player.Look.ReadValue<Vector2>());
+        Vector2 positionToLookTowards = InputManager.Instance.actions.Player.LookController.IsPressed() ? _controllerLookInput : mouseOnScreen;
+
+        if (InputManager.Instance.actions.Player.LookController.IsPressed())
             Cursor.lockState = CursorLockMode.Locked;
         else
             Cursor.lockState = CursorLockMode.Confined;
+
         float angle = -AngleBetweenTwoPoints(positionOnScreen, positionToLookTowards) - AngleOffset;
 
         #region Walk Animation Direction

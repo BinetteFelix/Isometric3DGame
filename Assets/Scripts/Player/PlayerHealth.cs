@@ -96,7 +96,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private void DoDamage(float damage)
     {
-        movement.movementAction.Disable();
+        InputManager.Instance.actions.Player.Move.Disable();
         DamageToTake = damage;
         currentHealth -= DamageToTake;
         healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
@@ -131,7 +131,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private void ReEnableInput()
     {
-        movement.movementAction.Enable();
+        InputManager.Instance.actions.Player.Move.Enable();
         IsTakingDamage = false;
     }
     private void Flash()
