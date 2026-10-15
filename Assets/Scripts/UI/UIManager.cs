@@ -19,10 +19,9 @@ public class UIManager : SingletonBehaviour<UIManager>
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] public Texture2D cursor;
     [SerializeField] public EventSystem eventSystem;
-    [SerializeField] private GameObject[] FirstSelected;
+    [SerializeField] public GameObject[] FirstSelected;
     [SerializeField] private List<GameObject> ammoType;
     [SerializeField] private TextMeshProUGUI ammoAmount;
-    [SerializeField] private GameObject playButton;
     #endregion
 
     #region INPUT PARAMETERS
@@ -42,16 +41,20 @@ public class UIManager : SingletonBehaviour<UIManager>
         InputManager.Instance.actions.UI.Pausing.Enable();
         pausePanel.SetActive(true);
         saveScreen.SetActive(true);
-        eventSystem.SetSelectedGameObject(playButton);
+        eventSystem.SetSelectedGameObject(FirstSelected[2]);
     }
     private void Update()
     {
         #region INPUT HANDLER
-        if (InputManager.Instance.actions.UI.Pausing.WasPressedThisFrame() && SceneManager.GetActiveScene().buildIndex == 1)
+        if (CanPause() && InputManager.Instance.actions.UI.Pausing.WasPressedThisFrame())
         {
             Pause();
         }
         #endregion
+    }
+    private bool CanPause()
+    {
+        return SceneManager.GetActiveScene().buildIndex == 1 && !UpgradeManager.Instance.upgradeScreen.activeSelf && !UpgradeManager.Instance.levelUpScreen.activeSelf;
     }
     public void Pause()
     {
@@ -104,6 +107,9 @@ public class UIManager : SingletonBehaviour<UIManager>
     private void ResetActualScene()
     {
         SceneManager.LoadScene(gameSceneIndex);
+        InputManager.Instance.actions.Player.Move.Enable();
+        InputManager.Instance.actions.Player.Look.Enable();
+        InputManager.Instance.actions.Player.LookController.Enable();
     }
     public void StartGame()
     {
@@ -145,6 +151,7 @@ public class UIManager : SingletonBehaviour<UIManager>
         ResetGame();
         CancelInvoke(nameof(ResetActualScene));
         SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
+        eventSystem.SetSelectedGameObject(FirstSelected[2]);
         SceneManager.LoadScene(0);
     }
     private void DisableOnScreenCanvas()

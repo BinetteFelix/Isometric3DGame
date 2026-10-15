@@ -191,4 +191,9 @@ public class PlayerFireGun : MonoBehaviour
     {
         _bulletPool.Release(bullet);
     }
+    private void OnEnable()
+    {
+        if (bulletAmount != null)
+            bulletAmount.text = $"{Ammo}";
+    }
 }

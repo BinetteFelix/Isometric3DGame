@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unify.unified-universal-blur": "file:C:/Users/felix/Downloads/Unified-Universal-Blur-main/Unified-Universal-Blur-main",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.14",
     "com.unity.cinemachine": "3.1.7",

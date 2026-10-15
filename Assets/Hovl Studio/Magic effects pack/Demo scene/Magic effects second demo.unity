@@ -363,7 +363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5135655739932955482, guid: 645ebd7cef59b7b40b27c29bf3e99cf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.99
+      value: -8.5
       objectReference: {fileID: 0}
     - target: {fileID: 5135655739932955482, guid: 645ebd7cef59b7b40b27c29bf3e99cf2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -371,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5135655739932955482, guid: 645ebd7cef59b7b40b27c29bf3e99cf2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -16.7
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 5135655739932955482, guid: 645ebd7cef59b7b40b27c29bf3e99cf2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2201,6 +2201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1470152280}
   - component: {fileID: 1470152279}
+  - component: {fileID: 1470152281}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2288,6 +2289,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1470152281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470152278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!4 &1496203028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3411762167605039674, guid: e4a831baccba453479bb744202efc891, type: 3}

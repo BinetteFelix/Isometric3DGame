@@ -37,6 +37,7 @@ public class WeaponCollection : MonoBehaviour
 
         switchWeaponDownAction.Enable();
         switchWeaponUpAction.Enable();
+        SwitchWeaponDown();
     }
 
     // Update is called once per frame

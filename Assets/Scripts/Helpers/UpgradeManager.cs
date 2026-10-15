@@ -4,8 +4,8 @@ using Utility;
 
 public class UpgradeManager : SingletonBehaviour<UpgradeManager>
 {
-    [SerializeField] private GameObject upgradeScreen;
-    [SerializeField] private GameObject levelUpScreen;
+    [SerializeField] public GameObject upgradeScreen;
+    [SerializeField] public GameObject levelUpScreen;
     private GameObject tearOrigin;
 
     #region Upgradeable Variables
@@ -16,6 +16,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
     public float SMGReloadSpeed;
     public float MovementSpeed;
     public float PoisonDamage;
+    public float AoEDamage;
     public int PierceAmount;
     public int MaxTearAmount;
     public int MaxShotgunAmmo;
@@ -68,6 +69,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                 {
                     MeleeDamage *= 1 + value;
                     WeaponDamage *= 1 + value;
+                    AoEDamage *= 1 + value;
 
                     EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
                     foreach (Bullet tear in eyeBall.tearPrefabs)
@@ -78,6 +80,8 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                     {
                         tear.SetDamage(WeaponDamage);
                     }
+                    AutoAoE aoE = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<AutoAoE>(true);
+                    aoE.SetAoEDamage(AoEDamage);
                     break;
                 }
             case "Speed":
@@ -149,6 +153,12 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                 {
                     EyeBall eyeBall = WeaponCollection.Instance.Weapons[1].GetComponent<EyeBall>();
                     eyeBall.SwitchTearState(EyeBall.EyeballState.reaper);
+                    break;
+                }
+            case "AoE":
+                {
+                    AutoAoE aoE = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<AutoAoE>(true);
+                    aoE.ActivateAoE(AoEDamage);
                     break;
                 }
         }
