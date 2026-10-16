@@ -154,6 +154,10 @@ public class UIManager : SingletonBehaviour<UIManager>
         eventSystem.SetSelectedGameObject(FirstSelected[2]);
         SceneManager.LoadScene(0);
     }
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
     private void DisableOnScreenCanvas()
     {
         screenSpaceCanvas.SetActive(false);

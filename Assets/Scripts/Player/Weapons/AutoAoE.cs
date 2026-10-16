@@ -14,6 +14,8 @@ public class AutoAoE : MonoBehaviour
     private void FixedUpdate()
     {
         attackRepeatSpeed -= Time.deltaTime;
+        effectAoE.transform.position = transform.position + new Vector3(0, 0.25f, 0);
+
         if (attackRepeatSpeed < 0)
         {
             enemies = Physics.OverlapSphere(transform.position, 6, whatIsEnemy);

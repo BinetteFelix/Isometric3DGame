@@ -61,7 +61,7 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
         Time.timeScale = 0;
         UIManager.Instance.SetCursorState(CursorLockMode.None, CursorMode.Auto, default);
     }
-    public void UpgradePlayer(string name, float value)
+    public void UpgradePlayer(string name, float value, GameObject panel)
     {
         switch (name)
         {
@@ -162,8 +162,12 @@ public class UpgradeManager : SingletonBehaviour<UpgradeManager>
                     break;
                 }
         }
-        if (!UIManager.Instance.IsPaused)
-            Time.timeScale = 1;
+        CloseUpgradeScreen(panel);
+    }
+    public void CloseUpgradeScreen(GameObject panel)
+    {
+        Time.timeScale = 1;
+        panel.SetActive(false);
         UIManager.Instance.SetCursorState(CursorLockMode.Confined, CursorMode.Auto, UIManager.Instance.cursor);
     }
     public override void Instantiate()

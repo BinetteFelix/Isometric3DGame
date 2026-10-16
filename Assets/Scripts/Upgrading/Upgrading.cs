@@ -17,7 +17,7 @@ public class Upgrading : MonoBehaviour
         {
             if (timeSlider.value == 0)
             {
-                UpgradePanel.SetActive(false);
+                UpgradeManager.Instance.CloseUpgradeScreen(UpgradePanel);
             }
         }
     }

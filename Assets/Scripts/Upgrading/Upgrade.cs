@@ -6,7 +6,6 @@ public class Upgrade : MonoBehaviour
     public GameObject Panel;
     public void SendUpgradeInfo()
     {
-        UpgradeManager.Instance.UpgradePlayer(UpgradeData.upgradeName, UpgradeData.value);
-        Panel.SetActive(false);
+        UpgradeManager.Instance.UpgradePlayer(UpgradeData.upgradeName, UpgradeData.value, Panel);
     }
 }
