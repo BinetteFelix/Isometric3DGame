@@ -10,6 +10,7 @@ public class ExperienceHandler : SingletonBehaviour<ExperienceHandler>
     public List<Experience> ExperienceTypes = new List<Experience>();
     public ObjectPool<Experience> xpPool;
     [SerializeField] public Transform spawnArea;
+
     #region UI
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI[] levelTexts;

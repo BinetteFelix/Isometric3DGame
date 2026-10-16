@@ -23,6 +23,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     public bool HasSpawnedEnemies { get; private set; }
     int terrorToSpawn = 2;
     int soulEaterToSpawn = 3;
+    int usurperToSpawn = 0;
+    int spawnIterations = 0;
     public int EnemiesKilled;
     public int enemyKilledLoopNumber;
 
@@ -68,9 +70,9 @@ public class EnemyController : SingletonBehaviour<EnemyController>
     #region OBJECTIVE UPDATE
     public void RespawnEnemies()
     {
+        spawnIterations++;
         if (!UIManager.Instance.JustResetGame)
         {
-            UpgradeManager.Instance.OpenUpgradeScreen();
             EnemiesToSpawn++;
         }
         
@@ -88,8 +90,10 @@ public class EnemyController : SingletonBehaviour<EnemyController>
 
     private void SpawnEnemies()
     {
-        terrorToSpawn = 2;
-        soulEaterToSpawn = 3;
+        terrorToSpawn = 4 + spawnIterations;
+        soulEaterToSpawn = 5 + spawnIterations;
+        usurperToSpawn = 1 + spawnIterations;
+
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
             GameObject newEnemy = EnemyPool.Get();
@@ -98,6 +102,8 @@ public class EnemyController : SingletonBehaviour<EnemyController>
                 terrorToSpawn--;
             if (newEnemy.name == "Soul Eater0(Clone)")
                 soulEaterToSpawn--;
+            if (newEnemy.name == "Usurper0(Clone)")
+                usurperToSpawn--;
 
             Vector3 spawnCircle = Random.insideUnitCircle * SpawnRadius;
 
@@ -145,8 +151,10 @@ public class EnemyController : SingletonBehaviour<EnemyController>
                         return Instantiate(EnemyTypes[0].gameObject, spawnArea);
                     else if (soulEaterToSpawn > 0)
                         return Instantiate(EnemyTypes[1].gameObject, spawnArea);
-                    else
+                    else if (usurperToSpawn > 0)
                         return Instantiate(EnemyTypes[2].gameObject, spawnArea);
+                    else
+                        return Instantiate(EnemyTypes[3].gameObject, spawnArea);
 
                 },
                 enemy =>

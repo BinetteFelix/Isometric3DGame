@@ -148,9 +148,10 @@ public class EnemyHealth : MonoBehaviour
             StartCoroutine(DamageEffect());
         }   
     }
-    public void PlayEffect(int indexInArray)
+    public void PlayEffect(int indexInArray, Transform spawnOrigin)
     {
         effects[indexInArray].Play();
+        effects[indexInArray].transform.position = spawnOrigin.position;
     }
     private float ConvertToDecimal(float n)
     {
@@ -174,6 +175,6 @@ public class EnemyHealth : MonoBehaviour
     }
     private void OnEnable()
     {
-        effects[5].Play();
+        PlayEffect(5, transform);
     }
 }

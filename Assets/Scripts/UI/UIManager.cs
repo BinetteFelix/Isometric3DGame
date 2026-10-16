@@ -52,9 +52,11 @@ public class UIManager : SingletonBehaviour<UIManager>
         }
         #endregion
     }
+
+    #region Game State
     private bool CanPause()
     {
-        return SceneManager.GetActiveScene().buildIndex == 1 && !UpgradeManager.Instance.upgradeScreen.activeSelf && !UpgradeManager.Instance.levelUpScreen.activeSelf;
+        return SceneManager.GetActiveScene().buildIndex == 1 && !UpgradeManager.Instance.upgradeScreen.activeSelf && !UpgradeManager.Instance.levelUpScreen.activeSelf && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>().PlayerIsDead;
     }
     public void Pause()
     {
@@ -92,6 +94,9 @@ public class UIManager : SingletonBehaviour<UIManager>
         Cursor.lockState = lockmode;
         Cursor.SetCursor(texture, Vector2.zero, mode);
     }
+    #endregion
+
+    #region Resetting Game
     public void ResetGame()
     {
         //MarkerHandler.Instance.ResetList();
@@ -102,15 +107,20 @@ public class UIManager : SingletonBehaviour<UIManager>
         worldSpaceCanvas.ResetAlpha();
         JustResetGame = true;
         ExperienceHandler.Instance.ResetLevel();
+
         Invoke(nameof(ResetActualScene), 0.1f);
     }
     private void ResetActualScene()
     {
         SceneManager.LoadScene(gameSceneIndex);
+        loadingScreen.SetActive(true);
         InputManager.Instance.actions.Player.Move.Enable();
         InputManager.Instance.actions.Player.Look.Enable();
         InputManager.Instance.actions.Player.LookController.Enable();
     }
+    #endregion
+
+    #region Start and Quit
     public void StartGame()
     {
         SceneManager.LoadScene(gameSceneIndex);
@@ -162,6 +172,8 @@ public class UIManager : SingletonBehaviour<UIManager>
     {
         screenSpaceCanvas.SetActive(false);
     }
+    #endregion
+
     public void OnGameSceneLoad()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)

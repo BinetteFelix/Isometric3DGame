@@ -69,7 +69,7 @@ public class PlayerAutoAttacking : MonoBehaviour
         if (enemy != null)
         {
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-            enemyHealth.PlayEffect(4);
+            enemyHealth.PlayEffect(4, enemyHealth.transform);
             enemyHealth.TakeDamage(UpgradeManager.Instance.MeleeDamage);
         }
 

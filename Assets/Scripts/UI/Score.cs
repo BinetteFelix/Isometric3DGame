@@ -1,18 +1,13 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    public string PlayerName;
-    public int score;
-    public string TimePlayed;
-
-    public List<TextMeshProUGUI> scoreTexts;
-    private void Start()
+    public TextMeshProUGUI[] scoreTexts = new TextMeshProUGUI[3];
+    public void SetInformation(int playerScore, string playerName, string timePlayed)
     {
-        scoreTexts[0].text = PlayerName;
-        scoreTexts[1].text = score.ToString();
-        scoreTexts[2].text = TimePlayed;
+        scoreTexts[0].text = playerName;
+        scoreTexts[1].text = playerScore.ToString();
+        scoreTexts[2].text = timePlayed;
     }
 }

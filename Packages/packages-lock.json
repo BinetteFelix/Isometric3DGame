@@ -7,7 +7,7 @@
       "dependencies": {}
     },
     "com.unify.unified-universal-blur": {
-      "version": "file:C:/Users/felix/Downloads/Unified-Universal-Blur-main/Unified-Universal-Blur-main",
+      "version": "file:../Package/Unified-Universal-Blur-main",
       "depth": 0,
       "source": "local",
       "dependencies": {

@@ -34,7 +34,7 @@ public class AutoAoE : MonoBehaviour
         {
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             enemyHealth.TakeDamage(AoEDamage);
-            enemyHealth.PlayEffect(4);
+            enemyHealth.PlayEffect(4, enemyHealth.transform);
         }
     }
     private void OnDrawGizmosSelected()

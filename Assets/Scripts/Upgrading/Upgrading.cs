@@ -44,9 +44,6 @@ public class Upgrading : MonoBehaviour
         }
         upgradesInGrid.Clear();
         UpgradeGrid.GetComponentsInChildren(false, upgradesInGrid);
-        foreach (Upgrade upgrade in upgradesInGrid)
-        {
-            UIManager.Instance.eventSystem.SetSelectedGameObject(upgrade.gameObject);
-        }
+        UIManager.Instance.eventSystem.SetSelectedGameObject(upgradesInGrid[0].GetComponentInChildren<Button>().gameObject);
     }
 }

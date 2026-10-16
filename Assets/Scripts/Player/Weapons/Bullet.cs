@@ -74,17 +74,17 @@ public class Bullet : MonoBehaviour
         if (bulletState == "Poisonous")
         {
             enemy.DoLingeringDamage(bulletDamage);
-            enemy.PlayEffect(1);
+            enemy.PlayEffect(1, transform);
         }
         else if (bulletState == "Basic")
         {
             enemy.TakeDamage(bulletDamage);
-            enemy.PlayEffect(2);
+            enemy.PlayEffect(2, transform);
         }
         else if (bulletState == "Reaper")
         {
             enemy.TakeDamage(bulletDamage);
-            enemy.PlayEffect(3);
+            enemy.PlayEffect(3, transform);
         }
     }
     private void DirectDamage(EnemyHealth enemy)
@@ -93,19 +93,19 @@ public class Bullet : MonoBehaviour
         {
             enemy.DoLingeringDamage(bulletDamage);
             _killAction.Invoke(this);
-            enemy.PlayEffect(1);
+            enemy.PlayEffect(1, transform);
         }
         else if (bulletState == "Basic")
         {
             enemy.TakeDamage(bulletDamage);
             _killAction.Invoke(this);
-            enemy.PlayEffect(2);
+            enemy.PlayEffect(2, transform);
         }
         else if(bulletState == "Reaper")
         {
             enemy.TakeDamage(bulletDamage);
             _killAction.Invoke(this);
-            enemy.PlayEffect(3);
+            enemy.PlayEffect(3, transform);
         }
     }
     private void OnEnable()

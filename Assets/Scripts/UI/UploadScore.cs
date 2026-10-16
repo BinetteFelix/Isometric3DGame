@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UploadScore : MonoBehaviour
@@ -22,13 +21,16 @@ public class UploadScore : MonoBehaviour
             GameObject newScore = Instantiate(scorePrefab, scoreBoard);
             Score score = newScore.GetComponent<Score>();
 
-            score.PlayerName = inputField.text;
-            score.score = EnemyController.Instance.EnemiesKilled;
-            score.TimePlayed = timePlayed.text;
+            SaveScore(score, EnemyController.Instance.EnemiesKilled, inputField.text, timePlayed.text);
 
             errorMessageText.gameObject.SetActive(false);
             HasSavedScore = true;
         }
+    }
+    public void SaveScore(Score newScore, int score, string playerName, string timePlayed)
+    {
+        newScore.SetInformation(score, playerName, timePlayed);
+        SaveManager.Instance.SaveHighscore(score, playerName, timePlayed);
     }
     private void OnEnable()
     {
