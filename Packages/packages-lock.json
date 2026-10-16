@@ -7,7 +7,7 @@
       "dependencies": {}
     },
     "com.unify.unified-universal-blur": {
-      "version": "file:../Package/Unified-Universal-Blur-main",
+      "version": "file:../BlurPackage/Unified-Universal-Blur-main",
       "depth": 0,
       "source": "local",
       "dependencies": {

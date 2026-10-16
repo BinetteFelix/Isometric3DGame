@@ -9,6 +9,7 @@ public class UIManager : SingletonBehaviour<UIManager>
 {
     #region COMPONENTS
     [SerializeField] private Animator pauseAnimator;
+    [SerializeField] private Animator damageAnimator;
     private Player_Movement playerMovement;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject saveScreen;
@@ -78,6 +79,10 @@ public class UIManager : SingletonBehaviour<UIManager>
         }
         pauseAnimator.SetBool("PauseState", IsPaused);
         pauseAnimator.SetTrigger("PauseInput");
+    }
+    public void PlayerTookDamage(int index)
+    {
+        damageAnimator.Play($"Damage{index}");
     }
     public void PlayerDead()
     {

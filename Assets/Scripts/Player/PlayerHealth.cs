@@ -1,7 +1,6 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -14,7 +13,6 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private ParticleSystem healEffect;
     private Player_Movement movement;
     private PlayerAutoAttacking autoAttacking;
-    [SerializeField] InputAction damageAction;
     #endregion
 
     #region TAKE DAMAGE DATA
@@ -46,7 +44,6 @@ public class PlayerHealth : MonoBehaviour
         cameraShakeSource = GetComponent<CinemachineImpulseSource>();
         movement = GetComponent<Player_Movement>();
         autoAttacking = GetComponent<PlayerAutoAttacking>();
-        damageAction.Enable();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,9 +55,32 @@ public class PlayerHealth : MonoBehaviour
     }
     private void Update()
     {
-        if (damageAction.WasPressedThisFrame())
-            TakeDamage(10);
+        #region Damage Control UI
+        if (currentHealth / BaseHealth > 0.80f && currentHealth / BaseHealth < 0.90f)
+        {
+            PlayDamageAnim(0);
+        }
+        else if (currentHealth / BaseHealth > 0.60f && currentHealth / BaseHealth < 0.80f)
+        {
+            PlayDamageAnim(1);
+        }
+        else if (currentHealth / BaseHealth > 0.40f && currentHealth / BaseHealth < 0.60f)
+        {
+            PlayDamageAnim(2);
+        }
+        else if (currentHealth / BaseHealth > 0.20f && currentHealth / BaseHealth < 0.40f)
+        {
+            PlayDamageAnim(3);
+        }
+        else if (PlayerIsDead)
+        {
+            PlayDamageAnim(4);
+        }
+        #endregion
     }
+    
+
+    #region Healing
     public void InitHeal(float health)
     {
         DoHeal(health);
@@ -75,6 +95,9 @@ public class PlayerHealth : MonoBehaviour
         currentHealth += health;
         healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
     }
+    #endregion
+
+    #region Damage
     public void TakeDamage(float damage)
     {
         DoDamage(damage);
@@ -104,17 +127,6 @@ public class PlayerHealth : MonoBehaviour
         IsTakingDamage = true;
         autoAttacking.CancelAttack();
     }
-    private float ConvertToDecimal(float n)
-    {
-        return n / BaseHealth;
-    }
-    public void ResetAttributes()
-    {
-        currentHealth = BaseHealth;
-        rend.material.color = originalColor;
-
-        healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
-    }
     private void PlayerDead()
     {
         PlayerIsDead = true;
@@ -129,10 +141,16 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(flashDuration);
         rend.material.color = originalColor;
     }
-    private void ReEnableInput()
+    void PlayDamageAnim(int animIndex)
     {
-        InputManager.Instance.actions.Player.Move.Enable();
-        IsTakingDamage = false;
+        UIManager.Instance.PlayerTookDamage(animIndex);
+    }
+    #endregion
+
+    #region Helpers
+    private float ConvertToDecimal(float n)
+    {
+        return n / BaseHealth;
     }
     private void Flash()
     {
@@ -142,4 +160,17 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(DamageEffect());
         }
     }
+    private void ReEnableInput()
+    {
+        InputManager.Instance.actions.Player.Move.Enable();
+        IsTakingDamage = false;
+    }
+    public void ResetAttributes()
+    {
+        currentHealth = BaseHealth;
+        rend.material.color = originalColor;
+
+        healthbarUI.GetComponent<PlayerHealthBar>().HealthBar.fillAmount = ConvertToDecimal(currentHealth);
+    }
+    #endregion
 }
